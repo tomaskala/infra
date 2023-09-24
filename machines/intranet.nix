@@ -274,6 +274,12 @@
             ipv4 = "10.0.0.10";
             ipv6 = "fd25:6f6:a9f:2000::a";
           };
+
+          printer = {
+            url = "printer.home.arpa";
+            ipv4 = "10.0.0.11";
+            ipv6 = "fd25:6f6:a9f:2000::b";
+          };
         };
       };
 
