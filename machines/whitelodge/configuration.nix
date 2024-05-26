@@ -10,6 +10,7 @@ in {
     ./modules/miniflux.nix
     ./modules/monitoring-hub.nix
     ./modules/radicale.nix
+    ./modules/syncthing.nix
     ./modules/website.nix
     ./modules/wireguard.nix
     ../../intranet
@@ -326,6 +327,17 @@ in {
       radicale = {
         enable = true;
         port = 5232;
+        inherit acmeEmail;
+      };
+
+      syncthing = {
+        enable = false;
+
+        ports = {
+          web = 8384;
+          listen = 22000;
+        };
+
         inherit acmeEmail;
       };
 

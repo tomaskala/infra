@@ -12,6 +12,21 @@
   config = {
     infra.intranet.devices = {
       whitelodge = {
+        syncthing = {
+          id = ""; # TODO
+          introducer = true;
+
+          ipv4 = {
+            inherit (config.infra.intranet.ranges.wg-internal) subnet location;
+            host = 1;
+          };
+
+          ipv6 = {
+            inherit (config.infra.intranet.ranges.wg-internal) subnet location;
+            host = 1;
+          };
+        };
+
         wireguard = {
           internal = {
             name = "wg-internal";
@@ -124,6 +139,21 @@
       };
 
       cooper = {
+        syncthing = {
+          id = ""; # TODO
+          introducer = false;
+
+          ipv4 = {
+            inherit (config.infra.intranet.ranges.wg-internal) location subnet;
+            host = 50;
+          };
+
+          ipv6 = {
+            inherit (config.infra.intranet.ranges.wg-internal) location subnet;
+            host = 50;
+          };
+        };
+
         wireguard = {
           internal = {
             name = "wg0";
@@ -148,6 +178,21 @@
       };
 
       blacklodge = {
+        syncthing = {
+          id = ""; # TODO
+          introducer = false;
+
+          ipv4 = {
+            inherit (config.infra.intranet.ranges.wg-internal) location subnet;
+            host = 51;
+          };
+
+          ipv6 = {
+            inherit (config.infra.intranet.ranges.wg-internal) location subnet;
+            host = 51;
+          };
+        };
+
         wireguard = {
           internal = {
             name = "wg0";
