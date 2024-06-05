@@ -85,24 +85,27 @@
           modules = [
             ./machines/bob/configuration.nix
             commonConfig
-            nixos-hardware.nixosModules.raspberry-pi-4
             agenix.nixosModules.default
+            nixos-hardware.nixosModules.raspberry-pi-4
           ];
           specialArgs = { inherit secrets util; };
         };
 
-        cooper = let system = "x86_64-linux";
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
+        cooper = let
+          system = "x86_64-linux";
           pkgs = forOneSystem (pkgs: pkgs) system;
+          util =
+            forOneSystem (pkgs: import ./util { inherit (pkgs) lib; }) system;
+        in nixpkgs.lib.nixosSystem {
+          inherit system pkgs;
           modules = [
             ./machines/cooper/configuration.nix
             commonConfig
-            nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
+            home-manager.nixosModules.home-manager
             agenix.nixosModules.default
-            home-manager.nixosModules.default
-            { home-manager.useGlobalPkgs = true; }
+            nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
           ];
+          specialArgs = { inherit secrets util; };
         };
       };
 
