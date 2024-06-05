@@ -32,6 +32,20 @@
             host = 10;
           };
         };
+
+        printer = {
+          url = "printer.l.home.arpa";
+
+          ipv4 = {
+            inherit (config.infra.intranet.ranges.l-internal) location subnet;
+            host = 11;
+          };
+
+          ipv6 = {
+            inherit (config.infra.intranet.ranges.l-internal) location subnet;
+            host = 11;
+          };
+        };
       };
     };
 
