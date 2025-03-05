@@ -23,6 +23,7 @@
 
     functions = {
       diff = "${pkgs.diffutils}/bin/diff -v diff --color=auto $argv";
+      ghostify = "infocmp -x | ssh $argv -- tic -x -";
       grep = "${pkgs.gnugrep}/bin/grep --color=auto $argv";
       ll = "ls -l $argv";
       lla = "ls -la $argv";
