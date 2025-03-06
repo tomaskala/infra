@@ -19,6 +19,7 @@
       };
 
       init.defaultBranch = "main";
+      commit.verbose = true;
       fetch.prune = true;
       pull.ff = "only";
 
