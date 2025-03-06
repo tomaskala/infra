@@ -12,6 +12,16 @@
       };
     };
 
+    aliases = {
+      a = "add";
+      c = "commit";
+      d = "diff";
+      l = "log";
+      s = "status";
+      sh = "show";
+      sw = "switch";
+    };
+
     extraConfig = {
       user = {
         name = "Tomas Kala";
