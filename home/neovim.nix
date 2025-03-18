@@ -225,6 +225,7 @@
 
         vim.opt.cursorline = true
         vim.opt.scrolloff = 3
+        vim.opt.mousescroll = "ver:1,hor:6"
         vim.opt.number = true
         vim.opt.relativenumber = true
         vim.opt.wildmode = { "longest:full", "full" }
