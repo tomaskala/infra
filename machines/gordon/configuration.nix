@@ -55,6 +55,7 @@
         lua
         python3
         shellcheck
+        uv
 
         # Media
         hugo
