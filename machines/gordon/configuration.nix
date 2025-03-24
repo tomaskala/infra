@@ -78,6 +78,8 @@
 
       masApps = {
         Bitwarden = 1352778147;
+        Hush = 1544743900;
+        Wipr = 1662217862;
         WireGuard = 1451685025;
       };
 
