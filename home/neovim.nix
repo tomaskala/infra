@@ -218,7 +218,6 @@
         vim.opt.shortmess:append({ I = true })
         vim.opt.splitbelow = true
         vim.opt.splitright = true
-        vim.opt.termguicolors = true
 
         vim.opt.backup = false
         vim.opt.swapfile = false
