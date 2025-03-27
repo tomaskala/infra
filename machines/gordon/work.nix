@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  secrets,
-  ...
-}:
+{ pkgs, secrets, ... }:
 
 {
   homebrew = {
@@ -23,6 +18,60 @@
   };
 
   home-manager.users.tomas = {
+    xdg.configFile = {
+      "nvim/lsp/biome.lua".text = # lua
+        ''
+          return {
+            cmd = { "biome", "lsp-proxy" },
+            filetypes = {
+              "astro",
+              "css",
+              "graphql",
+              "javascript",
+              "javascriptreact",
+              "json",
+              "jsonc",
+              "svelte",
+              "typescript",
+              "typescript.tsx",
+              "typescriptreact",
+              "vue",
+            },
+            root_markers = {
+              "package.json",
+              "biome.json",
+              "biome.jsonc",
+            },
+          }
+        '';
+
+      "nvim/lsp/ts_ls.lua".text = # lua
+        ''
+          return {
+            cmd = { "typescript-language-server", "--stdio" },
+            filetypes = {
+              "javascript",
+              "javascriptreact",
+              "javascript.jsx",
+              "typescript",
+              "typescriptreact",
+              "typescript.tsx",
+            },
+            root_markers = {
+              "tsconfig.json",
+              "jsconfig.json",
+              "package.json",
+              ".git",
+            },
+            init_options = { hostInfo = "neovim" },
+            on_attach = function(client)
+              -- We format using biome instead of ts_ls.
+              client.server_capabilities.documentFormattingProvider = false
+            end,
+          }
+        '';
+    };
+
     programs = {
       direnv = {
         enable = true;
@@ -37,27 +86,10 @@
         }
       ];
 
-      neovim = {
-        extraPackages = with pkgs; [
-          biome
-          nodePackages.typescript-language-server
-        ];
-
-        extraLuaConfig =
-          lib.mkAfter # lua
-            ''
-              do
-                local lspconfig = require("lspconfig")
-                lspconfig.biome.setup({})
-                lspconfig.ts_ls.setup({
-                  on_attach = function(client)
-                    -- We format using biome instead of ts_ls.
-                    client.server_capabilities.documentFormattingProvider = false
-                  end,
-                })
-              end
-            '';
-      };
+      neovim.extraPackages = with pkgs; [
+        biome
+        nodePackages.typescript-language-server
+      ];
 
       ssh.includes = [ "/Users/tomas/.ssh/config.d/work" ];
     };

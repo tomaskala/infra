@@ -1,6 +1,115 @@
 { pkgs, ... }:
 
 {
+  xdg.configFile = {
+    "nvim/lsp/gopls.lua".text = # lua
+      ''
+        return {
+          cmd = { "gopls" },
+          filetypes = { "go", "gomod", "gowork", "gotmpl", "gosum" },
+          root_markers = {
+            "go.mod",
+            "go.work",
+            ".git",
+          },
+        }
+      '';
+
+    "nvim/lsp/lua_ls.lua".text = # lua
+      ''
+        return {
+          cmd = { "lua-language-server" },
+          filetypes = { "lua" },
+          root_markers = {
+            ".luarc.json",
+            ".luarc.jsonc",
+            ".luacheckrc",
+            ".stylua.toml",
+            "stylua.toml",
+            "selene.toml",
+            "selene.yml",
+            ".git",
+          },
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = {
+                  "vim",
+                },
+              },
+            },
+          },
+        }
+      '';
+
+    "nvim/lsp/nil_ls.lua".text = # lua
+      ''
+        return {
+          cmd = { "nil" },
+          filetypes = { "nix" },
+          root_markers = {
+            "flake.nix",
+            ".git",
+          },
+          settings = {
+            ["nil"] = {
+              formatting = {
+                command = { "nixfmt" },
+              },
+              nix = {
+                flake = {
+                  autoArchive = false,
+                }
+              },
+            },
+          },
+        }
+      '';
+
+    "nvim/lsp/pyright.lua".text = # lua
+      ''
+        return {
+          cmd = { "pyright-langserver", "--stdio" },
+          filetypes = { "python" },
+          root_markers = {
+            "pyproject.toml",
+            "setup.py",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            "pyrightconfig.json",
+            ".git",
+          },
+          settings = {
+            pyright = {
+              -- Using Ruff's import organizer.
+              disableOrganizeImports = true,
+            },
+            python = {
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting.
+                ignore = { "*" },
+              },
+            },
+          },
+        }
+      '';
+
+    "nvim/lsp/ruff.lua".text = # lua
+      ''
+        return {
+          cmd = { "ruff", "server" },
+          filetypes = { "python" },
+          root_markers = {
+            "pyproject.toml",
+            "ruff.toml",
+            ".ruff.toml",
+            ".git",
+          },
+        }
+      '';
+  };
+
   programs.neovim = {
     enable = true;
     package = pkgs.unstable.neovim-unwrapped;
@@ -23,15 +132,13 @@
         type = "lua";
         config = # lua
           ''
-            do
-              require("catppuccin").setup({
-                background = {
-                  light = "latte",
-                  dark = "macchiato",
-                },
-              })
-              vim.cmd.colorscheme("catppuccin")
-            end
+            require("catppuccin").setup({
+              background = {
+                light = "latte",
+                dark = "macchiato",
+              },
+            })
+            vim.cmd.colorscheme("catppuccin")
           '';
       }
       {
@@ -39,120 +146,23 @@
         type = "lua";
         config = # lua
           ''
-            do
-              require("lualine").setup({
-                options = {
-                  theme = "catppuccin",
-                },
-                sections = {
-                  lualine_x = { "filetype" },
-                },
-              })
-            end
+            require("lualine").setup({
+              options = {
+                theme = "catppuccin",
+              },
+              sections = {
+                lualine_x = { "filetype" },
+              },
+            })
           '';
       }
       {
         plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
-        config = # lua
-          ''
-            do
-              require("nvim-treesitter.configs").setup({
-                highlight = { enable = true },
-                indent = { enable = true },
-              })
-            end
-          '';
-      }
-      {
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = # lua
-          ''
-            do
-              local lspconfig = require("lspconfig")
-              lspconfig.gopls.setup({})
-              lspconfig.lua_ls.setup({
-                settings = {
-                  Lua = {
-                    diagnostics = {
-                      globals = {
-                        "vim",
-                      },
-                    },
-                  },
-                },
-              })
-              lspconfig.nil_ls.setup({
-                settings = {
-                  ["nil"] = {
-                    formatting = { command = { "nixfmt" } },
-                  },
-                },
-              })
-              lspconfig.pyright.setup({
-                settings = {
-                  pyright = {
-                    -- Using Ruff's import organizer.
-                    disableOrganizeImports = true,
-                  },
-                  python = {
-                    analysis = {
-                      -- Ignore all files for analysis to exclusively use Ruff for linting.
-                      ignore = { "*" },
-                    },
-                  },
-                },
-              })
-              lspconfig.ruff.setup({})
-
-              vim.api.nvim_create_autocmd({ "LspAttach" }, {
-                desc = "Configure LSP keymaps",
-                group = vim.api.nvim_create_augroup("lsp", { clear = true }),
-                callback = function(args)
-                  local opts = { buffer = args.buf, noremap = true, silent = true }
-
-                  -- Trigger code completion
-                  vim.keymap.set("i", "<C-Space>", "<C-x><C-o>", opts)
-
-                  -- Display a function's signature
-                  vim.keymap.set("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-
-                  -- Rename all references
-                  vim.keymap.set("n", "grn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-
-                  -- Format file
-                  vim.keymap.set("n", "grf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
-
-                  -- Select a code action
-                  vim.keymap.set("n", "gra", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-
-                  -- The following is done using telescope.nvim.
-                  -- List references
-                  -- vim.keymap.set("n", "grr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-
-                  -- Go to definition
-                  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-
-                  -- List implementations
-                  -- vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-
-                  -- Go to type definition
-                  -- vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
-                end,
-              })
-            end
-          '';
       }
       {
         plugin = nvim-web-devicons;
         type = "lua";
-        config = # lua
-          ''
-            do
-              require("nvim-web-devicons").setup()
-            end
-          '';
       }
       {
         plugin = telescope-fzf-native-nvim;
@@ -229,17 +239,49 @@
         vim.opt.relativenumber = true
         vim.opt.wildmode = { "longest:full", "full" }
         vim.opt.showmode = false
+        vim.opt.completeopt = "menu,menuone,popup,fuzzy,noinsert"
+        vim.opt.winborder = "rounded"
 
         vim.opt.ignorecase = true
         vim.opt.smartcase = true
 
         vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", { noremap = true })
-        vim.keymap.set("n", "[q", "<cmd>cprevious<cr>", { noremap = true })
-        vim.keymap.set("n", "]q", "<cmd>cnext<cr>", { noremap = true })
-        vim.keymap.set("n", "[Q", "<cmd>cfirst<cr>", { noremap = true })
-        vim.keymap.set("n", "]Q", "<cmd>clast<cr>", { noremap = true })
+        vim.diagnostic.config({ virtual_text = true })
 
-        vim.api.nvim_create_autocmd({ "FileType" }, {
+        do
+          local configs = {}
+          for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*", true)) do
+            local name = vim.fn.fnamemodify(v, ":t:r")
+            table.insert(configs, name)
+          end
+          vim.lsp.enable(configs)
+        end
+
+        vim.api.nvim_create_autocmd("LspAttach", {
+          desc = "Configure LSP",
+          group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
+          callback = function(args)
+            -- Configure keybinds.
+            local opts = { buffer = args.buf, noremap = true, silent = true }
+            vim.keymap.set("n", "grf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
+
+            -- Configure completions.
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client:supports_method("textDocument/completion") then
+              vim.lsp.completion.enable(true, client.id, args.buf)
+            end
+          end,
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          desc = "Start treesitter",
+          group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+          callback = function()
+            pcall(vim.treesitter.start)
+          end
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
           desc = "Go settings",
           pattern = "go",
           group = vim.api.nvim_create_augroup("golang", { clear = true }),
@@ -249,10 +291,10 @@
           end,
         })
 
-        vim.api.nvim_create_autocmd({ "FileType" }, {
+        vim.api.nvim_create_autocmd("FileType", {
           desc = "Indent to 4 spaces",
           pattern = { "go", "python" },
-          group = vim.api.nvim_create_augroup("indentmore", { clear = true }),
+          group = vim.api.nvim_create_augroup("indent_4_spaces", { clear = true }),
           callback = function()
             vim.opt_local.tabstop = 4
             vim.opt_local.softtabstop = 4
@@ -260,7 +302,7 @@
           end,
         })
 
-        vim.api.nvim_create_autocmd({ "FileType" }, {
+        vim.api.nvim_create_autocmd("FileType", {
           desc = "Plaintext settings",
           pattern = { "markdown", "text" },
           group = vim.api.nvim_create_augroup("plaintext", { clear = true }),
