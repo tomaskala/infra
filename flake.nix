@@ -247,7 +247,6 @@
 
       devShells = forAllSystems (pkgs: {
         default = import ./shells/infra.nix { inherit pkgs; };
-        work = import ./shells/work.nix { inherit pkgs; };
       });
 
       formatter = forAllSystems (pkgs: treefmt-nix.lib.mkWrapper pkgs treefmtConfig);
