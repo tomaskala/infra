@@ -61,7 +61,7 @@ in
     services = {
       mealie = {
         enable = true;
-        package = pkgs.unstable.mealie;
+        package = pkgs.mealie;
         inherit (cfg) port;
 
         listenAddress = "127.0.0.1";
