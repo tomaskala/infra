@@ -219,7 +219,7 @@
 
           modules = [
             commonConfig
-            catppuccin.homeManagerModules.catppuccin
+            catppuccin.homeModules.catppuccin
             ./machines/cooper/tomas.nix
           ];
         };
@@ -229,7 +229,7 @@
 
           modules = [
             commonConfig
-            catppuccin.homeManagerModules.catppuccin
+            catppuccin.homeModules.catppuccin
             agenix.homeManagerModules.default
             ./machines/blacklodge/tomas.nix
           ];
