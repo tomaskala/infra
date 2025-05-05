@@ -16,7 +16,6 @@
 
         set -gx GOPATH "$XDG_DATA_HOME/go"
         set -gx GOBIN ~/.local/bin
-        set -gx GOTOOLCHAIN local
 
         set -g fish_greeting
         fish_add_path ~/.local/bin
