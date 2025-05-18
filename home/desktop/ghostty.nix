@@ -3,7 +3,6 @@
 {
   programs.ghostty = {
     enable = true;
-    enableFishIntegration = true;
 
     settings = {
       theme = "dark:catppuccin-macchiato,light:catppuccin-latte";
