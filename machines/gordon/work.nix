@@ -53,7 +53,7 @@ in
   environment.systemPackages = with pkgs; [
     # NodeJS development
     biome
-    nodejs_18
+    nodejs
     typescript
     yarn
 

@@ -112,11 +112,6 @@
 
   programs.neovim = {
     enable = true;
-    package = pkgs.unstable.neovim-unwrapped.overrideAttrs (old: {
-      meta = old.meta or { } // {
-        maintainers = [ ];
-      };
-    });
     withNodeJs = false;
     withPython3 = false;
     withRuby = false;

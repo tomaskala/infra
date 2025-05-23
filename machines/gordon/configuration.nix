@@ -4,8 +4,6 @@
   imports = [ ./work.nix ];
 
   config = {
-    services.nix-daemon.enable = true;
-
     nix.settings = {
       # Disabled because of https://github.com/NixOS/nix/issues/7273.
       auto-optimise-store = lib.mkForce false;
@@ -23,11 +21,7 @@
     age.identityPaths = [ "/Users/tomas/.ssh/id_ed25519_agenix" ];
 
     programs = {
-      fish = {
-        enable = true;
-        package = pkgs.unstable.fish;
-      };
-
+      fish.enable = true;
       zsh.enable = true;
     };
 
@@ -105,18 +99,19 @@
       hostName = "gordon";
     };
 
-    security.pam.enableSudoTouchIdAuth = true;
+    security.pam.services.sudo_local.touchIdAuth = true;
 
     system = {
+      primaryUser = "tomas";
       stateVersion = 4;
 
       # activateSettings -u will reload the settings from the database and apply
       # them to the current session, so we do not need to log out and log in
       # again to make the changes take effect.
       # The script is run every time the system boots or darwin-rebuild runs.
-      activationScripts.postUserActivation.text = # bash
+      activationScripts.postActivation.text = # bash
         ''
-          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+          sudo -u tomas /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
         '';
 
       defaults = {

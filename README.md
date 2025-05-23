@@ -4,17 +4,17 @@ Configuration for my network infrastructure.
 
 ## Machines
 
-| Hostname     | Device type               | Operating system | Active             |
+| Hostname | Device type | Operating system | Active |
 | ------------ | ------------------------- | ---------------- | ------------------ |
-| `whitelodge` | VPS                       | NixOS            | :x:                |
-| `blacklodge` | Desktop computer          | Pop!\_OS         | :white_check_mark: |
-| `cooper`     | Lenovo Thinkpad T14 Gen 2 | NixOS            | :white_check_mark: |
-| `gordon`     | MacBook Air M3            | MacOS            | :white_check_mark: |
-| `bob`        | Raspberry Pi 4 Model B    | NixOS            | :x:                |
-| `hawk`       | iPhone SE 2022            | iOS              | :white_check_mark: |
-| `audrey`     | MikroTik hAP ac lite TC   | OpenWRT          | :x:                |
-| `leland`     | Synology NAS              | Synology thingy  | :white_check_mark: |
-| `bobby`      | Steam Deck                | SteamOS          | :white_check_mark: |
+| `whitelodge` | VPS | NixOS | :x: |
+| `blacklodge` | Desktop computer | Pop!\_OS | :white_check_mark: |
+| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS | :white_check_mark: |
+| `gordon` | MacBook Air M3 | MacOS | :white_check_mark: |
+| `bob` | Raspberry Pi 4 Model B | NixOS | :x: |
+| `hawk` | iPhone SE 2022 | iOS | :white_check_mark: |
+| `audrey` | MikroTik hAP ac lite TC | OpenWRT | :x: |
+| `leland` | Synology NAS | Synology thingy | :white_check_mark: |
+| `bobby` | Steam Deck | SteamOS | :white_check_mark: |
 
 ## Deployment
 
