@@ -43,7 +43,7 @@
         wireguard-tools
 
         # Fonts
-        (nerdfonts.override { fonts = [ "FiraCode" ]; })
+        nerd-fonts.fira-code
       ];
     };
 
