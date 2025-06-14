@@ -152,9 +152,6 @@
       # Communication
       discord
       telegram-desktop
-
-      # Miscellaneous
-      yubikey-manager-qt
     ];
 
     networking.hostName = "cooper";
