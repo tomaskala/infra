@@ -90,7 +90,7 @@
         "obsidian"
         "signal"
         "telegram"
-        "wireshark"
+        "wireshark-app"
       ];
     };
 
