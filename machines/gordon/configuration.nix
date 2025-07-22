@@ -77,11 +77,6 @@
         WireGuard = 1451685025;
       };
 
-      # Curl should be installed using homebrew, as the nixpkgs version has
-      # issues with finding ca-certificates.
-      # https://github.com/NixOS/nixpkgs/issues/283793
-      brews = [ "curl" ];
-
       casks = [
         "discord"
         "firefox"
