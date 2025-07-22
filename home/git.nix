@@ -15,6 +15,7 @@
     aliases = {
       a = "add";
       c = "commit";
+      cp = "cherry-pick";
       d = "diff";
       l = "log";
       s = "status";
