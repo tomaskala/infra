@@ -25,3 +25,8 @@ jobs:
           fail-mode: true
       - name: 'Run checks'
         run: 'nix flake check'
+        # Disabled because Nix Catppuccin like to break stuff without warning,
+        # causing the checks to always fail on an aarch64-darwin builder.
+        # See https://github.com/catppuccin/nix/issues/437 and
+        # https://github.com/catppuccin/nix/issues/392.
+        if: matrix.os != 'macos-latest'
