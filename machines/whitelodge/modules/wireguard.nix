@@ -25,15 +25,14 @@ let
     {
       PublicKey = publicKey;
       PresharedKeyFile = presharedKeyFile;
-      AllowedIPs =
-        [
-          (infra.ipAddressMasked ipv4 32)
-          (infra.ipAddressMasked ipv6 128)
-        ]
-        ++ lib.optionals (subnet != null) [
-          (infra.ipSubnet subnet.ipv4)
-          (infra.ipSubnet subnet.ipv6)
-        ];
+      AllowedIPs = [
+        (infra.ipAddressMasked ipv4 32)
+        (infra.ipAddressMasked ipv6 128)
+      ]
+      ++ lib.optionals (subnet != null) [
+        (infra.ipSubnet subnet.ipv4)
+        (infra.ipSubnet subnet.ipv6)
+      ];
     };
 
   mkRoute =
