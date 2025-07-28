@@ -82,6 +82,7 @@
         "firefox"
         "ghostty"
         "iina"
+        "netnewswire"
         "obsidian"
         "signal"
         "telegram"
