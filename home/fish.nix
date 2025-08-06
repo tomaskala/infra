@@ -28,6 +28,7 @@
       lla = "ls -la $argv";
       ls = "${pkgs.coreutils}/bin/ls -FNh --color=auto --group-directories-first $argv";
       vim = "nvim $argv";
+      lg = "lazygit";
     };
   };
 }
