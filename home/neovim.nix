@@ -238,7 +238,7 @@
         vim.opt.ignorecase = true
         vim.opt.smartcase = true
 
-        vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", { noremap = true })
+        vim.keymap.set("n", "<Esc>", function() vim.cmd("nohlsearch") end, { noremap = true })
         vim.diagnostic.config({ virtual_text = true })
 
         do
@@ -256,7 +256,7 @@
           callback = function(args)
             -- Configure keybinds.
             local opts = { buffer = args.buf, noremap = true, silent = true }
-            vim.keymap.set("n", "grf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
+            vim.keymap.set("n", "grf", vim.lsp.buf.format, opts)
 
             -- Configure completions.
             local client = vim.lsp.get_client_by_id(args.data.client_id)
