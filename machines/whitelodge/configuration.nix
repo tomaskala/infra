@@ -6,20 +6,16 @@
 }:
 
 let
-  inherit (pkgs) infra;
-
-  intranetCfg = config.infra.intranet;
-  acmeEmail = "public+acme@tomaskala.com";
+  domain = "whitelodge.exocomet-hippocampus.ts.net";
+  mediaDir = "/mnt/media";
 in
 {
   imports = [
-    ./modules/firewall.nix
-    ./modules/mealie.nix
-    ./modules/miniflux.nix
-    ./modules/monitoring-hub.nix
-    ./modules/website.nix
-    ./modules/wireguard.nix
-    ../../intranet
+    ./modules/authentication.nix
+    ./modules/calibre-web.nix
+    ./modules/homepage.nix
+    ./modules/navidrome.nix
+    ./modules/tailscale.nix
   ];
 
   config = {
@@ -27,13 +23,11 @@ in
       gc = {
         automatic = true;
         dates = "weekly";
-        # The system is running on ZFS, so we don't need Nix generations.
-        options = "--delete-old";
       };
     };
 
     system = {
-      stateVersion = "23.05";
+      stateVersion = "25.05";
 
       autoUpgrade = {
         enable = true;
@@ -42,119 +36,62 @@ in
 
         # Run after the automatic flake.lock update configured in Github Actions.
         dates = "Sun *-*-* 03:00:00";
-
-        # The system runs in a container, sharing the Linux kernel with other
-        # containers. As such, no kernel upgrades can happen during a system
-        # upgrade, and no reboot is necessary. When enabled, this broke the
-        # nixos-upgrade service because it attempted to read non-existent
-        # files under /run/booted-system.
-        allowReboot = false;
       };
     };
 
+    hardware.enableAllFirmware = true;
+
+    fileSystems.${mediaDir} = {
+      device = "10.0.0.10:/volume1/Media";
+      fsType = "nfs";
+      options = [
+        "nfsvers=4.1" # Use NFSv4.1 (the highest my NAS supports).
+        "x-systemd.automount" # Automatically mount upon first access.
+        "noauto" # Do not mount when the machine starts.
+        "x-systemd.idle-timeout=3600" # Automatically disconnect after being idle.
+        "ro" # Mount as a read-only filesystem.
+      ];
+    };
+
     age.secrets = {
-      users-tomas-password.file = "${secrets}/secrets/users/whitelodge/tomas.age";
-      users-root-password.file = "${secrets}/secrets/users/whitelodge/root.age";
+      tomas-password.file = "${secrets}/secrets/whitelodge/users/tomas.age";
+      root-password.file = "${secrets}/secrets/whitelodge/users/root.age";
+      tailscale-api-key = "${secrets}/secrets/whitelodge/tailscale-api-key.age";
+      homepage-env = "${secrets}/secrets/whitelodge/homepage-env.age";
 
-      wg-whitelodge-internal-pk = {
-        file = "${secrets}/secrets/wg-pk/whitelodge/internal.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
+      # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
+      authelia-postgres-password = "${secrets}/secrets/whitelodge/authelia/postgres-password.age";
+      authelia-jwt-secret = "${secrets}/secrets/whitelodge/authelia/jwt-secret.age";
+      authelia-oidc-hmac-secret = "${secrets}/secrets/whitelodge/authelia/hmac-secret.age";
+      authelia-oidc-issuer-private-key = "${secrets}/secrets/whitelodge/authelia/oidc-issuer-private-key.age";
+      authelia-session-secret = "${secrets}/secrets/whitelodge/authelia/session-secret.age";
+      authelia-storage-encryption-key = "${secrets}/secrets/whitelodge/authelia/storage-encryption-key.age";
+      authelia-ldap-password = "${secrets}/secrets/whitelodge/authelia/ldap-password.age";
 
-      wg-whitelodge-isolated-pk = {
-        file = "${secrets}/secrets/wg-pk/whitelodge/isolated.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-whitelodge-passthru-pk = {
-        file = "${secrets}/secrets/wg-pk/whitelodge/passthru.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-bob2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/bob2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-cooper2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/cooper2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-hawk2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/hawk2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-blacklodge2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/blacklodge2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-audrey2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/audrey2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
-
-      wg-gordon2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/gordon2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
+      lldap-jwt-secret = "${secrets}/secrets/whitelodge/lldap/jwt-secret.age";
+      lldap-user-pass = "${secrets}/secrets/whitelodge/lldap/user-pass.age";
     };
 
     users = {
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets.users-root-password.path;
+        root.hashedPasswordFile = config.age.secrets.root-password.path;
 
         tomas = {
           isNormalUser = true;
           extraGroups = [ "wheel" ];
-          hashedPasswordFile = config.age.secrets.users-tomas-password.path;
+          hashedPasswordFile = config.age.secrets.tomas-password.path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMvN19BcNTeaVAF291lBG0z9ROD6J91XAMyy+0VP6CdL cooper2whitelodge"
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGRpAi2U+EW2dhKv/tu2DVJPNZnrqgQway2CSAs38tFl blacklodge2whitelodge"
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnSCqYOxP/hkkgquZ8XM5OvssH7BpHUouGS5TvEIvnC gordon2whitelodge"
           ];
         };
-
-        git = {
-          isSystemUser = true;
-          createHome = true;
-          home = "/home/git";
-          shell = "${pkgs.git}/bin/git-shell";
-          group = "git";
-          openssh.authorizedKeys.keys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbhtSz3s/zgTVWg7d37J9qeKk+u4H+jJhwvj/QXjaIW cooper2whitelodge-git"
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP3iFrxprV/hToSeHEIo2abt/IcK/M86iqF4mV6S81Rf blacklodge2whitelodge-git"
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBH+pyD14TFgpAfoK8NZmNjB5PkfiA5Uil9yrZqnSCf8 gordon2whitelodge-git"
-          ];
-        };
       };
-
-      groups.git = { };
     };
 
-    time.timeZone = "Etc/UTC";
+    time.timeZone = "Europe/Prague";
 
     programs = {
       git.enable = true;
@@ -167,32 +104,40 @@ in
         baseIndex = 1;
       };
 
-      vim = {
+      neovim = {
         enable = true;
         defaultEditor = true;
+        vimAlias = true;
+        withNodeJs = false;
+        withPython3 = false;
+        withRuby = false;
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      curl
-      ldns
-      rsync
-      tree
-      wireguard-tools
-    ];
+    environment = {
+      enableAllTerminfo = true;
+
+      systemPackages = with pkgs; [
+        curl
+        jq
+        ldns
+        ripgrep
+        rsync
+        tree
+      ];
+    };
 
     networking = {
       hostName = "whitelodge";
-      useDHCP = false;
+      firewall.enable = true;
+      nftables.enable = true;
     };
 
     services = {
-      ntp.enable = false;
-      timesyncd.enable = true;
+      fwupd.enable = true;
 
       openssh = {
         enable = true;
-        openFirewall = false;
 
         settings = {
           X11Forwarding = false;
@@ -200,87 +145,39 @@ in
           PermitRootLogin = "no";
           PasswordAuthentication = false;
         };
-
-        listenAddresses = [
-          {
-            addr = infra.ipAddress intranetCfg.devices.whitelodge.wireguard.internal.ipv4;
-            port = 22;
-          }
-          {
-            addr = infra.ipAddress intranetCfg.devices.whitelodge.wireguard.internal.ipv6;
-            port = 22;
-          }
-        ];
-      };
-
-      prometheus.exporters = {
-        node = {
-          enable = true;
-          openFirewall = false;
-          listenAddress = "127.0.0.1";
-          port = 9100;
-          enabledCollectors = [
-            "processes"
-            "systemd"
-          ];
-        };
       };
     };
 
     infra = {
-      firewall.enable = true;
+      tailscale.enable = true;
 
-      mealie = {
+      authentication = {
         enable = true;
-        port = 9000;
-        inherit acmeEmail;
+
+        subdomains = {
+          auth = "auth";
+          ldap = "ldap";
+        };
+
+        baseDomain = domain;
+        ldapBaseDN = "dc=exocomet-hippocampus,dc=ts,dc=net";
       };
 
-      miniflux = {
+      homepage = {
         enable = true;
-        port = 7070;
-        inherit acmeEmail;
+        inherit domain;
       };
 
-      monitoring-hub = {
+      calibre-web = {
         enable = true;
-        grafanaPort = 3000;
-        prometheusPort = 9090;
-        inherit acmeEmail;
-
-        scrapeConfigs = [
-          {
-            job_name = "node";
-            static_configs = [
-              {
-                targets = [ "127.0.0.1:9100" ];
-                labels = {
-                  peer = "whitelodge";
-                };
-              }
-              {
-                targets = [ "${infra.ipAddress intranetCfg.devices.bob.wireguard.isolated.ipv4}:9100" ];
-                labels = {
-                  peer = "bob";
-                };
-              }
-            ];
-          }
-        ];
+        domain = "calibre.${domain}";
+        libraryDir = "${mediaDir}/ebooks";
       };
 
-      website = {
+      navidrome = {
         enable = true;
-        domain = "tomaskala.com";
-        webroot = "/var/www/tomaskala.com";
-        inherit acmeEmail;
-      };
-
-      wireguard = {
-        enable = true;
-        enableInternal = true;
-        enableIsolated = true;
-        enablePassthru = true;
+        domain = "navidrome.${domain}";
+        musicDir = "${mediaDir}/music";
       };
     };
   };
