@@ -20,7 +20,6 @@ in
     ./modules/network.nix
     ./modules/wireguard.nix
     ../../intranet
-    ../../modules/blocky.nix
   ];
 
   config = {
@@ -123,49 +122,6 @@ in
     };
 
     infra = {
-      blocky = {
-        enable = true;
-
-        listenAddresses = [
-          {
-            addr = "127.0.0.1";
-            port = 53;
-          }
-          {
-            addr = "[::1]";
-            port = 53;
-          }
-          {
-            addr = infra.ipAddress deviceCfg.external.lan.ipv4;
-            port = 53;
-          }
-          {
-            addr = "[${infra.ipAddress deviceCfg.external.lan.ipv6}]";
-            port = 53;
-          }
-        ];
-
-        metrics = {
-          addr = infra.ipAddress deviceCfg.wireguard.isolated.ipv4;
-          port = 4000;
-        };
-
-        localDomains =
-          let
-            lServices = builtins.attrValues intranetCfg.subnets.l-internal.services;
-
-            urlsToIPs = builtins.map (
-              {
-                url,
-                ipv4,
-                ipv6,
-              }:
-              lib.nameValuePair url { inherit ipv4 ipv6; }
-            ) lServices;
-          in
-          builtins.listToAttrs urlsToIPs;
-      };
-
       firewall.enable = true;
 
       navidrome = {
