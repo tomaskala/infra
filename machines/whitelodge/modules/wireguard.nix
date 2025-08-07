@@ -50,20 +50,6 @@ let
       }
     ];
 
-  mkLocalDomains =
-    let
-      mkLocalDomain =
-        _:
-        {
-          url,
-          ipv4,
-          ipv6,
-        }:
-        lib.nameValuePair url { inherit ipv4 ipv6; };
-    in
-    { services, ... }:
-    lib.mapAttrs' mkLocalDomain services;
-
   mkSubnet =
     interface: subnet:
     let
@@ -117,10 +103,6 @@ let
           routes = builtins.concatMap mkRoute accessibleSubnets;
         };
       };
-
-      infra.blocky.localDomains = lib.attrsets.mergeAttrsList (
-        builtins.map mkLocalDomains ([ subnet ] ++ accessibleSubnets)
-      );
     };
 in
 {

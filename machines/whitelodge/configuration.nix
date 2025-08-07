@@ -20,7 +20,6 @@ in
     ./modules/website.nix
     ./modules/wireguard.nix
     ../../intranet
-    ../../modules/blocky.nix
   ];
 
   config = {
@@ -229,60 +228,6 @@ in
     };
 
     infra = {
-      blocky = {
-        enable = true;
-
-        listenAddresses = [
-          # Allow the server itself to use the resolver.
-          {
-            addr = "127.0.0.1";
-            port = 53;
-          }
-          {
-            addr = "[::1]";
-            port = 53;
-          }
-          # Allow internal peers to use the resolver. This is to allow
-          # resolving internal domain names as well as to use it for
-          # domain filtering when accessing the public internet.
-          {
-            addr = infra.ipAddress intranetCfg.devices.whitelodge.wireguard.internal.ipv4;
-            port = 53;
-          }
-          {
-            addr = "[${infra.ipAddress intranetCfg.devices.whitelodge.wireguard.internal.ipv6}]";
-            port = 53;
-          }
-          # Allow isolated peers to use the resolver. This is to allow
-          # resolving internal domain names.
-          {
-            addr = infra.ipAddress intranetCfg.devices.whitelodge.wireguard.isolated.ipv4;
-            port = 53;
-          }
-          {
-            addr = "[${infra.ipAddress intranetCfg.devices.whitelodge.wireguard.isolated.ipv6}]";
-            port = 53;
-          }
-          # Allow passthru peers to use the resolver. This is to allow
-          # them to use a trusted resolver. Although it will resolve
-          # internal domain names, the passthru peers do not have access
-          # to those services.
-          {
-            addr = infra.ipAddress intranetCfg.devices.whitelodge.wireguard.passthru.ipv4;
-            port = 53;
-          }
-          {
-            addr = "[${infra.ipAddress intranetCfg.devices.whitelodge.wireguard.passthru.ipv6}]";
-            port = 53;
-          }
-        ];
-
-        metrics = {
-          addr = "127.0.0.1";
-          port = 4000;
-        };
-      };
-
       firewall.enable = true;
 
       mealie = {
@@ -315,23 +260,6 @@ in
               }
               {
                 targets = [ "${infra.ipAddress intranetCfg.devices.bob.wireguard.isolated.ipv4}:9100" ];
-                labels = {
-                  peer = "bob";
-                };
-              }
-            ];
-          }
-          {
-            job_name = "blocky";
-            static_configs = [
-              {
-                targets = [ "127.0.0.1:4000" ];
-                labels = {
-                  peer = "whitelodge";
-                };
-              }
-              {
-                targets = [ "${infra.ipAddress intranetCfg.devices.bob.wireguard.isolated.ipv4}:4000" ];
                 labels = {
                   peer = "bob";
                 };
