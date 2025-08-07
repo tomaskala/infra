@@ -335,8 +335,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "openwrt-imagebuilder": "openwrt-imagebuilder",
         "secrets": "secrets",
-        "treefmt-nix": "treefmt-nix",
-        "vps-admin-os": "vps-admin-os"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "rust-overlay": {
@@ -430,21 +429,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "vps-admin-os": {
-      "locked": {
-        "lastModified": 1755289961,
-        "narHash": "sha256-/e0CF8XV8wPzNY5jvZJlfjF7lBpsopSfRGb1XPtR84c=",
-        "owner": "vpsfreecz",
-        "repo": "vpsadminos",
-        "rev": "6a78b558d1e720b5d125c7ad22b1f6be2c2cf25d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vpsfreecz",
-        "repo": "vpsadminos",
         "type": "github"
       }
     }
