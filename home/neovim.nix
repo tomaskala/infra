@@ -241,6 +241,24 @@
         vim.keymap.set("n", "<Esc>", function() vim.cmd("nohlsearch") end, { noremap = true })
         vim.diagnostic.config({ virtual_text = true })
 
+        vim.keymap.set("n", "<leader>lg", function()
+          if vim.fn.executable("lazygit") == 0 then
+            vim.notify("Lazygit is not installed")
+            return
+          end
+
+          vim.cmd("tabnew")
+          vim.opt_local.number = false
+          vim.opt_local.signcolumn = "no"
+          vim.fn.termopen("lazygit", {
+            on_exit = function()
+              vim.cmd("silent! :checktime")
+              vim.cmd("silent! :bw")
+            end,
+          })
+          vim.api.nvim_feedkeys("i", "n", false)
+        end, { noremap = true })
+
         do
           local configs = {}
           for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*", true)) do
