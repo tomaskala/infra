@@ -245,10 +245,6 @@
         inherit openwrt-imagebuilder;
       };
 
-      devShells = forAllSystems (pkgs: {
-        default = import ./shells/infra.nix { inherit pkgs; };
-      });
-
       formatter = forAllSystems (pkgs: treefmt-nix.lib.mkWrapper pkgs treefmtConfig);
 
       checks = forAllSystems (pkgs: {
