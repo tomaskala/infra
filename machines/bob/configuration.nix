@@ -1,33 +1,24 @@
 {
   config,
-  lib,
   pkgs,
   secrets,
   ...
 }:
 
 let
-  inherit (pkgs) infra;
-
-  intranetCfg = config.infra.intranet;
-  deviceCfg = intranetCfg.devices.bob;
+  domain = "bob.exocomet-hippocampus.ts.net";
+  mediaDir = "/mnt/media";
 in
 {
   imports = [
-    ./hardware-configuration.nix
-    ./modules/firewall.nix
+    ./modules/authentication.nix
+    ./modules/calibre-web.nix
+    ./modules/homepage.nix
     ./modules/navidrome.nix
-    ./modules/network.nix
-    ./modules/wireguard.nix
-    ../../intranet
+    ./modules/tailscale.nix
   ];
 
   config = {
-    boot.loader = {
-      grub.enable = false;
-      generic-extlinux-compatible.enable = true;
-    };
-
     nix = {
       gc = {
         automatic = true;
@@ -35,39 +26,53 @@ in
       };
     };
 
-    system.stateVersion = "23.05";
+    system.stateVersion = "25.05";
+    nixpkgs.config.allowUnfree = true;
+    hardware.enableAllFirmware = true;
+
+    fileSystems.${mediaDir} = {
+      device = "10.0.0.10:/volume1/Media";
+      fsType = "nfs";
+      options = [
+        "nfsvers=4.1" # Use NFSv4.1 (the highest my NAS supports).
+        "x-systemd.automount" # Automatically mount upon first access.
+        "noauto" # Do not mount when the machine starts.
+        "x-systemd.idle-timeout=3600" # Automatically disconnect after being idle.
+        "ro" # Mount as a read-only filesystem.
+      ];
+    };
 
     age.secrets = {
-      users-tomas-password.file = "${secrets}/secrets/users/bob/tomas.age";
-      users-root-password.file = "${secrets}/secrets/users/bob/root.age";
+      tomas-password.file = "${secrets}/secrets/bob/users/tomas.age";
+      root-password.file = "${secrets}/secrets/bob/users/root.age";
+      tailscale-api-key.file = "${secrets}/secrets/bob/tailscale-api-key.age";
+      homepage-env.file = "${secrets}/secrets/bob/homepage-env.age";
 
-      wg-bob-isolated-pk = {
-        file = "${secrets}/secrets/wg-pk/bob/isolated.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
+      # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
+      authelia-postgres-password.file = "${secrets}/secrets/bob/authelia/postgres-password.age";
+      authelia-jwt-secret.file = "${secrets}/secrets/bob/authelia/jwt-secret.age";
+      authelia-oidc-hmac-secret.file = "${secrets}/secrets/bob/authelia/hmac-secret.age";
+      authelia-session-secret.file = "${secrets}/secrets/bob/authelia/session-secret.age";
+      authelia-storage-encryption-key.file = "${secrets}/secrets/bob/authelia/storage-encryption-key.age";
+      authelia-ldap-password.file = "${secrets}/secrets/bob/authelia/ldap-password.age";
 
-      wg-bob2whitelodge = {
-        file = "${secrets}/secrets/wg-psk/bob2whitelodge.age";
-        mode = "0640";
-        owner = "root";
-        group = "systemd-network";
-      };
+      lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
+      lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
     };
 
     users = {
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets.users-root-password.path;
+        root.hashedPasswordFile = config.age.secrets.root-password.path;
 
         tomas = {
           isNormalUser = true;
           extraGroups = [ "wheel" ];
-          hashedPasswordFile = config.age.secrets.users-tomas-password.path;
+          hashedPasswordFile = config.age.secrets.tomas-password.path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF9wbboIeutdnZFbYT5zwJNBf4fJy9njfEMwxOnJKh4z blacklodge2bob"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6BGS5Ty3Oaozhow1qwTsOitN6Ksje4GEzheMzXoijW gordon2bob"
           ];
         };
       };
@@ -75,33 +80,51 @@ in
 
     time.timeZone = "Europe/Prague";
 
-    environment.systemPackages = with pkgs; [
-      curl
-      git
-      htop
-      ldns
-      libraspberrypi
-      raspberrypi-eeprom
-      rsync
-      tmux
-      tree
-      wireguard-tools
-    ];
+    programs = {
+      git.enable = true;
+      htop.enable = true;
 
-    programs.vim = {
-      enable = true;
-      defaultEditor = true;
+      tmux = {
+        enable = true;
+        escapeTime = 1;
+        clock24 = true;
+        baseIndex = 1;
+      };
+
+      neovim = {
+        enable = true;
+        defaultEditor = true;
+        vimAlias = true;
+        withNodeJs = false;
+        withPython3 = false;
+        withRuby = false;
+      };
     };
 
-    networking.hostName = "bob";
+    environment = {
+      enableAllTerminfo = true;
+
+      systemPackages = with pkgs; [
+        curl
+        jq
+        ldns
+        ripgrep
+        rsync
+        tree
+      ];
+    };
+
+    networking = {
+      hostName = "bob";
+      firewall.enable = true;
+      nftables.enable = true;
+    };
 
     services = {
-      ntp.enable = false;
-      timesyncd.enable = true;
+      fwupd.enable = true;
 
       openssh = {
         enable = true;
-        openFirewall = false;
 
         settings = {
           X11Forwarding = false;
@@ -110,27 +133,39 @@ in
           PasswordAuthentication = false;
         };
       };
-
-      prometheus.exporters = {
-        node = {
-          enable = true;
-          openFirewall = false;
-          listenAddress = infra.ipAddress deviceCfg.wireguard.isolated.ipv4;
-          port = 9100;
-        };
-      };
     };
 
     infra = {
-      firewall.enable = true;
+      tailscale.enable = true;
+
+      authentication = {
+        enable = true;
+
+        subdomains = {
+          auth = "auth";
+          ldap = "ldap";
+        };
+
+        baseDomain = domain;
+        ldapBaseDN = "dc=exocomet-hippocampus,dc=ts,dc=net";
+      };
+
+      homepage = {
+        enable = true;
+        inherit domain;
+      };
+
+      calibre-web = {
+        enable = true;
+        domain = "calibre.${domain}";
+        libraryDir = "${mediaDir}/ebooks";
+      };
 
       navidrome = {
         enable = true;
-        domain = "music.l.home.arpa";
-        musicDir = "/mnt/Music";
+        domain = "navidrome.${domain}";
+        musicDir = "${mediaDir}/music";
       };
-
-      wireguard.enable = true;
     };
   };
 }

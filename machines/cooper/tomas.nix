@@ -13,7 +13,6 @@
     ../../home/starship.nix
     ../../home/tmux.nix
     ../../home/yt-dlp.nix
-    ../../intranet
   ];
 
   config = {

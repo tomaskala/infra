@@ -335,8 +335,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "openwrt-imagebuilder": "openwrt-imagebuilder",
         "secrets": "secrets",
-        "treefmt-nix": "treefmt-nix",
-        "vps-admin-os": "vps-admin-os"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "rust-overlay": {
@@ -370,11 +369,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738749729,
-        "narHash": "sha256-RrDib54vXY6NHRfNZvDFZS6Pdun3idC0SGte3rWmF8Q=",
+        "lastModified": 1754911958,
+        "narHash": "sha256-AQl0sk7NgXUj5RQyFum6UNsixbKIiageEd23EAvTUrU=",
         "ref": "refs/heads/main",
-        "rev": "264fa982ee14cf104316652659c416fcc659bfd2",
-        "revCount": 16,
+        "rev": "124b58187a6921541cae05950da25eae6fced8d0",
+        "revCount": 19,
         "type": "git",
         "url": "ssh://git@github.com/tomaskala/infra-secrets"
       },
@@ -430,21 +429,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "vps-admin-os": {
-      "locked": {
-        "lastModified": 1754767390,
-        "narHash": "sha256-CajW0Om1hqiO1PtXBzYho3fwlQowq5EHntGxdfaWfcQ=",
-        "owner": "vpsfreecz",
-        "repo": "vpsadminos",
-        "rev": "01f64d0dd3c416b56eb5019a75b60db2c39f1da4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vpsfreecz",
-        "repo": "vpsadminos",
         "type": "github"
       }
     }

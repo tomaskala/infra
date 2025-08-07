@@ -18,8 +18,6 @@
     ./modules/phone.nix
     ./modules/tailscale.nix
     ./modules/virtualisation.nix
-    ./modules/wireguard.nix
-    ../../intranet
   ];
 
   config = {
@@ -65,13 +63,6 @@
 
         wg-cooper-internal-pk = {
           file = "${secrets}/secrets/wg-pk/cooper/internal.age";
-          mode = "0640";
-          owner = "root";
-          group = "systemd-network";
-        };
-
-        wg-cooper2whitelodge = {
-          file = "${secrets}/secrets/wg-psk/cooper2whitelodge.age";
           mode = "0640";
           owner = "root";
           group = "systemd-network";
@@ -134,7 +125,6 @@
       openssl
       tcpdump
       whois
-      wireguard-tools
 
       # Development
       gnumake

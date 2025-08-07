@@ -6,7 +6,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    vps-admin-os.url = "github:vpsfreecz/vpsadminos";
 
     catppuccin = {
       url = "github:catppuccin/nix";
@@ -64,7 +63,6 @@
       nixpkgs,
       nixpkgs-unstable,
       nixos-hardware,
-      vps-admin-os,
       catppuccin,
       nix-darwin,
       home-manager,
@@ -119,11 +117,7 @@
         };
 
         settings = {
-          global.excludes = [
-            "*.json"
-            "*.opml"
-            "LICENSE"
-          ];
+          global.excludes = [ "LICENSE" ];
           formatter.mdformat.options = [ "--number" ];
         };
       };
@@ -132,38 +126,20 @@
     in
     {
       nixosConfigurations = {
-        whitelodge = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = [
-            commonConfig
-            ./machines/whitelodge/configuration.nix
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.root = import ./machines/whitelodge/root.nix;
-              };
-            }
-            vps-admin-os.nixosConfigurations.container
-          ];
-
-          specialArgs = {
-            inherit secrets;
-          };
-        };
-
         bob = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
+          system = "x86_64-linux";
 
           modules = [
             commonConfig
             ./machines/bob/configuration.nix
             agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            nixos-hardware.nixosModules.raspberry-pi-4
+            # nixos-hardware unfortunately lacks a preset for this particular NUC model.
+            nixos-hardware.nixosModules.common-cpu-intel
+            nixos-hardware.nixosModules.common-pc
+            nixos-hardware.nixosModules.common-pc-ssd
+            {
+              services.thermald.enable = true;
+            }
           ];
 
           specialArgs = {
