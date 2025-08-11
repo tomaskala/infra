@@ -9,15 +9,15 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/audio.nix
-    ./modules/gnome.nix
-    ./modules/firewall.nix
-    ./modules/gaming.nix
-    ./modules/locale.nix
-    ./modules/network.nix
-    ./modules/phone.nix
-    ./modules/tailscale.nix
-    ./modules/virtualisation.nix
+    ../../modules/nixos-desktop/audio.nix
+    ../../modules/nixos-desktop/gnome.nix
+    ../../modules/nixos-desktop/firewall.nix
+    ../../modules/nixos-desktop/gaming.nix
+    ../../modules/nixos-desktop/locale.nix
+    ../../modules/nixos-desktop/network.nix
+    ../../modules/nixos-desktop/phone.nix
+    ../../modules/nixos-desktop/tailscale.nix
+    ../../modules/nixos-desktop/virtualisation.nix
   ];
 
   config = {
