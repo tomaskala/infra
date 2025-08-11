@@ -2,17 +2,17 @@
 
 {
   imports = [
-    ../../home/desktop/ghostty.nix
-    ../../home/desktop/zathura.nix
-    ../../home/fish.nix
-    ../../home/git.nix
-    ../../home/mpv.nix
-    ../../home/neovim.nix
-    ../../home/programs.nix
-    ../../home/ssh.nix
-    ../../home/starship.nix
-    ../../home/tmux.nix
-    ../../home/yt-dlp.nix
+    ../../modules/home-manager/desktop/ghostty.nix
+    ../../modules/home-manager/desktop/zathura.nix
+    ../../modules/home-manager/fish.nix
+    ../../modules/home-manager/git.nix
+    ../../modules/home-manager/mpv.nix
+    ../../modules/home-manager/neovim.nix
+    ../../modules/home-manager/programs.nix
+    ../../modules/home-manager/ssh.nix
+    ../../modules/home-manager/starship.nix
+    ../../modules/home-manager/tmux.nix
+    ../../modules/home-manager/yt-dlp.nix
   ];
 
   config = {
