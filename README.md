@@ -2,7 +2,7 @@
 
 Configuration for my network infrastructure.
 
-## Machines
+## Hosts
 
 | Hostname | Device type | Operating system | Active |
 | ------------ | ------------------------- | ---------------- | ------------------ |
@@ -20,7 +20,7 @@ Configuration for my network infrastructure.
 To define and deploy a machine (called `twinpeaks` in this example), do the
 following.
 
-1. Put its configuration under `machines/twinpeaks`.
+1. Put its configuration under `hosts/twinpeaks`.
 2. Create an `outputs.nixosConfigurations.twinpeaks` block in `flake.nix`.
 3. Start the machine and its SSH server to generate an SSH host key.
 4. Obtain the host key.
