@@ -42,11 +42,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    openwrt-imagebuilder = {
-      url = "github:astro/nix-openwrt-imagebuilder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     secrets = {
       url = "git+ssh://git@github.com/tomaskala/infra-secrets";
 
@@ -69,7 +64,6 @@
       lanzaboote,
       agenix,
       treefmt-nix,
-      openwrt-imagebuilder,
       secrets,
       ...
     }:
@@ -214,11 +208,6 @@
             inherit secrets;
           };
         };
-      };
-
-      infra.x86_64-linux.audrey = import ./hosts/audrey {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        inherit openwrt-imagebuilder;
       };
 
       formatter = forAllSystems (pkgs: treefmt-nix.lib.mkWrapper pkgs treefmtConfig);
