@@ -11,11 +11,11 @@ let
 in
 {
   imports = [
-    ./modules/authentication.nix
-    ./modules/calibre-web.nix
-    ./modules/homepage.nix
-    ./modules/navidrome.nix
-    ./modules/tailscale.nix
+    ../../modules/nixos-server/authentication.nix
+    ../../modules/nixos-server/calibre-web.nix
+    ../../modules/nixos-server/homepage.nix
+    ../../modules/nixos-server/navidrome.nix
+    ../../modules/nixos-server/tailscale.nix
   ];
 
   config = {
