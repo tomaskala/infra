@@ -1,12 +1,14 @@
 {
   config,
+  lib,
   pkgs,
   secrets,
   ...
 }:
 
 let
-  domain = "bob.exocomet-hippocampus.ts.net";
+  domain = "exocomet-hippocampus.ts.net";
+  hostName = "bob";
   mediaDir = "/mnt/media";
 in
 {
@@ -115,7 +117,7 @@ in
     };
 
     networking = {
-      hostName = "bob";
+      inherit hostName;
       firewall.enable = true;
       nftables.enable = true;
     };
@@ -146,24 +148,24 @@ in
           ldap = "ldap";
         };
 
-        baseDomain = domain;
-        ldapBaseDN = "dc=exocomet-hippocampus,dc=ts,dc=net";
+        baseDomain = "${hostName}.${domain}";
+        ldapBaseDN = lib.concatStringsSep "," (builtins.map (s: "dc=${s}") (lib.splitString "." domain));
       };
 
       homepage = {
         enable = true;
-        inherit domain;
+        domain = "${hostName}.${domain}";
       };
 
       calibre-web = {
         enable = true;
-        domain = "calibre.${domain}";
+        domain = "calibre.${hostName}.${domain}";
         libraryDir = "${mediaDir}/ebooks";
       };
 
       navidrome = {
         enable = true;
-        domain = "navidrome.${domain}";
+        domain = "navidrome.${hostName}${domain}";
         musicDir = "${mediaDir}/music";
       };
     };
