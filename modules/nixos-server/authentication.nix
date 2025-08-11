@@ -126,7 +126,7 @@ in
         environment = {
           LLDAP_JWT_SECRET_FILE = config.age.secrets.lldap-jwt-secret.path;
           LLDAP_LDAP_USER_PASS_FILE = config.age.secrets.lldap-user-pass.path;
-          LLDAP_LDAPS_OPTIONS__ENABLED = true;
+          LLDAP_LDAPS_OPTIONS__ENABLED = "true";
           LLDAP_LDAPS_OPTIONS__CERT_FILE = "${config.services.caddy.dataDir}/${cfg.baseDomain}/cert.pem";
           LLDAP_LDAPS_OPTIONS__KEY_FILE = "${config.services.caddy.dataDir}/${cfg.baseDomain}/key.pem";
         };
