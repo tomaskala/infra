@@ -131,7 +131,7 @@
 
           modules = [
             commonConfig
-            ./machines/bob/configuration.nix
+            ./hosts/bob/configuration.nix
             agenix.nixosModules.default
             # nixos-hardware unfortunately lacks a preset for this particular NUC model.
             nixos-hardware.nixosModules.common-cpu-intel
@@ -152,7 +152,7 @@
 
           modules = [
             commonConfig
-            ./machines/cooper/configuration.nix
+            ./hosts/cooper/configuration.nix
             catppuccin.nixosModules.catppuccin
             agenix.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
@@ -171,14 +171,14 @@
 
           modules = [
             commonConfig
-            ./machines/gordon/configuration.nix
+            ./hosts/gordon/configuration.nix
             agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.tomas = import ./machines/gordon/tomas.nix;
+                users.tomas = import ./hosts/gordon/tomas.nix;
               };
             }
           ];
@@ -196,7 +196,7 @@
           modules = [
             commonConfig
             catppuccin.homeModules.catppuccin
-            ./machines/cooper/tomas.nix
+            ./hosts/cooper/tomas.nix
           ];
         };
 
@@ -207,7 +207,7 @@
             commonConfig
             catppuccin.homeModules.catppuccin
             agenix.homeManagerModules.default
-            ./machines/blacklodge/tomas.nix
+            ./hosts/blacklodge/tomas.nix
           ];
 
           extraSpecialArgs = {
@@ -216,7 +216,7 @@
         };
       };
 
-      infra.x86_64-linux.audrey = import ./machines/audrey {
+      infra.x86_64-linux.audrey = import ./hosts/audrey {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         inherit openwrt-imagebuilder;
       };
