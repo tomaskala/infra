@@ -99,27 +99,6 @@
         "type": "github"
       }
     },
-    "flake-parts_2": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "openwrt-imagebuilder",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1733312601,
-        "narHash": "sha256-4pDvzqnegAfRkPwO3wmwBhVi/Sye1mzps0zHWYnP88c=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "205b12d8b7cd4802fbcb8e8ef6a0f1408781a4f9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -274,28 +253,6 @@
         "type": "github"
       }
     },
-    "openwrt-imagebuilder": {
-      "inputs": {
-        "flake-parts": "flake-parts_2",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1755334003,
-        "narHash": "sha256-uyXAiJTHJOyY94Shcd8UEJLhy2MCZoghiCSG52iGOW4=",
-        "owner": "astro",
-        "repo": "nix-openwrt-imagebuilder",
-        "rev": "1644de9796910b1808e897bc27f6519950c342e7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "astro",
-        "repo": "nix-openwrt-imagebuilder",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -333,7 +290,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "openwrt-imagebuilder": "openwrt-imagebuilder",
         "secrets": "secrets",
         "treefmt-nix": "treefmt-nix"
       }
@@ -394,21 +350,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
-      "locked": {
-        "lastModified": 1680978846,
-        "narHash": "sha256-Gtqg8b/v49BFDpDetjclCYXm8mAnTrUzR0JnE2nv5aw=",
-        "owner": "nix-systems",
-        "repo": "x86_64-linux",
-        "rev": "2ecfcac5e15790ba6ce360ceccddb15ad16d08a8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "x86_64-linux",
         "type": "github"
       }
     },
