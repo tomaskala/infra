@@ -31,7 +31,7 @@ in
           enableBookConversion = true;
 
           reverseProxyAuth = {
-            enable = config.infra.authentication.enable;
+            inherit (config.infra.authentication) enable;
             header = "Remote-User";
           };
         };
