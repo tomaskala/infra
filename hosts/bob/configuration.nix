@@ -29,6 +29,7 @@ in
       };
     };
 
+    boot.loader.systemd-boot.enable = true;
     system.stateVersion = "25.05";
     nixpkgs.config.allowUnfree = true;
     hardware.enableAllFirmware = true;
