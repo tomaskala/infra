@@ -325,11 +325,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1754911958,
-        "narHash": "sha256-AQl0sk7NgXUj5RQyFum6UNsixbKIiageEd23EAvTUrU=",
+        "lastModified": 1755003290,
+        "narHash": "sha256-bSJCDL1HaoNleka/zMr2WW62ql88/QYWGypr0ouevPM=",
         "ref": "refs/heads/main",
-        "rev": "124b58187a6921541cae05950da25eae6fced8d0",
-        "revCount": 19,
+        "rev": "7f0fa7946d7eaed0b5a11ea5afffaef827d87892",
+        "revCount": 20,
         "type": "git",
         "url": "ssh://git@github.com/tomaskala/infra-secrets"
       },
