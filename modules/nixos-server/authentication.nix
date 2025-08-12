@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.infra.authentication;
@@ -80,6 +85,20 @@ in
           log.level = "info";
           password_policy.zxcvbn.enabled = true;
           server.address = "tcp://127.0.0.1:${builtins.toString cfg.port}/";
+
+          # TODO: Replace once we have at least one OIDC-capable service.
+          identity_providers.oidc.clients = [
+            {
+              client_id = "dummy_client";
+              client_name = "Dummy Client so Authelia can start";
+              client_secret.source = pkgs.writeText "dummy.secret" "dummy_client_secret";
+              public = false;
+              authorization_policy = "one_factor";
+              redirect_uris = [ ];
+            }
+          ];
+
+          notifier.filesystem.filename = "/var/lib/authelia-main/notifications.log";
 
           session.cookies = [
             {
