@@ -27,8 +27,8 @@ following.
    ```
    $ ssh-keyscan <ip-address>
    ```
-5. Follow the instructions in the
-   [infra-secrets](https://github.com/tomaskala/infra-secrets) repository.
+5. Follow the instructions in the [secrets section](#secrets) to include any
+   secrets.
 6. SSH into the machine and enter a Nix shell with git (the flake setup needs
    it).
    ```
@@ -41,3 +41,22 @@ following.
    Explicitly setting the flake is only necessary during the initial
    deployment. Afterwards, the hostname will have been set and `nixos-rebuild`
    will automatically select the matching flake.
+
+## Secrets
+
+To add secrets for a machine, do the following.
+
+1. Put the host key and any secrets inside `secrets.nix`.
+2. Define all secrets.
+   ```
+   $ nix shell nixpkgs#agenix
+   $ agenix -e secrets/secret.age
+   ```
+   Note that for secrets holding the user passwords (to be used with
+   `config.users.users.<name>.hashedPasswordFile`), the content of the
+   age-encrypted file should be the SHA-512 of the password. That is, create
+   the secret as
+   ```
+   $ nix shell nixpkgs#agenix
+   $ openssl passwd -6 -in <password-file> | agenix -e secrets/users/user.age
+   ```

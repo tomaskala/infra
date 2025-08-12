@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  secrets,
   ...
 }:
 
@@ -52,45 +51,45 @@ in
     };
 
     age.secrets = {
-      tomas-password.file = "${secrets}/secrets/bob/users/tomas.age";
-      root-password.file = "${secrets}/secrets/bob/users/root.age";
-      tailscale-api-key.file = "${secrets}/secrets/bob/tailscale-api-key.age";
-      homepage-env.file = "${secrets}/secrets/bob/homepage-env.age";
+      tomas-password.file = ../../secrets/bob/users/tomas.age;
+      root-password.file = ../../secrets/bob/users/root.age;
+      tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
+      homepage-env.file = ../../secrets/bob/homepage-env.age;
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
       authelia-postgres-password = {
-        file = "${secrets}/secrets/bob/authelia/postgres-password.age";
+        file = ../../secrets/bob/authelia/postgres-password.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
       authelia-jwt-secret = {
-        file = "${secrets}/secrets/bob/authelia/jwt-secret.age";
+        file = ../../secrets/bob/authelia/jwt-secret.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
       authelia-session-secret = {
-        file = "${secrets}/secrets/bob/authelia/session-secret.age";
+        file = ../../secrets/bob/authelia/session-secret.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
       authelia-storage-encryption-key = {
-        file = "${secrets}/secrets/bob/authelia/storage-encryption-key.age";
+        file = ../../secrets/bob/authelia/storage-encryption-key.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
       authelia-ldap-password = {
-        file = "${secrets}/secrets/bob/authelia/ldap-password.age";
+        file = ../../secrets/bob/authelia/ldap-password.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
 
-      lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
-      lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
+      lldap-jwt-secret.file = ../../secrets/bob/lldap/jwt-secret.age;
+      lldap-user-pass.file = ../../secrets/bob/lldap/user-pass.age;
     };
 
     users = {
