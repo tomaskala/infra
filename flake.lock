@@ -290,7 +290,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "secrets": "secrets",
         "treefmt-nix": "treefmt-nix"
       }
     },
@@ -313,29 +312,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
-      }
-    },
-    "secrets": {
-      "inputs": {
-        "agenix": [
-          "agenix"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1755021970,
-        "narHash": "sha256-DH9kAmWDJnCMvk1kTqkYrcu6u28aK3gGzJzKp7rlWpQ=",
-        "ref": "refs/heads/main",
-        "rev": "93b2602fca60f38705e168a487130a5be8b5d56b",
-        "revCount": 22,
-        "type": "git",
-        "url": "ssh://git@github.com/tomaskala/infra-secrets"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/tomaskala/infra-secrets"
       }
     },
     "systems": {

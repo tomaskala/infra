@@ -1,5 +1,2 @@
 # Nix derivation outputs
 result
-
-# Age-encrypted files.
-*.age

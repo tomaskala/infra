@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  secrets,
   ...
 }:
 
@@ -58,15 +57,8 @@
       identityPaths = [ "/home/tomas/.ssh/id_ed25519_agenix" ];
 
       secrets = {
-        users-tomas-password.file = "${secrets}/secrets/users/cooper/tomas.age";
-        users-root-password.file = "${secrets}/secrets/users/cooper/root.age";
-
-        wg-cooper-internal-pk = {
-          file = "${secrets}/secrets/wg-pk/cooper/internal.age";
-          mode = "0640";
-          owner = "root";
-          group = "systemd-network";
-        };
+        users-tomas-password.file = ../../secrets/cooper/users/tomas.age;
+        users-root-password.file = ../../secrets/cooper/users/root.age;
       };
     };
 

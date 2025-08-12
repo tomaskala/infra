@@ -1,4 +1,4 @@
-{ pkgs, secrets, ... }:
+{ pkgs, ... }:
 
 let
   work = pkgs.writeShellApplication {
@@ -45,7 +45,7 @@ in
   };
 
   age.secrets.work-ssh-config = {
-    file = "${secrets}/secrets/other/gordon/work-ssh-config.age";
+    file = ../../secrets/gordon/work-ssh-config.age;
     path = "/Users/tomas/.ssh/config.d/work";
     owner = "tomas";
   };

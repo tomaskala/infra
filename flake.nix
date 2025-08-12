@@ -41,15 +41,6 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    secrets = {
-      url = "git+ssh://git@github.com/tomaskala/infra-secrets";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        agenix.follows = "agenix";
-      };
-    };
   };
 
   outputs =
@@ -64,7 +55,6 @@
       lanzaboote,
       agenix,
       treefmt-nix,
-      secrets,
       ...
     }:
     let
@@ -135,10 +125,6 @@
               services.thermald.enable = true;
             }
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
 
         cooper = nixpkgs.lib.nixosSystem {
@@ -152,10 +138,6 @@
             lanzaboote.nixosModules.lanzaboote
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
       };
 
@@ -176,10 +158,6 @@
               };
             }
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
       };
 
@@ -203,10 +181,6 @@
             agenix.homeManagerModules.default
             ./hosts/blacklodge/tomas.nix
           ];
-
-          extraSpecialArgs = {
-            inherit secrets;
-          };
         };
       };
 
