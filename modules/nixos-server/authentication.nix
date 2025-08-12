@@ -65,7 +65,6 @@ in
 
         secrets = {
           jwtSecretFile = config.age.secrets.authelia-jwt-secret.path;
-          #oidcHmacSecretFile = config.age.secrets.authelia-oidc-hmac-secret.path;
           sessionSecretFile = config.age.secrets.authelia-session-secret.path;
           storageEncryptionKeyFile = config.age.secrets.authelia-storage-encryption-key.path;
         };
