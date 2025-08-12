@@ -70,12 +70,6 @@ in
         owner = "root";
         group = "authelia-main";
       };
-      authelia-oidc-hmac-secret = {
-        file = "${secrets}/secrets/bob/authelia/hmac-secret.age";
-        mode = "0640";
-        owner = "root";
-        group = "authelia-main";
-      };
       authelia-session-secret = {
         file = "${secrets}/secrets/bob/authelia/session-secret.age";
         mode = "0640";
@@ -97,13 +91,6 @@ in
 
       lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
       lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
-
-      tandoor-socialaccount-providers = {
-        file = "${secrets}/secrets/bob/tandoor/socialaccount-providers.age";
-        mode = "0640";
-        owner = "root";
-        group = "tandoor_recipes";
-      };
     };
 
     users = {
