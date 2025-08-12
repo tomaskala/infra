@@ -57,15 +57,55 @@ in
       homepage-env.file = "${secrets}/secrets/bob/homepage-env.age";
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
-      authelia-postgres-password.file = "${secrets}/secrets/bob/authelia/postgres-password.age";
-      authelia-jwt-secret.file = "${secrets}/secrets/bob/authelia/jwt-secret.age";
-      authelia-oidc-hmac-secret.file = "${secrets}/secrets/bob/authelia/hmac-secret.age";
-      authelia-session-secret.file = "${secrets}/secrets/bob/authelia/session-secret.age";
-      authelia-storage-encryption-key.file = "${secrets}/secrets/bob/authelia/storage-encryption-key.age";
-      authelia-ldap-password.file = "${secrets}/secrets/bob/authelia/ldap-password.age";
+      authelia-postgres-password = {
+        file = "${secrets}/secrets/bob/authelia/postgres-password.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-jwt-secret = {
+        file = "${secrets}/secrets/bob/authelia/jwt-secret.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-oidc-hmac-secret = {
+        file = "${secrets}/secrets/bob/authelia/hmac-secret.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-session-secret = {
+        file = "${secrets}/secrets/bob/authelia/session-secret.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-storage-encryption-key = {
+        file = "${secrets}/secrets/bob/authelia/storage-encryption-key.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-ldap-password = {
+        file = "${secrets}/secrets/bob/authelia/ldap-password.age";
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
 
-      lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
-      lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
+      lldap-jwt-secret = {
+        file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
+        mode = "0640";
+        owner = "root";
+        group = "lldap";
+      };
+      lldap-user-pass = {
+        file = "${secrets}/secrets/bob/lldap/user-pass.age";
+        mode = "0640";
+        owner = "root";
+        group = "lldap";
+      };
     };
 
     users = {
