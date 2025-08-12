@@ -19,7 +19,7 @@ in
     services.tailscale = {
       enable = true;
       authKeyFile = config.age.secrets.tailscale-api-key.path;
-      permitCertUid = "caddy";
+      permitCertUid = config.services.caddy.user;
     };
   };
 }
