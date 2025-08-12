@@ -81,11 +81,13 @@ in
           password_policy.zxcvbn.enabled = true;
           server.address = "tcp://127.0.0.1:${builtins.toString cfg.port}/";
 
-          session.cookies = {
-            domain = cfg.baseDomain;
-            authelia_url = "https://${autheliaDomain}";
-            default_redirection_url = "https://${cfg.baseDomain}";
-          };
+          session.cookies = [
+            {
+              domain = cfg.baseDomain;
+              authelia_url = "https://${autheliaDomain}";
+              default_redirection_url = "https://${cfg.baseDomain}";
+            }
+          ];
 
           storage.postgres = {
             address = "unix:///run/postgresql";
