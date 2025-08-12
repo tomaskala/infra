@@ -4,16 +4,16 @@ Configuration for my network infrastructure.
 
 ## Hosts
 
-| Hostname | Device type | Operating system | Active |
-| ------------ | ------------------------- | ---------------- | ------------------ |
-| `bob` | ASUS NUC 14 Pro | NixOS | :white_check_mark: |
-| `blacklodge` | Desktop computer | Pop!\_OS | :white_check_mark: |
-| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS | :white_check_mark: |
-| `gordon` | MacBook Air M3 | MacOS | :white_check_mark: |
-| `hawk` | iPhone SE 2022 | iOS | :white_check_mark: |
-| `audrey` | MikroTik hAP ac lite TC | OpenWRT | :x: |
-| `leland` | Synology NAS | Synology thingy | :white_check_mark: |
-| `bobby` | Steam Deck | SteamOS | :white_check_mark: |
+| Hostname | Device type | Operating system |
+| ------------ | ------------------------- | ---------------- |
+| `bob` | ASUS NUC 14 Pro | NixOS |
+| `blacklodge` | Desktop computer | Pop!\_OS |
+| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS |
+| `gordon` | MacBook Air M3 | MacOS |
+| `hawk` | iPhone SE 2022 | iOS |
+| `audrey` | MikroTik hAP ac lite TC | OpenWRT |
+| `leland` | Synology NAS | Synology thingy |
+| `bobby` | Steam Deck | SteamOS |
 
 ## Deployment
 
