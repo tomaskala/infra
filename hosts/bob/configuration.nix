@@ -94,18 +94,8 @@ in
         group = "authelia-main";
       };
 
-      lldap-jwt-secret = {
-        file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
-        mode = "0640";
-        owner = "root";
-        group = "lldap";
-      };
-      lldap-user-pass = {
-        file = "${secrets}/secrets/bob/lldap/user-pass.age";
-        mode = "0640";
-        owner = "root";
-        group = "lldap";
-      };
+      lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
+      lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
     };
 
     users = {

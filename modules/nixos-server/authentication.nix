@@ -119,16 +119,13 @@ in
 
         settings = {
           database_url = "postgresql:///lldap?host=/run/postgresql";
-          http_url = "${cfg.subdomains.ldap}.${cfg.baseDomain}";
+          http_url = "https://${cfg.subdomains.ldap}.${cfg.baseDomain}";
           ldap_base_dn = cfg.ldapBaseDN;
         };
 
         environment = {
-          LLDAP_JWT_SECRET_FILE = config.age.secrets.lldap-jwt-secret.path;
-          LLDAP_LDAP_USER_PASS_FILE = config.age.secrets.lldap-user-pass.path;
-          LLDAP_LDAPS_OPTIONS__ENABLED = "true";
-          LLDAP_LDAPS_OPTIONS__CERT_FILE = "${config.services.caddy.dataDir}/${cfg.baseDomain}/cert.pem";
-          LLDAP_LDAPS_OPTIONS__KEY_FILE = "${config.services.caddy.dataDir}/${cfg.baseDomain}/key.pem";
+          LLDAP_JWT_SECRET_FILE = "%d/jwt-secret.key";
+          LLDAP_LDAP_USER_PASS_FILE = "%d/user-pass.key";
         };
       };
 
@@ -170,6 +167,13 @@ in
           "caddy.service" # So that TLS certificates have been created.
         ];
         requires = [ "postgresql.service" ];
+
+        # Needed because the service uses dynamic users, so we can't assign ownership
+        # to the age secrets directly.
+        serviceConfig.LoadCredential = [
+          "jwt-secret.key:${config.age.secrets.lldap-jwt-secret.path}"
+          "user-pass.key:${config.age.secrets.lldap-user-pass.path}"
+        ];
       };
     };
   };
