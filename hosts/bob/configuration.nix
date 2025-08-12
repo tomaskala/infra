@@ -13,6 +13,7 @@ let
 in
 {
   imports = [
+    ./hardware-configuration.nix
     ../../modules/nixos-server/authentication.nix
     ../../modules/nixos-server/calibre-web.nix
     ../../modules/nixos-server/homepage.nix
