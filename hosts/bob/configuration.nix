@@ -19,6 +19,7 @@ in
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/tailscale.nix
+    ../../modules/nixos-server/tandoor.nix
   ];
 
   config = {
@@ -96,6 +97,13 @@ in
 
       lldap-jwt-secret.file = "${secrets}/secrets/bob/lldap/jwt-secret.age";
       lldap-user-pass.file = "${secrets}/secrets/bob/lldap/user-pass.age";
+
+      tandoor-socialaccount-providers = {
+        file = "${secrets}/secrets/bob/tandoor/socialaccount-providers.age";
+        mode = "0640";
+        owner = "root";
+        group = "tandoor_recipes";
+      };
     };
 
     users = {
@@ -202,8 +210,13 @@ in
 
       navidrome = {
         enable = true;
-        domain = "navidrome.${hostName}${domain}";
+        domain = "navidrome.${hostName}.${domain}";
         musicDir = "${mediaDir}/music";
+      };
+
+      tandoor = {
+        enable = true;
+        domain = "tandoor.${hostName}.${domain}";
       };
     };
   };

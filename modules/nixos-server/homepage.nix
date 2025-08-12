@@ -100,6 +100,17 @@ in
                 };
               });
           }
+          {
+            Misc = (
+              lib.optional config.infra.tandoor.enable {
+                "Tandoor" = {
+                  type = "tandoor";
+                  url = config.infra.tandoor.domain;
+                  token = "{{HOMEPAGE_VAR_TANDOOR_TOKEN}}";
+                };
+              }
+            );
+          }
         ];
       };
 
