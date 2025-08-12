@@ -215,7 +215,7 @@ in
       };
 
       tandoor = {
-        enable = true;
+        enable = false;
         domain = "tandoor.${hostName}.${domain}";
       };
     };
