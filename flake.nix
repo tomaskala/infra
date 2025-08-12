@@ -36,11 +36,6 @@
         home-manager.follows = "home-manager";
       };
     };
-
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -54,7 +49,6 @@
       home-manager,
       lanzaboote,
       agenix,
-      treefmt-nix,
       ...
     }:
     let
@@ -88,21 +82,6 @@
               "flakes"
             ];
           };
-        };
-      };
-
-      treefmtConfig = {
-        projectRootFile = "flake.nix";
-
-        programs = {
-          mdformat.enable = true;
-          nixfmt.enable = true;
-          yamlfmt.enable = true;
-        };
-
-        settings = {
-          global.excludes = [ "LICENSE" ];
-          formatter.mdformat.options = [ "--number" ];
         };
       };
 
@@ -184,7 +163,7 @@
         };
       };
 
-      formatter = forAllSystems (pkgs: treefmt-nix.lib.mkWrapper pkgs treefmtConfig);
+      formatter = forAllSystems (pkgs: pkgs.nixfmt-tree);
 
       checks = forAllSystems (pkgs: {
         deadnix = pkgs.runCommandLocal "check-deadnix" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
@@ -198,8 +177,6 @@
           statix check ${self}
           touch $out
         '';
-
-        formatting = (treefmt-nix.lib.evalModule pkgs treefmtConfig).config.build.check self;
       });
     };
 }
