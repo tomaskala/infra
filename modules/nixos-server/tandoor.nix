@@ -9,7 +9,14 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain Tandoor is available on";
+      description = "Domain of this machine";
+    };
+
+    matcher = lib.mkOption {
+      type = lib.types.str;
+      description = "Webserver matcher for this service";
+      default = "tandoor";
+      readOnly = true;
     };
   };
 
@@ -33,20 +40,17 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig =
-          if config.infra.authentication.enable then
-            ''
+        virtualHosts.${cfg.domain}.extraConfig = ''
+          @tandoor path /${cfg.matcher} /${cfg.matcher}/*
+          handle @tandoor {
+            ${lib.optionalString config.infra.authentication.enable ''
               forward_auth :${builtins.toString config.infra.authentication.port} {
                 uri /api/authz/forward-auth
                 copy_headers Remote-User
               }
-
-              reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
-            ''
-          else
-            ''
-              reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
-            '';
+            ''}
+            reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
+        '';
       };
 
       postgresql = {

@@ -9,7 +9,14 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain calibre-web is available on";
+      description = "Domain of this machine";
+    };
+
+    matcher = lib.mkOption {
+      type = lib.types.str;
+      description = "Webserver matcher for this service";
+      default = "calibre-web";
+      readOnly = true;
     };
 
     libraryDir = lib.mkOption {
@@ -40,20 +47,18 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig =
-          if config.infra.authentication.enable then
-            ''
+        virtualHosts.${cfg.domain}.extraConfig = ''
+          @calibre path /${cfg.matcher} /${cfg.matcher}/*
+          handle @calibre {
+            ${lib.optionalString config.infra.authentication.enable ''
               forward_auth :${builtins.toString config.infra.authentication.port} {
                 uri /api/authz/forward-auth
                 copy_headers Remote-User
               }
-
-              reverse_proxy :${builtins.toString config.services.calibre-web.listen.port}
-            ''
-          else
-            ''
-              reverse_proxy :${builtins.toString config.services.calibre-web.listen.port}
-            '';
+            ''}
+            reverse_proxy :${builtins.toString config.services.calibre-web.listen.port}
+          }
+        '';
       };
     };
   };
