@@ -175,7 +175,7 @@ in
         # to the age secrets directly.
         serviceConfig.LoadCredential = [
           "jwt-secret.key:${config.age.secrets.lldap-jwt-secret.path}"
-          "user-pass.key:${config.age.secrets.lldap-user-pass.path}"
+          "user-pass.key:${config.age.secrets.authelia-ldap-password.path}"
         ];
       };
     };

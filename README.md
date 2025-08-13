@@ -49,7 +49,7 @@ To add secrets for a machine, do the following.
 1. Put the host key and any secrets inside `secrets.nix`.
 2. Define all secrets.
    ```
-   $ nix shell nixpkgs#agenix
+   $ nix shell github:ryantm/agenix#agenix
    $ agenix -e secrets/secret.age
    ```
    Note that for secrets holding the user passwords (to be used with
@@ -57,6 +57,6 @@ To add secrets for a machine, do the following.
    age-encrypted file should be the SHA-512 of the password. That is, create
    the secret as
    ```
-   $ nix shell nixpkgs#agenix
+   $ nix shell github:ryantm/agenix#agenix
    $ openssl passwd -6 -in <password-file> | agenix -e secrets/users/user.age
    ```
