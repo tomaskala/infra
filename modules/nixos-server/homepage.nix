@@ -123,7 +123,7 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          handle / {
+          handle {
             ${lib.optionalString config.infra.authentication.enable ''
               forward_auth :${builtins.toString config.infra.authentication.port} {
                 uri /api/authz/forward-auth
