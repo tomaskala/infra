@@ -56,14 +56,19 @@ in
       postgresql = {
         enable = true;
 
-        ensureDatabases = [ "tandoor" ];
+        ensureDatabases = [ "tandoor_recipes" ];
         ensureUsers = [
           {
-            name = "tandoor";
+            name = "tandoor_recipes";
             ensureDBOwnership = true;
           }
         ];
       };
+    };
+
+    systemd.services.tandoor-recipes = {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
     };
   };
 }
