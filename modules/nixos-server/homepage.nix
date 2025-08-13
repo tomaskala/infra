@@ -18,6 +18,7 @@ in
       homepage-dashboard = {
         enable = true;
         openFirewall = false;
+        allowedHosts = cfg.domain;
         environmentFile = config.age.secrets.homepage-env.path;
 
         settings = {
