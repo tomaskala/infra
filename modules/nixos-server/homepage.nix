@@ -9,7 +9,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain homepage is available on";
+      description = "Domain of this machine";
     };
   };
 
@@ -74,12 +74,12 @@ in
               (lib.optional config.infra.calibre-web.enable {
                 "Calibre" = {
                   icon = "calibre-web";
-                  href = "https://${config.infra.calibre-web.domain}";
+                  href = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
                   description = "Ebook management";
 
                   widget = {
                     type = "calibreweb";
-                    url = "https://${config.infra.calibre-web.domain}";
+                    url = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
                     username = "{{HOMEPAGE_VAR_CALIBRE_WEB_USERNAME}}";
                     password = "{{HOMEPAGE_VAR_CALIBRE_WEB_PASSWORD}}";
                   };
@@ -88,12 +88,12 @@ in
               ++ (lib.optional config.infra.navidrome.enable {
                 "Navidrome" = {
                   icon = "navidrome";
-                  href = "https://${config.infra.navidrome.domain}";
+                  href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
                   description = "Music player";
 
                   widget = {
                     type = "navidrome";
-                    url = "https://${config.infra.navidrome.domain}";
+                    url = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
                     user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
                     token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
                     salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
@@ -105,12 +105,12 @@ in
             Misc = lib.optional config.infra.tandoor.enable {
               "Tandoor" = {
                 icon = "tandoor-recipes";
-                href = "https://${config.infra.tandoor.domain}";
+                href = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
                 description = "Recipe management";
 
                 widget = {
                   type = "tandoor";
-                  url = "https://${config.infra.tandoor.domain}";
+                  url = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
                   token = "{{HOMEPAGE_VAR_TANDOOR_TOKEN}}";
                 };
               };
@@ -122,20 +122,17 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig =
-          if config.infra.authentication.enable then
-            ''
+        virtualHosts.${cfg.domain}.extraConfig = ''
+          handle / {
+            ${lib.optionalString config.infra.authentication.enable ''
               forward_auth :${builtins.toString config.infra.authentication.port} {
                 uri /api/authz/forward-auth
                 copy_headers Remote-User
               }
-
-              reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
-            ''
-          else
-            ''
-              reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
-            '';
+            ''}
+            reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
+          }
+        '';
       };
     };
   };

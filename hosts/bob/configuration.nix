@@ -8,6 +8,7 @@
 let
   domain = "exocomet-hippocampus.ts.net";
   hostName = "bob";
+  hostDomain = "${hostName}.${domain}";
   mediaDir = "/mnt/media";
 in
 {
@@ -182,36 +183,30 @@ in
 
       authentication = {
         enable = true;
-
-        subdomains = {
-          auth = "auth";
-          ldap = "ldap";
-        };
-
-        baseDomain = "${hostName}.${domain}";
+        domain = hostDomain;
         ldapBaseDN = lib.concatStringsSep "," (builtins.map (s: "dc=${s}") (lib.splitString "." domain));
       };
 
       homepage = {
         enable = true;
-        domain = "${hostName}.${domain}";
+        domain = hostDomain;
       };
 
       calibre-web = {
         enable = true;
-        domain = "calibre.${hostName}.${domain}";
+        domain = hostDomain;
         libraryDir = "${mediaDir}/ebooks";
       };
 
       navidrome = {
         enable = true;
-        domain = "navidrome.${hostName}.${domain}";
+        domain = hostDomain;
         musicDir = "${mediaDir}/music";
       };
 
       tandoor = {
         enable = true;
-        domain = "tandoor.${hostName}.${domain}";
+        domain = hostDomain;
       };
     };
   };

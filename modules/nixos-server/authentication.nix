@@ -2,7 +2,6 @@
 
 let
   cfg = config.infra.authentication;
-  autheliaDomain = "${cfg.subdomains.auth}.${cfg.baseDomain}";
 in
 {
   options.infra.authentication = {
@@ -15,25 +14,7 @@ in
       readOnly = true;
     };
 
-    subdomains = lib.mkOption {
-      type = lib.types.submodule {
-        options = {
-          auth = lib.mkOption {
-            type = lib.types.str;
-            description = "Authelia subdomain of the base domain";
-            example = "auth";
-          };
-
-          ldap = lib.mkOption {
-            type = lib.types.str;
-            description = "LDAP subdomain of the base domain";
-            example = "ldap";
-          };
-        };
-      };
-    };
-
-    baseDomain = lib.mkOption {
+    domain = lib.mkOption {
       type = lib.types.str;
       description = "Domain protected by Authelia";
       example = "example.com";
@@ -44,6 +25,20 @@ in
       description = "LDAP base distinguished name";
       example = "dc=example,dc=com";
     };
+
+    authMatcher = lib.mkOption {
+      type = lib.types.str;
+      description = "Webserver matcher for the authentication endpoint";
+      default = "auth";
+      readOnly = true;
+    };
+
+    ldapMatcher = lib.mkOption {
+      type = lib.types.str;
+      description = "Webserver matcher for the LDAP endpoint";
+      default = "ldap";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -51,12 +46,16 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${autheliaDomain}.extraConfig = ''
-          reverse_proxy :${builtins.toString cfg.port}
-        '';
+        virtualHosts.${cfg.domain}.extraConfig = ''
+          @authelia path /${cfg.authMatcher} /${cfg.authMatcher}/*
+          handle @authelia {
+            reverse_proxy :${builtins.toString cfg.port}
+          }
 
-        virtualHosts."${cfg.subdomains.ldap}.${cfg.baseDomain}".extraConfig = ''
-          reverse_proxy :${builtins.toString config.services.lldap.settings.http_port}
+          @ldap path /${cfg.ldapMatcher} /${cfg.ldapMatcher}/*
+          handle @ldap {
+            reverse_proxy :${builtins.toString config.services.lldap.settings.http_port}
+          }
         '';
       };
 
@@ -84,9 +83,9 @@ in
 
           session.cookies = [
             {
-              domain = cfg.baseDomain;
-              authelia_url = "https://${autheliaDomain}";
-              default_redirection_url = "https://${cfg.baseDomain}";
+              inherit (cfg) domain;
+              authelia_url = "https://${cfg.domain}/${cfg.authMatcher}";
+              default_redirection_url = "https://${cfg.domain}";
             }
           ];
 
@@ -108,7 +107,7 @@ in
 
             rules = [
               {
-                domain = cfg.baseDomain;
+                inherit (cfg) domain;
                 policy = "one_factor";
                 subject = [ "group:trusted_users" ];
               }
@@ -122,7 +121,7 @@ in
 
         settings = {
           database_url = "postgresql:///lldap?host=/run/postgresql";
-          http_url = "https://${cfg.subdomains.ldap}.${cfg.baseDomain}";
+          http_url = "https://${cfg.domain}/${cfg.ldapMatcher}";
           ldap_base_dn = cfg.ldapBaseDN;
         };
 

@@ -9,7 +9,14 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain Navidrome is available on";
+      description = "Domain of this machine";
+    };
+
+    matcher = lib.mkOption {
+      type = lib.types.str;
+      description = "Webserver matcher for this service";
+      default = "navidrome";
+      readOnly = true;
     };
 
     musicDir = lib.mkOption {
@@ -40,21 +47,18 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig =
-          if config.infra.authentication.enable then
-            ''
-              @protected not path /share/* /rest/*
-              forward_auth @protected :${builtins.toString config.infra.authentication.port} {
+        virtualHosts.${cfg.domain}.extraConfig = ''
+          @navidrome path /${cfg.matcher} /${cfg.matcher}/*
+          handle @navidrome {
+            ${lib.optionalString config.infra.authentication.enable ''
+              forward_auth :${builtins.toString config.infra.authentication.port} {
                 uri /api/authz/forward-auth
                 copy_headers Remote-User
               }
-
-              reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
-            ''
-          else
-            ''
-              reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
-            '';
+            ''}
+            reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
+          }
+        '';
       };
     };
   };
