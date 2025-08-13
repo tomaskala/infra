@@ -149,7 +149,16 @@ in
 
     networking = {
       inherit hostName;
-      firewall.enable = true;
+
+      firewall = {
+        enable = true;
+
+        allowedTCPPorts = lib.mkIf config.services.caddy.enable [
+          80
+          443
+        ];
+      };
+
       nftables.enable = true;
     };
 
