@@ -37,13 +37,7 @@ in
     bob
     gordon
   ];
-
-  "secrets/bob/lldap/jwt-secret.age".publicKeys = [
-    bob
-    gordon
-  ];
-
-  "secrets/bob/authelia-ldap-password.age".publicKeys = [
+  "secrets/bob/authelia/users.age".publicKeys = [
     bob
     gordon
   ];
