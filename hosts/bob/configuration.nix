@@ -88,6 +88,13 @@ in
         owner = "root";
         group = "authelia-main";
       };
+
+      tandoor-secret-key = {
+        file = ../../secrets/bob/tandoor-secret-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "tandoor_recipes";
+      };
     };
 
     users = {

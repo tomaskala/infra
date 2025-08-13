@@ -27,7 +27,7 @@ in
         address = "localhost";
 
         extraConfig = {
-          SECRET_KEY_FILE = ""; # TODO
+          SECRET_KEY_FILE = config.age.secrets.tandoor-secret-key.path;
           ALLOWED_HOSTS = cfg.domain;
           DB_ENGINE = "django.db.backends.postgresql";
           POSTGRES_HOST = "/run/postgresql";
