@@ -107,11 +107,9 @@ in
       };
     };
 
-    systemd.services = {
-      authelia-main = {
-        after = [ "postgresql.service" ];
-        requires = [ "postgresql.service" ];
-      };
+    systemd.services.authelia-main = {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
     };
   };
 }
