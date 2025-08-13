@@ -81,15 +81,15 @@ in
         owner = "root";
         group = "authelia-main";
       };
+
       authelia-ldap-password = {
-        file = ../../secrets/bob/authelia/ldap-password.age;
+        file = ../../secrets/bob/authelia-ldap-password.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
 
       lldap-jwt-secret.file = ../../secrets/bob/lldap/jwt-secret.age;
-      lldap-user-pass.file = ../../secrets/bob/lldap/user-pass.age;
     };
 
     users = {
