@@ -74,12 +74,12 @@ in
               (lib.optional config.infra.calibre-web.enable {
                 "Calibre" = {
                   icon = "calibre-web";
-                  href = config.infra.calibre-web.domain;
+                  href = "https://${config.infra.calibre-web.domain}";
                   description = "Ebook management";
 
                   widget = {
                     type = "calibreweb";
-                    url = config.infra.calibre-web.domain;
+                    url = "https://${config.infra.calibre-web.domain}";
                     username = "{{HOMEPAGE_VAR_CALIBRE_WEB_USERNAME}}";
                     password = "{{HOMEPAGE_VAR_CALIBRE_WEB_PASSWORD}}";
                   };
@@ -88,12 +88,12 @@ in
               ++ (lib.optional config.infra.navidrome.enable {
                 "Navidrome" = {
                   icon = "navidrome";
-                  href = config.infra.navidrome.domain;
+                  href = "https://${config.infra.navidrome.domain}";
                   description = "Music player";
 
                   widget = {
                     type = "navidrome";
-                    url = config.infra.navidrome.domain;
+                    url = "https://${config.infra.navidrome.domain}";
                     user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
                     token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
                     salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
@@ -104,9 +104,15 @@ in
           {
             Misc = lib.optional config.infra.tandoor.enable {
               "Tandoor" = {
-                type = "tandoor";
-                url = config.infra.tandoor.domain;
-                token = "{{HOMEPAGE_VAR_TANDOOR_TOKEN}}";
+                icon = "tandoor-recipes";
+                href = "https://${config.infra.tandoor.domain}";
+                description = "Recipe management";
+
+                widget = {
+                  type = "tandoor";
+                  url = "https://${config.infra.tandoor.domain}";
+                  token = "{{HOMEPAGE_VAR_TANDOOR_TOKEN}}";
+                };
               };
             };
           }
