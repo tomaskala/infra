@@ -14,7 +14,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos-server/authentication.nix
+    ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/calibre-web.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/navidrome.nix
@@ -82,15 +82,12 @@ in
         owner = "root";
         group = "authelia-main";
       };
-
-      authelia-ldap-password = {
-        file = ../../secrets/bob/authelia-ldap-password.age;
+      authelia-users = {
+        file = ../../secrets/bob/authelia/users.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-
-      lldap-jwt-secret.file = ../../secrets/bob/lldap/jwt-secret.age;
     };
 
     users = {
@@ -181,10 +178,9 @@ in
     infra = {
       tailscale.enable = true;
 
-      authentication = {
+      authelia = {
         enable = true;
         domain = hostDomain;
-        ldapBaseDN = lib.concatStringsSep "," (builtins.map (s: "dc=${s}") (lib.splitString "." domain));
       };
 
       homepage = {

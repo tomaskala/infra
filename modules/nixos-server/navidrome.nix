@@ -40,7 +40,7 @@ in
           EnableStarRating = false;
           EnableTranscodingConfig = false;
           ScanSchedule = "@every 24h";
-          EnableUserEditing = !config.infra.authentication.enable;
+          EnableUserEditing = !config.infra.authelia.enable;
         };
       };
 
@@ -50,8 +50,8 @@ in
         virtualHosts.${cfg.domain}.extraConfig = ''
           @navidrome path /${cfg.matcher} /${cfg.matcher}/*
           handle @navidrome {
-            ${lib.optionalString config.infra.authentication.enable ''
-              forward_auth :${builtins.toString config.infra.authentication.port} {
+            ${lib.optionalString config.infra.authelia.enable ''
+              forward_auth :${builtins.toString config.infra.authelia.port} {
                 uri /api/authz/forward-auth
                 copy_headers Remote-User
               }
