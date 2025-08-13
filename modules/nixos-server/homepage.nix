@@ -37,12 +37,6 @@ in
 
         widgets = [
           {
-            search = {
-              provider = "duckduckgo";
-              target = "_blank";
-            };
-          }
-          {
             resources = {
               label = "system";
               cpu = true;
