@@ -51,15 +51,6 @@ in
               disk = [ "/" ];
             };
           }
-          {
-            openmeteo = {
-              label = "Prague";
-              timezone = "Europe/Prague";
-              units = "metric";
-              latitude = "{{HOMEPAGE_VAR_PRAGUE_LATITUDE}}";
-              longitude = "{{HOMEPAGE_VAR_PRAGUE_LONGITUDE}}";
-            };
-          }
         ];
 
         services = [
