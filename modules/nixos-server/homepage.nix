@@ -30,7 +30,7 @@ in
           layout = {
             Media = {
               style = "row";
-              columns = 2;
+              columns = 3;
             };
           };
         };
@@ -57,7 +57,7 @@ in
           {
             Media =
               (lib.optional config.infra.calibre-web.enable {
-                "Calibre" = {
+                Calibre = {
                   icon = "calibre-web";
                   href = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
                   description = "Ebook management";
@@ -71,7 +71,7 @@ in
                 };
               })
               ++ (lib.optional config.infra.navidrome.enable {
-                "Navidrome" = {
+                Navidrome = {
                   icon = "navidrome";
                   href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
                   description = "Music player";
@@ -84,11 +84,26 @@ in
                     salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
                   };
                 };
+              })
+              ++ (lib.optional config.infra.jellyfin.enable {
+                Jellyfin = {
+                  icon = "jellyfin";
+                  href = "https://${cfg.domain}/${config.infra.jellyfin.matcher}";
+                  description = "Media server";
+
+                  widget = {
+                    type = "jellyfin";
+                    url = "https://${cfg.domain}/${config.infra.jellyfin.matcher}";
+                    key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
+                    enableBlocks = true;
+                    enableNowPlaying = false;
+                  };
+                };
               });
           }
           {
             Misc = lib.optional config.infra.tandoor.enable {
-              "Tandoor" = {
+              Tandoor = {
                 icon = "tandoor-recipes";
                 href = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
                 description = "Recipe management";

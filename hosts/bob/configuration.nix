@@ -17,6 +17,7 @@ in
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/calibre-web.nix
     ../../modules/nixos-server/homepage.nix
+    ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/tailscale.nix
     ../../modules/nixos-server/tandoor.nix
@@ -199,6 +200,11 @@ in
         enable = true;
         domain = hostDomain;
         libraryDir = "${mediaDir}/ebooks";
+      };
+
+      jellyfin = {
+        enable = true;
+        domain = hostDomain;
       };
 
       navidrome = {
