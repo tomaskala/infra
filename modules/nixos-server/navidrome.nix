@@ -40,6 +40,7 @@ in
           EnableStarRating = false;
           EnableTranscodingConfig = false;
           ScanSchedule = "@every 24h";
+          ReverseProxyWhitelist = lib.mkIf config.infra.authelia.enable "127.0.0.1/32";
           EnableUserEditing = !config.infra.authelia.enable;
         };
       };
