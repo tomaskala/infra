@@ -215,7 +215,6 @@ in
       calibre-web = {
         enable = true;
         domain = hostDomain;
-        libraryDir = "${mediaDir}/ebooks";
       };
 
       jellyfin = {

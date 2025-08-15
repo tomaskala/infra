@@ -18,11 +18,6 @@ in
       default = "calibre-web";
       readOnly = true;
     };
-
-    libraryDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Where Calibre stores the ebooks";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -33,8 +28,7 @@ in
         openFirewall = false;
 
         options = {
-          calibreLibrary = cfg.libraryDir;
-          enableBookUploading = false;
+          enableBookUploading = true;
           enableBookConversion = true;
 
           reverseProxyAuth = {
