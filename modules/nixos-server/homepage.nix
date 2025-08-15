@@ -42,7 +42,6 @@ in
               label = "system";
               cpu = true;
               memory = true;
-              uptime = true;
               refresh = 5000;
             };
           }
@@ -50,6 +49,12 @@ in
             resources = {
               label = "storage";
               disk = [ "/" ];
+            };
+          }
+          {
+            resources = {
+              label = "uptime";
+              uptime = true;
             };
           }
         ];
