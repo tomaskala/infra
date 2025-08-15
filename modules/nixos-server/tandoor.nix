@@ -31,8 +31,8 @@ in
           ALLOWED_HOSTS = cfg.domain;
           DB_ENGINE = "django.db.backends.postgresql";
           POSTGRES_HOST = "/run/postgresql";
-          POSTGRES_DB = "tandoor";
-          POSTGRES_USER = "tandoor";
+          POSTGRES_DB = "tandoor_recipes";
+          POSTGRES_USER = "tandoor_recipes";
           REMOTE_USER_AUTH = 1;
         };
       };
