@@ -144,8 +144,8 @@
 
           modules = [
             commonConfig
-            catppuccin.homeModules.catppuccin
             ./hosts/cooper/tomas.nix
+            catppuccin.homeModules.catppuccin
           ];
         };
 
@@ -154,9 +154,9 @@
 
           modules = [
             commonConfig
+            ./hosts/blacklodge/tomas.nix
             catppuccin.homeModules.catppuccin
             agenix.homeManagerModules.default
-            ./hosts/blacklodge/tomas.nix
           ];
         };
       };
