@@ -59,7 +59,7 @@
 
       commonConfig = {
         nixpkgs.overlays = [
-          (final: prev: {
+          (_: prev: {
             unstable = nixpkgs-unstable.legacyPackages.${prev.system};
           })
         ];
