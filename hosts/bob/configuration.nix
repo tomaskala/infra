@@ -125,9 +125,16 @@ in
 
       tmux = {
         enable = true;
-        escapeTime = 1;
-        clock24 = true;
         baseIndex = 1;
+        clock24 = true;
+
+        extraConfigBeforePlugins = ''
+          # ============================================= #
+          # Start with defaults from the Sensible plugin  #
+          # --------------------------------------------- #
+          run-shell ${pkgs.tmuxPlugins.sensible.rtp}
+          # ============================================= #
+        '';
       };
 
       neovim = {
