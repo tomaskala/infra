@@ -42,14 +42,21 @@ in
 
     fileSystems.${mediaDir} = {
       device = "10.0.0.10:/volume1/Media";
-      fsType = "nfs";
-      options = [
-        "nfsvers=4.1" # Use NFSv4.1 (the highest my NAS supports).
-        "x-systemd.automount" # Automatically mount upon first access.
-        "noauto" # Do not mount when the machine starts.
-        "x-systemd.idle-timeout=3600" # Automatically disconnect after being idle.
-        "ro" # Mount as a read-only filesystem.
-      ];
+      fsType = "cifs";
+      options =
+        let
+          automount = [
+            "x-systemd.automount" # Automatically mount upon first access.
+            "noauto" # Do not mount when the machine starts.
+            "x-systemd.idle-timeout=3600" # Automatically disconnect after being idle.
+            "x-systemd.device-timeout=5s" # Wait for this long for the device to show up.
+            "x-systemd.mount-timeout=5s" # Wait for this long for the mount command to finish.
+            "ro" # Mount as a read-only filesystem.
+          ];
+        in
+        [
+          "${builtins.concatStringsSep "," automount},credentials=${config.age.secrets.nas-smb-credentials.path}"
+        ];
     };
 
     age.secrets = {
@@ -57,6 +64,7 @@ in
       root-password.file = ../../secrets/bob/users/root.age;
       tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
       homepage-env.file = ../../secrets/bob/homepage-env.age;
+      nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
       authelia-postgres-password = {

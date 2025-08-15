@@ -20,6 +20,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/nas-smb-credentials.age".publicKeys = [
+    bob
+    gordon
+  ];
 
   "secrets/bob/authelia/postgres-password.age".publicKeys = [
     bob
