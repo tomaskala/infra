@@ -41,7 +41,7 @@ in
     hardware.enableAllFirmware = true;
 
     fileSystems.${mediaDir} = {
-      device = "//10.0.0.10/volume1/Media";
+      device = "//10.0.0.10/Media";
       fsType = "cifs";
       options =
         let
