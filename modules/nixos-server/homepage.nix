@@ -24,6 +24,7 @@ in
         settings = {
           title = "Welcome home";
           headerStyle = "boxed";
+          base = cfg.domain;
           hideVersion = true;
           disableUpdateCheck = true;
 
