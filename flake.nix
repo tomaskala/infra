@@ -54,7 +54,6 @@
     let
       systems = [
         "x86_64-linux"
-        "aarch64-linux"
         "aarch64-darwin"
       ];
 
@@ -62,7 +61,6 @@
         nixpkgs.overlays = [
           (final: prev: {
             unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-            infra = import ./infra { inherit (final.pkgs) lib; };
           })
         ];
 
