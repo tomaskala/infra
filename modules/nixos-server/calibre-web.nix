@@ -56,6 +56,9 @@ in
                 copy_headers Remote-User
               }
             ''}
+
+            # This is needed when running on a subpath, as opposed to a subdomain.
+            request_header X-Script-Name "/${cfg.matcher}"
             reverse_proxy :${builtins.toString config.services.calibre-web.listen.port}
           }
         '';
