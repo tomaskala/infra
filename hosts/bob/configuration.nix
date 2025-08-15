@@ -159,6 +159,7 @@ in
       enableAllTerminfo = true;
 
       systemPackages = with pkgs; [
+        cifs-utils # Needed for mounting NAS using SMB.
         curl
         jq
         ldns
