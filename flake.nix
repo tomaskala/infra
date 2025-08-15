@@ -8,8 +8,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     catppuccin = {
-      url = "github:catppuccin/nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:catppuccin/nix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-darwin = {
