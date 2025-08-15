@@ -34,6 +34,7 @@ in
         settings = {
           Address = "localhost";
           MusicFolder = cfg.musicDir;
+          BaseUrl = "https://${cfg.domain}/${cfg.matcher}";
           AutoImportPlaylists = false;
           EnableExternalServices = false;
           EnableGravatar = false;
