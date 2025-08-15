@@ -34,6 +34,7 @@ in
           POSTGRES_DB = "tandoor_recipes";
           POSTGRES_USER = "tandoor_recipes";
           REMOTE_USER_AUTH = 1;
+          STATIC_URL = "https://${cfg.domain}/${cfg.matcher}/static/";
         };
       };
 
