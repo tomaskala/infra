@@ -22,7 +22,7 @@ in
         environmentFile = config.age.secrets.homepage-env.path;
 
         settings = {
-          title = "Welcome home";
+          title = "Bob";
           headerStyle = "boxed";
           base = cfg.domain;
           hideVersion = true;
@@ -55,6 +55,16 @@ in
             resources = {
               label = "uptime";
               uptime = true;
+            };
+          }
+          {
+            datetime = {
+              text_size = "x1";
+              format = {
+                dateStyle = "long";
+                timeStyle = "short";
+                hour12 = false;
+              };
             };
           }
         ];
