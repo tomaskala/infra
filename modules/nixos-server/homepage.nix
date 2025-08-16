@@ -19,7 +19,6 @@ in
         enable = true;
         openFirewall = false;
         allowedHosts = cfg.domain;
-        environmentFile = config.age.secrets.homepage-env.path;
 
         settings = {
           title = "Bob";
@@ -77,13 +76,6 @@ in
                   icon = "calibre-web";
                   href = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
                   description = "Ebook management";
-
-                  widget = {
-                    type = "calibreweb";
-                    url = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
-                    username = "{{HOMEPAGE_VAR_CALIBRE_WEB_USERNAME}}";
-                    password = "{{HOMEPAGE_VAR_CALIBRE_WEB_PASSWORD}}";
-                  };
                 };
               })
               ++ (lib.optional config.infra.navidrome.enable {
@@ -91,14 +83,6 @@ in
                   icon = "navidrome";
                   href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
                   description = "Music player";
-
-                  widget = {
-                    type = "navidrome";
-                    url = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
-                    user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
-                    token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
-                    salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
-                  };
                 };
               })
               ++ (lib.optional config.infra.jellyfin.enable {
@@ -106,14 +90,6 @@ in
                   icon = "jellyfin";
                   href = "https://${cfg.domain}/${config.infra.jellyfin.matcher}";
                   description = "Media server";
-
-                  widget = {
-                    type = "jellyfin";
-                    url = "https://${cfg.domain}/${config.infra.jellyfin.matcher}";
-                    key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
-                    enableBlocks = true;
-                    enableNowPlaying = false;
-                  };
                 };
               });
           }
@@ -123,12 +99,6 @@ in
                 icon = "tandoor-recipes";
                 href = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
                 description = "Recipe management";
-
-                widget = {
-                  type = "tandoor";
-                  url = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
-                  token = "{{HOMEPAGE_VAR_TANDOOR_TOKEN}}";
-                };
               };
             };
           }
