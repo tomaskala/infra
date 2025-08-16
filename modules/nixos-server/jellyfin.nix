@@ -32,6 +32,10 @@ in
     };
   };
 
+  # When setting up Jellyfin for the first time, it's necessary to open firewall, connect directly
+  # to the Jellyfin instance, go to the network settings, and set the base URL field to "cfg.matcher"
+  # (without the quotes, without leading or trailing slashes). Afterwards, restart the service and
+  # proxied connection should work.
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       jellyfin
