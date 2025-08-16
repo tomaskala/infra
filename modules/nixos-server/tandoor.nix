@@ -44,12 +44,7 @@ in
         virtualHosts.${cfg.domain}.extraConfig = ''
           @tandoor path /${cfg.matcher} /${cfg.matcher}/*
           handle @tandoor {
-            ${lib.optionalString config.infra.authelia.enable ''
-              forward_auth :${builtins.toString config.infra.authelia.port} {
-                uri /api/authz/forward-auth
-                copy_headers Remote-User
-              }
-            ''}
+            ${lib.optionalString config.infra.authelia.enable "import auth"}
             reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
         '';
       };
