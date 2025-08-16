@@ -44,13 +44,7 @@ in
         virtualHosts.${cfg.domain}.extraConfig = ''
           @calibre path /${cfg.matcher} /${cfg.matcher}/*
           handle @calibre {
-            ${lib.optionalString config.infra.authelia.enable ''
-              forward_auth :${builtins.toString config.infra.authelia.port} {
-                uri /api/authz/forward-auth
-                copy_headers Remote-User
-              }
-            ''}
-
+            ${lib.optionalString config.infra.authelia.enable "import auth"}
             # This is needed when running on a subpath, as opposed to a subdomain.
             request_header X-Script-Name "/${cfg.matcher}"
             reverse_proxy :${builtins.toString config.services.calibre-web.listen.port}

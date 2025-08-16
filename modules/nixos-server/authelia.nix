@@ -39,6 +39,16 @@ in
             reverse_proxy :${builtins.toString cfg.port}
           }
         '';
+
+        # Importable authentication block.
+        extraConfig = ''
+          (auth) {
+            forward_auth :${builtins.toString config.infra.authelia.port} {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+            }
+          }
+        '';
       };
 
       authelia.instances.main = {
