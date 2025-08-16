@@ -166,9 +166,12 @@ in
         curl
         jq
         ldns
+        openssl
+        python3
         ripgrep
         rsync
         tree
+        uv
       ];
     };
 
