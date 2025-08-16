@@ -63,7 +63,6 @@ in
       tomas-password.file = ../../secrets/bob/users/tomas.age;
       root-password.file = ../../secrets/bob/users/root.age;
       tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
-      homepage-env.file = ../../secrets/bob/homepage-env.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
