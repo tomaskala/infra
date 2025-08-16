@@ -58,6 +58,8 @@ in
           jwtSecretFile = config.age.secrets.authelia-jwt-secret.path;
           sessionSecretFile = config.age.secrets.authelia-session-secret.path;
           storageEncryptionKeyFile = config.age.secrets.authelia-storage-encryption-key.path;
+          oidcHmacSecretFile = config.age.secrets.authelia-oidc-hmac-secret.path;
+          oidcIssuerPrivateKeyFile = config.age.secrets.authelia-oidc-issuer-private-key.path;
         };
 
         environmentVariables = {
@@ -95,7 +97,7 @@ in
               {
                 inherit (cfg) domain;
                 policy = "one_factor";
-                subject = [ "group:trusted_users" ];
+                subject = [ "group:trusted-users" ];
               }
             ];
           };
