@@ -41,6 +41,14 @@ in
     bob
     gordon
   ];
+  "secrets/bob/authelia/oidc-hmac-secret.age".publicKeys = [
+    bob
+    gordon
+  ];
+  "secrets/bob/authelia/oidc-issuer-private-key.age".publicKeys = [
+    bob
+    gordon
+  ];
 
   "secrets/bob/tandoor-secret-key.age".publicKeys = [
     bob

@@ -96,6 +96,18 @@ in
         owner = "root";
         group = "authelia-main";
       };
+      authelia-oidc-hmac-secret = {
+        file = ../../secrets/bob/authelia/oidc-hmac-secret.age;
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
+      authelia-oidc-issuer-private-key = {
+        file = ../../secrets/bob/authelia/oidc-issuer-private-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "authelia-main";
+      };
 
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
