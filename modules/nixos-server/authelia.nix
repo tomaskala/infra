@@ -97,6 +97,11 @@ in
                 policy = "one_factor";
                 subject = [ "group:trusted-users" ];
               }
+              {
+                domain = "*.${cfg.hostDomain}";
+                policy = "one_factor";
+                subject = [ "group:trusted-users" ];
+              }
             ];
           };
         };
