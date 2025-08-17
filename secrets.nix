@@ -54,6 +54,11 @@ in
     gordon
   ];
 
+  "secrets/bob/tandoor-secret-key.age".publicKeys = [
+    bob
+    gordon
+  ];
+
   "secrets/users/cooper/tomas.age".publicKeys = [ cooper ];
   "secrets/users/cooper/root.age".publicKeys = [ cooper ];
 

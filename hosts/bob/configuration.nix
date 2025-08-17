@@ -19,6 +19,7 @@ in
     ../../modules/nixos-server/kavita.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/tailscale.nix
+    ../../modules/nixos-server/tandoor.nix
   ];
 
   config = {
@@ -112,6 +113,13 @@ in
         mode = "0640";
         owner = "root";
         group = "authelia-main";
+      };
+
+      tandoor-secret-key = {
+        file = ../../secrets/bob/tandoor-secret-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "tandoor_recipes";
       };
     };
 
@@ -239,6 +247,11 @@ in
         enable = true;
         domain = "navidrome.${hostDomain}";
         musicDir = "${mediaDir}/music";
+      };
+
+      tandoor = {
+        enable = true;
+        domain = hostDomain;
       };
     };
   };
