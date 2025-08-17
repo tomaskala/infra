@@ -16,6 +16,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/dns-challenge-env.age".publicKeys = [
+    bob
+    gordon
+  ];
   "secrets/bob/nas-smb-credentials.age".publicKeys = [
     bob
     gordon

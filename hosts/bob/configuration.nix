@@ -7,7 +7,7 @@
 
 let
   hostName = "bob";
-  hostDomain = "${hostName}.exocomet-hippocampus.ts.net}";
+  hostDomain = "${hostName}.the-great-northern.com";
   mediaDir = "/mnt/media";
 in
 {
@@ -62,6 +62,7 @@ in
       tomas-password.file = ../../secrets/bob/users/tomas.age;
       root-password.file = ../../secrets/bob/users/root.age;
       tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
+      dns-challenge-env.file = ../../secrets/bob/dns-challenge-env.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
 
       kavita-token-key = {
@@ -203,6 +204,17 @@ in
       nftables.enable = true;
     };
 
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = "public+acme@tomaskala.com";
+
+      certs.${hostDomain} = {
+        dnsProvider = "cloudflare";
+        environmentFile = config.age.secrets.dns-challenge-env.path;
+        extraDomainNames = [ "*.${hostDomain}" ];
+      };
+    };
+
     services = {
       fwupd.enable = true;
 
@@ -223,34 +235,38 @@ in
 
       authelia = {
         enable = true;
-        domain = "auth.${hostDomain}";
-        redirection = hostDomain;
+        inherit hostDomain;
+        subdomain = "auth";
       };
 
       homepage = {
         enable = true;
-        domain = hostDomain;
+        inherit hostDomain;
       };
 
       jellyfin = {
         enable = true;
-        domain = "jellyfin.${hostDomain}";
+        inherit hostDomain;
+        subdomain = "jellyfin";
       };
 
       kavita = {
         enable = true;
-        domain = "kavita.${hostDomain}";
+        inherit hostDomain;
+        subdomain = "kavita";
       };
 
       navidrome = {
         enable = true;
-        domain = "navidrome.${hostDomain}";
+        inherit hostDomain;
+        subdomain = "navidrome";
         musicDir = "${mediaDir}/music";
       };
 
       tandoor = {
         enable = true;
-        domain = "tandoor.${hostDomain}";
+        inherit hostDomain;
+        subdomain = "tandoor";
       };
     };
   };

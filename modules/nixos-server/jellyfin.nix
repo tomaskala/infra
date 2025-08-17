@@ -7,14 +7,20 @@
 
 let
   cfg = config.infra.jellyfin;
+  domain = "${cfg.subdomain}.${cfg.hostDomain}";
 in
 {
   options.infra.jellyfin = {
     enable = lib.mkEnableOption "jellyfin";
 
-    domain = lib.mkOption {
+    hostDomain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this service";
+      description = "Domain of this host";
+    };
+
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Subdomain of this service";
     };
 
     port = lib.mkOption {
@@ -41,9 +47,12 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig = ''
-          reverse_proxy :${builtins.toString cfg.port}
-        '';
+        virtualHosts.${domain} = {
+          useACMEHost = cfg.hostDomain;
+          extraConfig = ''
+            reverse_proxy :${builtins.toString cfg.port}
+          '';
+        };
       };
 
       authelia.instances.main.settings.identity_providers.oidc.clients = [
@@ -56,8 +65,8 @@ in
           require_pkce = true;
           pkce_challenge_method = "S256";
           redirect_uris = [
-            "https://${cfg.domain}/sso/OID/redirect/authelia"
-            "http://${cfg.domain}/sso/OID/redirect/authelia"
+            "https://${domain}/sso/OID/redirect/authelia"
+            "http://${domain}/sso/OID/redirect/authelia"
           ];
           scopes = [
             "openid"

@@ -2,14 +2,20 @@
 
 let
   cfg = config.infra.kavita;
+  domain = "${cfg.subdomain}.${cfg.hostDomain}";
 in
 {
   options.infra.kavita = {
     enable = lib.mkEnableOption "kavita";
 
-    domain = lib.mkOption {
+    hostDomain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this service";
+      description = "Domain of this host";
+    };
+
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Subdomain of this service";
     };
   };
 
@@ -24,9 +30,12 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig = ''
-          reverse_proxy :${builtins.toString config.services.kavita.settings.Port}
-        '';
+        virtualHosts.${domain} = {
+          useACMEHost = cfg.hostDomain;
+          extraConfig = ''
+            reverse_proxy :${builtins.toString config.services.kavita.settings.Port}
+          '';
+        };
       };
     };
   };

@@ -2,14 +2,20 @@
 
 let
   cfg = config.infra.tandoor;
+  domain = "${cfg.subdomain}.${cfg.hostDomain}";
 in
 {
   options.infra.tandoor = {
     enable = lib.mkEnableOption "tandoor";
 
-    domain = lib.mkOption {
+    hostDomain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this service";
+      description = "Domain of this host";
+    };
+
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Subdomain of this service";
     };
   };
 
@@ -21,7 +27,7 @@ in
 
         extraConfig = {
           SECRET_KEY_FILE = config.age.secrets.tandoor-secret-key.path;
-          ALLOWED_HOSTS = cfg.domain;
+          ALLOWED_HOSTS = domain;
           DB_ENGINE = "django.db.backends.postgresql";
           POSTGRES_HOST = "/run/postgresql";
           POSTGRES_DB = "tandoor_recipes";
@@ -33,10 +39,13 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig = ''
-          ${lib.optionalString config.infra.authelia.enable "import auth"}
-          reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
-        '';
+        virtualHosts.${domain} = {
+          useACMEHost = cfg.hostDomain;
+          extraConfig = ''
+            ${lib.optionalString config.infra.authelia.enable "import auth"}
+            reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
+          '';
+        };
       };
 
       postgresql = {

@@ -2,19 +2,20 @@
 
 let
   cfg = config.infra.authelia;
+  domain = "${cfg.subdomain}.${cfg.hostDomain}";
 in
 {
   options.infra.authelia = {
     enable = lib.mkEnableOption "authelia";
 
-    domain = lib.mkOption {
+    hostDomain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this service";
+      description = "Domain of this host";
     };
 
-    redirection = lib.mkOption {
+    subdomain = lib.mkOption {
       type = lib.types.str;
-      description = "Default domain to redirect to after authenticating";
+      description = "Subdomain of this service";
     };
 
     port = lib.mkOption {
@@ -30,9 +31,12 @@ in
       caddy = {
         enable = true;
 
-        virtualHosts.${cfg.domain}.extraConfig = ''
-          reverse_proxy :${builtins.toString cfg.port}
-        '';
+        virtualHosts.${domain} = {
+          useACMEHost = cfg.hostDomain;
+          extraConfig = ''
+            reverse_proxy :${builtins.toString cfg.port}
+          '';
+        };
 
         # Importable authentication block.
         extraConfig = ''
@@ -70,9 +74,9 @@ in
 
           session.cookies = [
             {
-              inherit (cfg) domain;
-              authelia_url = "https://${cfg.domain}";
-              default_redirection_url = "https://${cfg.redirection}";
+              domain = cfg.hostDomain;
+              authelia_url = "https://${domain}";
+              default_redirection_url = "https://${cfg.hostDomain}";
             }
           ];
 
@@ -89,7 +93,7 @@ in
 
             rules = [
               {
-                inherit (cfg) domain;
+                domain = cfg.hostDomain;
                 policy = "one_factor";
                 subject = [ "group:trusted-users" ];
               }
