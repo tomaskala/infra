@@ -15,7 +15,6 @@ in
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-server/authelia.nix
-    ../../modules/nixos-server/calibre-web.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/navidrome.nix
@@ -214,11 +213,6 @@ in
       };
 
       homepage = {
-        enable = true;
-        domain = hostDomain;
-      };
-
-      calibre-web = {
         enable = true;
         domain = hostDomain;
       };

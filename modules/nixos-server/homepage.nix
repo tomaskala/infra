@@ -71,14 +71,7 @@ in
         services = [
           {
             Media =
-              (lib.optional config.infra.calibre-web.enable {
-                Calibre = {
-                  icon = "calibre-web";
-                  href = "https://${cfg.domain}/${config.infra.calibre-web.matcher}";
-                  description = "Ebook management";
-                };
-              })
-              ++ (lib.optional config.infra.navidrome.enable {
+              (lib.optional config.infra.navidrome.enable {
                 Navidrome = {
                   icon = "navidrome";
                   href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
