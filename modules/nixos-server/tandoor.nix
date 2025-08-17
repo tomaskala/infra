@@ -9,14 +9,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this machine";
-    };
-
-    matcher = lib.mkOption {
-      type = lib.types.str;
-      description = "Webserver matcher for this service";
-      default = "tandoor";
-      readOnly = true;
+      description = "Domain of this service";
     };
   };
 
@@ -34,7 +27,6 @@ in
           POSTGRES_DB = "tandoor_recipes";
           POSTGRES_USER = "tandoor_recipes";
           REMOTE_USER_AUTH = 1;
-          STATIC_URL = "https://${cfg.domain}/${cfg.matcher}/static/";
         };
       };
 
@@ -42,10 +34,8 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          @tandoor path /${cfg.matcher} /${cfg.matcher}/*
-          handle @tandoor {
-            ${lib.optionalString config.infra.authelia.enable "import auth"}
-            reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
+          ${lib.optionalString config.infra.authelia.enable "import auth"}
+          reverse_proxy :${builtins.toString config.services.tandoor-recipes.port}
         '';
       };
 

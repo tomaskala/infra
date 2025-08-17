@@ -97,7 +97,7 @@ in
             Misc = lib.optional config.infra.tandoor.enable {
               Tandoor = {
                 icon = "tandoor-recipes";
-                href = "https://${cfg.domain}/${config.infra.tandoor.matcher}";
+                href = "https://${config.infra.tandoor.domain}";
                 description = "Recipe management";
               };
             };

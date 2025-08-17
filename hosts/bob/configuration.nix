@@ -70,6 +70,12 @@ in
         owner = "root";
         group = "kavita";
       };
+      tandoor-secret-key = {
+        file = ../../secrets/bob/tandoor-secret-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "tandoor_recipes";
+      };
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
       authelia-postgres-password = {
@@ -113,13 +119,6 @@ in
         mode = "0640";
         owner = "root";
         group = "authelia-main";
-      };
-
-      tandoor-secret-key = {
-        file = ../../secrets/bob/tandoor-secret-key.age;
-        mode = "0640";
-        owner = "root";
-        group = "tandoor_recipes";
       };
     };
 
@@ -251,7 +250,7 @@ in
 
       tandoor = {
         enable = true;
-        domain = hostDomain;
+        domain = "tandoor.${hostDomain}";
       };
     };
   };
