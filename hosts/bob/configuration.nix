@@ -17,6 +17,7 @@ in
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
+    ../../modules/nixos-server/kavita.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/tailscale.nix
   ];
@@ -62,6 +63,13 @@ in
       root-password.file = ../../secrets/bob/users/root.age;
       tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
+
+      kavita-token-key = {
+        file = ../../secrets/bob/kavita-token-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "kavita";
+      };
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
       authelia-postgres-password = {
@@ -218,6 +226,11 @@ in
       };
 
       jellyfin = {
+        enable = true;
+        domain = hostDomain;
+      };
+
+      kavita = {
         enable = true;
         domain = hostDomain;
       };

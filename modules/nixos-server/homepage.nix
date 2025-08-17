@@ -71,7 +71,14 @@ in
         services = [
           {
             Media =
-              (lib.optional config.infra.navidrome.enable {
+              (lib.optional config.infra.kavita.enable {
+                Kavita = {
+                  icon = "kavita";
+                  href = "https://${cfg.domain}/${config.infra.kavita.matcher}";
+                  description = "Ebook library";
+                };
+              })
+              ++ (lib.optional config.infra.navidrome.enable {
                 Navidrome = {
                   icon = "navidrome";
                   href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
