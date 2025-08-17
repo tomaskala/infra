@@ -6,9 +6,8 @@
 }:
 
 let
-  domain = "exocomet-hippocampus.ts.net";
   hostName = "bob";
-  hostDomain = "${hostName}.${domain}";
+  hostDomain = "${hostName}.exocomet-hippocampus.ts.net}";
   mediaDir = "/mnt/media";
 in
 {
@@ -217,7 +216,8 @@ in
 
       authelia = {
         enable = true;
-        domain = hostDomain;
+        domain = "auth.${hostDomain}";
+        redirection = hostDomain;
       };
 
       homepage = {
@@ -227,17 +227,17 @@ in
 
       jellyfin = {
         enable = true;
-        domain = hostDomain;
+        domain = "jellyfin.${hostDomain}";
       };
 
       kavita = {
         enable = true;
-        domain = hostDomain;
+        domain = "kavita.${hostDomain}";
       };
 
       navidrome = {
         enable = true;
-        domain = hostDomain;
+        domain = "navidrome.${hostDomain}";
         musicDir = "${mediaDir}/music";
       };
     };

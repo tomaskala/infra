@@ -14,14 +14,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this machine";
-    };
-
-    matcher = lib.mkOption {
-      type = lib.types.str;
-      description = "Webserver matcher for this service";
-      default = "jellyfin";
-      readOnly = true;
+      description = "Domain of this service";
     };
 
     port = lib.mkOption {
@@ -32,10 +25,6 @@ in
     };
   };
 
-  # When setting up Jellyfin for the first time, it's necessary to open firewall, connect directly
-  # to the Jellyfin instance, go to the network settings, and set the base URL field to "cfg.matcher"
-  # (without the quotes, without leading or trailing slashes). Afterwards, restart the service and
-  # proxied connection should work.
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       jellyfin
@@ -53,10 +42,7 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          @jellyfin path /${cfg.matcher} /${cfg.matcher}/*
-          handle @jellyfin {
-            reverse_proxy :${builtins.toString cfg.port}
-          }
+          reverse_proxy :${builtins.toString cfg.port}
         '';
       };
 
@@ -70,8 +56,8 @@ in
           require_pkce = true;
           pkce_challenge_method = "S256";
           redirect_uris = [
-            "https://${cfg.domain}/${cfg.matcher}/sso/OID/redirect/authelia"
-            "http://${cfg.domain}/${cfg.matcher}/sso/OID/redirect/authelia"
+            "https://${cfg.domain}/sso/OID/redirect/authelia"
+            "http://${cfg.domain}/sso/OID/redirect/authelia"
           ];
           scopes = [
             "openid"

@@ -9,15 +9,12 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain protected by Authelia";
-      example = "example.com";
+      description = "Domain of this service";
     };
 
-    matcher = lib.mkOption {
+    redirection = lib.mkOption {
       type = lib.types.str;
-      description = "Webserver matcher for this service";
-      default = "auth";
-      readOnly = true;
+      description = "Default domain to redirect to after authenticating";
     };
 
     port = lib.mkOption {
@@ -34,10 +31,7 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          @authelia path /${cfg.matcher} /${cfg.matcher}/*
-          handle @authelia {
-            reverse_proxy :${builtins.toString cfg.port}
-          }
+          reverse_proxy :${builtins.toString cfg.port}
         '';
 
         # Importable authentication block.
@@ -70,15 +64,15 @@ in
           theme = "auto";
           log.level = "info";
           password_policy.zxcvbn.enabled = true;
-          server.address = "tcp://127.0.0.1:${builtins.toString cfg.port}/${cfg.matcher}";
+          server.address = "tcp://:${builtins.toString cfg.port}/";
 
           notifier.filesystem.filename = "/var/lib/authelia-main/notifications.log";
 
           session.cookies = [
             {
               inherit (cfg) domain;
-              authelia_url = "https://${cfg.domain}/${cfg.matcher}";
-              default_redirection_url = "https://${cfg.domain}";
+              authelia_url = "https://${cfg.domain}";
+              default_redirection_url = "https://${cfg.redirection}";
             }
           ];
 

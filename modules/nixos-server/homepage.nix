@@ -9,7 +9,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this machine";
+      description = "Domain of this service";
     };
   };
 
@@ -74,21 +74,21 @@ in
               (lib.optional config.infra.kavita.enable {
                 Kavita = {
                   icon = "kavita";
-                  href = "https://${cfg.domain}/${config.infra.kavita.matcher}";
+                  href = "https://${config.infra.kavita.domain}";
                   description = "Ebook library";
                 };
               })
               ++ (lib.optional config.infra.navidrome.enable {
                 Navidrome = {
                   icon = "navidrome";
-                  href = "https://${cfg.domain}/${config.infra.navidrome.matcher}";
+                  href = "https://${config.infra.navidrome.domain}";
                   description = "Music player";
                 };
               })
               ++ (lib.optional config.infra.jellyfin.enable {
                 Jellyfin = {
                   icon = "jellyfin";
-                  href = "https://${cfg.domain}/${config.infra.jellyfin.matcher}";
+                  href = "https://${config.infra.jellyfin.domain}";
                   description = "Media server";
                 };
               });
@@ -100,10 +100,8 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          handle {
-            ${lib.optionalString config.infra.authelia.enable "import auth"}
-            reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
-          }
+          ${lib.optionalString config.infra.authelia.enable "import auth"}
+          reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
         '';
       };
     };

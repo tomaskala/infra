@@ -9,14 +9,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this machine";
-    };
-
-    matcher = lib.mkOption {
-      type = lib.types.str;
-      description = "Webserver matcher for this service";
-      default = "navidrome";
-      readOnly = true;
+      description = "Domain of this service";
     };
 
     musicDir = lib.mkOption {
@@ -34,7 +27,6 @@ in
         settings = {
           Address = "localhost";
           MusicFolder = cfg.musicDir;
-          BaseUrl = "https://${cfg.domain}/${cfg.matcher}";
           AutoImportPlaylists = false;
           EnableExternalServices = false;
           EnableGravatar = false;
@@ -50,11 +42,8 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          @navidrome path /${cfg.matcher} /${cfg.matcher}/*
-          handle @navidrome {
-            ${lib.optionalString config.infra.authelia.enable "import auth"}
-            reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
-          }
+          ${lib.optionalString config.infra.authelia.enable "import auth"}
+          reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
         '';
       };
     };

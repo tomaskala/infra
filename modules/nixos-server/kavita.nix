@@ -9,14 +9,7 @@ in
 
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain of this machine";
-    };
-
-    matcher = lib.mkOption {
-      type = lib.types.str;
-      description = "Webserver matcher for this service";
-      default = "kavita";
-      readOnly = true;
+      description = "Domain of this service";
     };
   };
 
@@ -32,10 +25,7 @@ in
         enable = true;
 
         virtualHosts.${cfg.domain}.extraConfig = ''
-          @kavita path /${cfg.matcher} /${cfg.matcher}/*
-          handle @kavita {
-            reverse_proxy :${builtins.toString config.services.kavita.settings.Port}
-          }
+          reverse_proxy :${builtins.toString config.services.kavita.settings.Port}
         '';
       };
     };
