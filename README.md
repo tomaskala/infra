@@ -2,36 +2,33 @@
 
 Configuration for my network infrastructure.
 
-## Machines
+## Hosts
 
-| Hostname | Device type | Operating system | Active |
-| ------------ | ------------------------- | ---------------- | ------------------ |
-| `whitelodge` | VPS | NixOS | :x: |
-| `blacklodge` | Desktop computer | Pop!\_OS | :white_check_mark: |
-| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS | :white_check_mark: |
-| `gordon` | MacBook Air M3 | MacOS | :white_check_mark: |
-| `bob` | Raspberry Pi 4 Model B | NixOS | :x: |
-| `hawk` | iPhone SE 2022 | iOS | :white_check_mark: |
-| `audrey` | MikroTik hAP ac lite TC | OpenWRT | :x: |
-| `leland` | Synology NAS | Synology thingy | :white_check_mark: |
-| `bobby` | Steam Deck | SteamOS | :white_check_mark: |
+| Hostname | Device type | Operating system |
+| ------------ | ------------------------- | ---------------- |
+| `bob` | ASUS NUC 14 Pro | NixOS |
+| `blacklodge` | Desktop computer | Pop!\_OS |
+| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS |
+| `gordon` | MacBook Air M3 | MacOS |
+| `hawk` | iPhone SE 2022 | iOS |
+| `audrey` | MikroTik hAP ac lite TC | OpenWRT |
+| `leland` | Synology NAS | Synology thingy |
+| `bobby` | Steam Deck | SteamOS |
 
 ## Deployment
 
 To define and deploy a machine (called `twinpeaks` in this example), do the
 following.
 
-1. Put its configuration under `machines/twinpeaks`.
-2. Create an `outputs.nixosConfigurations.twinpeaks` block in `flake.nix`. If
-   necessary, define its network configuration in `intranet/devices.nix` and
-   `intranet/wireguard.nix`.
+1. Put its configuration under `hosts/twinpeaks`.
+2. Create an `outputs.nixosConfigurations.twinpeaks` block in `flake.nix`.
 3. Start the machine and its SSH server to generate an SSH host key.
 4. Obtain the host key.
    ```
    $ ssh-keyscan <ip-address>
    ```
-5. Follow the instructions in the
-   [infra-secrets](https://github.com/tomaskala/infra-secrets) repository.
+5. Follow the instructions in the [secrets section](#secrets) to include any
+   secrets.
 6. SSH into the machine and enter a Nix shell with git (the flake setup needs
    it).
    ```
@@ -44,3 +41,22 @@ following.
    Explicitly setting the flake is only necessary during the initial
    deployment. Afterwards, the hostname will have been set and `nixos-rebuild`
    will automatically select the matching flake.
+
+## Secrets
+
+To add secrets for a machine, do the following.
+
+1. Put the host key and any secrets inside `secrets.nix`.
+2. Define all secrets.
+   ```
+   $ nix shell github:ryantm/agenix#agenix
+   $ agenix -e secrets/secret.age
+   ```
+   Note that for secrets holding the user passwords (to be used with
+   `config.users.users.<name>.hashedPasswordFile`), the content of the
+   age-encrypted file should be the SHA-512 of the password. That is, create
+   the secret as
+   ```
+   $ nix shell github:ryantm/agenix#agenix
+   $ openssl passwd -6 -in <password-file> | agenix -e secrets/users/user.age
+   ```

@@ -6,11 +6,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    vps-admin-os.url = "github:vpsfreecz/vpsadminos";
 
     catppuccin = {
-      url = "github:catppuccin/nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:catppuccin/nix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-darwin = {
@@ -37,25 +36,6 @@
         home-manager.follows = "home-manager";
       };
     };
-
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    openwrt-imagebuilder = {
-      url = "github:astro/nix-openwrt-imagebuilder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    secrets = {
-      url = "git+ssh://git@github.com/tomaskala/infra-secrets";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        agenix.follows = "agenix";
-      };
-    };
   };
 
   outputs =
@@ -64,29 +44,23 @@
       nixpkgs,
       nixpkgs-unstable,
       nixos-hardware,
-      vps-admin-os,
       catppuccin,
       nix-darwin,
       home-manager,
       lanzaboote,
       agenix,
-      treefmt-nix,
-      openwrt-imagebuilder,
-      secrets,
       ...
     }:
     let
       systems = [
         "x86_64-linux"
-        "aarch64-linux"
         "aarch64-darwin"
       ];
 
       commonConfig = {
         nixpkgs.overlays = [
-          (final: prev: {
+          (_: prev: {
             unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-            infra = import ./infra { inherit (final.pkgs) lib; };
           })
         ];
 
@@ -109,66 +83,25 @@
         };
       };
 
-      treefmtConfig = {
-        projectRootFile = "flake.nix";
-
-        programs = {
-          mdformat.enable = true;
-          nixfmt.enable = true;
-          yamlfmt.enable = true;
-        };
-
-        settings = {
-          global.excludes = [
-            "*.json"
-            "*.opml"
-            "LICENSE"
-          ];
-          formatter.mdformat.options = [ "--number" ];
-        };
-      };
-
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
     {
       nixosConfigurations = {
-        whitelodge = nixpkgs.lib.nixosSystem {
+        bob = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
           modules = [
             commonConfig
-            ./machines/whitelodge/configuration.nix
+            ./hosts/bob/configuration.nix
             agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
+            # nixos-hardware unfortunately lacks a preset for this particular NUC model.
+            nixos-hardware.nixosModules.common-cpu-intel
+            nixos-hardware.nixosModules.common-pc
+            nixos-hardware.nixosModules.common-pc-ssd
             {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.root = import ./machines/whitelodge/root.nix;
-              };
+              services.thermald.enable = true;
             }
-            vps-admin-os.nixosConfigurations.container
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
-        };
-
-        bob = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-
-          modules = [
-            commonConfig
-            ./machines/bob/configuration.nix
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            nixos-hardware.nixosModules.raspberry-pi-4
-          ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
 
         cooper = nixpkgs.lib.nixosSystem {
@@ -176,16 +109,12 @@
 
           modules = [
             commonConfig
-            ./machines/cooper/configuration.nix
+            ./hosts/cooper/configuration.nix
             catppuccin.nixosModules.catppuccin
             agenix.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
       };
 
@@ -195,21 +124,17 @@
 
           modules = [
             commonConfig
-            ./machines/gordon/configuration.nix
+            ./hosts/gordon/configuration.nix
             agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.tomas = import ./machines/gordon/tomas.nix;
+                users.tomas = import ./hosts/gordon/tomas.nix;
               };
             }
           ];
-
-          specialArgs = {
-            inherit secrets;
-          };
         };
       };
 
@@ -219,8 +144,8 @@
 
           modules = [
             commonConfig
+            ./hosts/cooper/tomas.nix
             catppuccin.homeModules.catppuccin
-            ./machines/cooper/tomas.nix
           ];
         };
 
@@ -229,27 +154,14 @@
 
           modules = [
             commonConfig
+            ./hosts/blacklodge/tomas.nix
             catppuccin.homeModules.catppuccin
             agenix.homeManagerModules.default
-            ./machines/blacklodge/tomas.nix
           ];
-
-          extraSpecialArgs = {
-            inherit secrets;
-          };
         };
       };
 
-      infra.x86_64-linux.audrey = import ./machines/audrey {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        inherit openwrt-imagebuilder;
-      };
-
-      devShells = forAllSystems (pkgs: {
-        default = import ./shells/infra.nix { inherit pkgs; };
-      });
-
-      formatter = forAllSystems (pkgs: treefmt-nix.lib.mkWrapper pkgs treefmtConfig);
+      formatter = forAllSystems (pkgs: pkgs.nixfmt-tree);
 
       checks = forAllSystems (pkgs: {
         deadnix = pkgs.runCommandLocal "check-deadnix" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
@@ -263,8 +175,6 @@
           statix check ${self}
           touch $out
         '';
-
-        formatting = (treefmt-nix.lib.evalModule pkgs treefmtConfig).config.build.check self;
       });
     };
 }

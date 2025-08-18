@@ -1,0 +1,121 @@
+{ config, lib, ... }:
+
+let
+  cfg = config.infra.homepage;
+in
+{
+  options.infra.homepage = {
+    enable = lib.mkEnableOption "homepage";
+
+    hostDomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of this host";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    services = {
+      homepage-dashboard = {
+        enable = true;
+        openFirewall = false;
+        allowedHosts = cfg.hostDomain;
+
+        settings = {
+          title = "Bob";
+          headerStyle = "boxed";
+          base = cfg.hostDomain;
+          hideVersion = true;
+          disableUpdateCheck = true;
+
+          layout = {
+            Media = {
+              style = "row";
+              columns = 3;
+            };
+          };
+        };
+
+        widgets = [
+          {
+            resources = {
+              label = "system";
+              cpu = true;
+              memory = true;
+              refresh = 5000;
+            };
+          }
+          {
+            resources = {
+              label = "storage";
+              disk = [ "/" ];
+            };
+          }
+          {
+            resources = {
+              label = "uptime";
+              uptime = true;
+            };
+          }
+          {
+            datetime = {
+              text_size = "x1";
+              format = {
+                dateStyle = "long";
+                timeStyle = "short";
+                hour12 = false;
+              };
+            };
+          }
+        ];
+
+        services = [
+          {
+            Media =
+              (lib.optional config.infra.kavita.enable {
+                Kavita = {
+                  icon = "kavita";
+                  href = "https://${config.infra.kavita.subdomain}.${cfg.hostDomain}";
+                  description = "Ebook library";
+                };
+              })
+              ++ (lib.optional config.infra.navidrome.enable {
+                Navidrome = {
+                  icon = "navidrome";
+                  href = "https://${config.infra.navidrome.subdomain}.${cfg.hostDomain}";
+                  description = "Music player";
+                };
+              })
+              ++ (lib.optional config.infra.jellyfin.enable {
+                Jellyfin = {
+                  icon = "jellyfin";
+                  href = "https://${config.infra.jellyfin.subdomain}.${cfg.hostDomain}";
+                  description = "Media server";
+                };
+              });
+          }
+          {
+            Misc = lib.optional config.infra.tandoor.enable {
+              Tandoor = {
+                icon = "tandoor-recipes";
+                href = "https://${config.infra.tandoor.subdomain}.${cfg.hostDomain}";
+                description = "Recipe management";
+              };
+            };
+          }
+        ];
+      };
+
+      caddy = {
+        enable = true;
+
+        virtualHosts.${cfg.hostDomain} = {
+          useACMEHost = cfg.hostDomain;
+          extraConfig = ''
+            ${lib.optionalString config.infra.authelia.enable "import auth"}
+            reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
+          '';
+        };
+      };
+    };
+  };
+}
