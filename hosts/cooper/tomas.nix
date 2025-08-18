@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -28,9 +28,6 @@
       enable = true;
       accent = "mauve";
       flavor = "macchiato";
-
-      # Catppuccin for GTK has been discontinued.
-      gtk.enable = lib.mkForce false;
     };
 
     xdg.desktopEntries.openmw = {

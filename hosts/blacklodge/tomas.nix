@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -53,8 +53,5 @@
       accent = "mauve";
       flavor = "macchiato";
     };
-
-    # Catppuccin for GTK has been discontinued.
-    catppuccin.gtk.enable = lib.mkForce false;
   };
 }
