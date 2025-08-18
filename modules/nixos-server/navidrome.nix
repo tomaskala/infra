@@ -34,6 +34,7 @@ in
           Address = "localhost";
           MusicFolder = cfg.musicDir;
           AutoImportPlaylists = false;
+          EnableCoverAnimation = false;
           EnableExternalServices = false;
           EnableGravatar = false;
           EnableStarRating = false;
