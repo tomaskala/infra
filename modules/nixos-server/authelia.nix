@@ -77,6 +77,9 @@ in
               domain = cfg.hostDomain;
               authelia_url = "https://${domain}";
               default_redirection_url = "https://${cfg.hostDomain}";
+              inactivity = "1h";
+              expiration = "1d";
+              remember_me = "3M";
             }
           ];
 
