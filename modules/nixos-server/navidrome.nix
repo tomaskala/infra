@@ -31,7 +31,7 @@ in
         openFirewall = false;
 
         settings = {
-          Address = "localhost";
+          Address = "unix:/run/navidrome/navidrome.sock";
           MusicFolder = cfg.musicDir;
           AutoImportPlaylists = false;
           EnableCoverAnimation = false;
@@ -40,7 +40,7 @@ in
           EnableStarRating = false;
           EnableTranscodingConfig = false;
           ScanSchedule = "@every 24h";
-          ReverseProxyWhitelist = lib.mkIf config.infra.authelia.enable "127.0.0.1/32";
+          ReverseProxyWhitelist = lib.mkIf config.infra.authelia.enable "@";
           EnableUserEditing = !config.infra.authelia.enable;
         };
       };
@@ -52,10 +52,12 @@ in
           useACMEHost = cfg.hostDomain;
           extraConfig = ''
             ${lib.optionalString config.infra.authelia.enable "import auth"}
-            reverse_proxy :${builtins.toString config.services.navidrome.settings.Port}
+            reverse_proxy unix//run/navidrome/navidrome.sock
           '';
         };
       };
     };
+
+    users.users.${config.services.caddy.user}.extraGroups = [ config.services.navidrome.group ];
   };
 }
