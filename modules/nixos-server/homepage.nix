@@ -23,6 +23,7 @@ in
         settings = {
           title = "Bob";
           headerStyle = "boxed";
+          target = "_self";
           base = cfg.hostDomain;
           hideVersion = true;
           disableUpdateCheck = true;
