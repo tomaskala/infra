@@ -22,13 +22,6 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
-
-    port = lib.mkOption {
-      type = lib.types.port;
-      description = "Jellyfin HTTP port is not configurable using Nix";
-      default = 8096;
-      readOnly = true;
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -50,7 +43,7 @@ in
         virtualHosts.${domain} = {
           useACMEHost = cfg.hostDomain;
           extraConfig = ''
-            reverse_proxy :${builtins.toString cfg.port}
+            reverse_proxy unix//run/jellyfin/jellyfin.sock
           '';
         };
       };
@@ -82,8 +75,19 @@ in
       ];
     };
 
-    systemd.services.jellyfin.environment.LIBVA_DRIVER_NAME = "iHD";
     environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+    systemd.services.jellyfin = {
+      serviceConfig.RuntimeDirectory = "jellyfin";
+
+      environment = {
+        LIBVA_DRIVER_NAME = "iHD";
+        JELLYFIN_kestrel__socket = "true";
+        JELLYFIN_kestrel__socketPath = "/run/jellyfin/jellyfin.sock";
+        JELLYFIN_kestrel__socketPermissions = "0660";
+      };
+    };
+
+    users.users.${config.services.caddy.user}.extraGroups = [ config.services.jellyfin.group ];
 
     hardware.graphics = {
       enable = true;
