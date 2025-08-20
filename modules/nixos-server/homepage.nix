@@ -72,7 +72,14 @@ in
         services = [
           {
             Media =
-              (lib.optional config.infra.kavita.enable {
+              (lib.optional config.infra.audiobookshelf.enable {
+                audiobookshelf = {
+                  icon = "audiobookshelf";
+                  href = "https://${config.infra.audiobookshelf.subdomain}.${cfg.hostDomain}";
+                  description = "Audiobook & ebook management";
+                };
+              })
+              ++ (lib.optional config.infra.kavita.enable {
                 Kavita = {
                   icon = "kavita";
                   href = "https://${config.infra.kavita.subdomain}.${cfg.hostDomain}";

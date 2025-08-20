@@ -13,6 +13,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
@@ -232,6 +233,12 @@ in
 
     infra = {
       tailscale.enable = true;
+
+      audiobookshelf = {
+        enable = true;
+        inherit hostDomain;
+        subdomain = "audiobookshelf";
+      };
 
       authelia = {
         enable = true;
