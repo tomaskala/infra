@@ -79,13 +79,6 @@ in
                   description = "Audiobook & ebook management";
                 };
               })
-              ++ (lib.optional config.infra.kavita.enable {
-                Kavita = {
-                  icon = "kavita";
-                  href = "https://${config.infra.kavita.subdomain}.${cfg.hostDomain}";
-                  description = "Ebook library";
-                };
-              })
               ++ (lib.optional config.infra.navidrome.enable {
                 Navidrome = {
                   icon = "navidrome";

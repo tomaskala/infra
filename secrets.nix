@@ -24,10 +24,6 @@ in
     bob
     gordon
   ];
-  "secrets/bob/kavita-token-key.age".publicKeys = [
-    bob
-    gordon
-  ];
   "secrets/bob/tandoor-secret-key.age".publicKeys = [
     bob
     gordon

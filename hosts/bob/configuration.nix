@@ -17,7 +17,6 @@ in
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
-    ../../modules/nixos-server/kavita.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/tailscale.nix
     ../../modules/nixos-server/tandoor.nix
@@ -66,12 +65,6 @@ in
       dns-challenge-env.file = ../../secrets/bob/dns-challenge-env.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
 
-      kavita-token-key = {
-        file = ../../secrets/bob/kavita-token-key.age;
-        mode = "0640";
-        owner = "root";
-        group = "kavita";
-      };
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
         mode = "0640";
@@ -255,12 +248,6 @@ in
         enable = true;
         inherit hostDomain;
         subdomain = "jellyfin";
-      };
-
-      kavita = {
-        enable = true;
-        inherit hostDomain;
-        subdomain = "kavita";
       };
 
       navidrome = {
