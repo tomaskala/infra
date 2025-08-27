@@ -33,6 +33,10 @@ in
               style = "row";
               columns = 3;
             };
+            Misc = {
+              style = "row";
+              columns = 2;
+            };
           };
         };
 
@@ -95,13 +99,21 @@ in
               });
           }
           {
-            Misc = lib.optional config.infra.tandoor.enable {
-              Tandoor = {
-                icon = "tandoor-recipes";
-                href = "https://${config.infra.tandoor.subdomain}.${cfg.hostDomain}";
-                description = "Recipe management";
-              };
-            };
+            Misc =
+              (lib.optional config.infra.readeck.enable {
+                Readeck = {
+                  icon = "readeck";
+                  href = "https://${config.infra.readeck.subdomain}.${cfg.hostDomain}";
+                  description = "Read later";
+                };
+              })
+              ++ (lib.optional config.infra.tandoor.enable {
+                Tandoor = {
+                  icon = "tandoor-recipes";
+                  href = "https://${config.infra.tandoor.subdomain}.${cfg.hostDomain}";
+                  description = "Recipe management";
+                };
+              });
           }
         ];
       };

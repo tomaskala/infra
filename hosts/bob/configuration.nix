@@ -18,6 +18,7 @@ in
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/navidrome.nix
+    ../../modules/nixos-server/readeck.nix
     ../../modules/nixos-server/tailscale.nix
     ../../modules/nixos-server/tandoor.nix
   ];
@@ -64,6 +65,7 @@ in
       tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
       dns-challenge-env.file = ../../secrets/bob/dns-challenge-env.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
+      readeck-env.file = ../../secrets/bob/readeck-env.age;
 
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
@@ -257,6 +259,12 @@ in
         inherit hostDomain;
         subdomain = "navidrome";
         musicDir = "${mediaDir}/music";
+      };
+
+      readeck = {
+        enable = true;
+        inherit hostDomain;
+        subdomain = "readeck";
       };
 
       tandoor = {

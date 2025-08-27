@@ -28,6 +28,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/readeck-env.age".publicKeys = [
+    bob
+    gordon
+  ];
 
   "secrets/bob/authelia/postgres-password.age".publicKeys = [
     bob
