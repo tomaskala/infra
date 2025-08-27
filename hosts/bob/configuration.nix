@@ -219,7 +219,9 @@ in
           X11Forwarding = false;
           GatewayPorts = "no";
           PermitRootLogin = "no";
+          KbdInteractiveAuthentication = false;
           PasswordAuthentication = false;
+          UsePAM = false;
         };
       };
     };
