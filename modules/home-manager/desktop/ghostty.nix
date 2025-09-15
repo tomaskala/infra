@@ -5,7 +5,7 @@
     enable = true;
 
     settings = {
-      theme = "dark:catppuccin-macchiato,light:catppuccin-latte";
+      theme = "dark:Catppuccin Macchiato,light:Catppuccin Latte";
       cursor-invert-fg-bg = true;
 
       command = lib.getExe pkgs.fish;
