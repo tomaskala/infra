@@ -1,8 +1,6 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [ ./work.nix ];
-
   config = {
     nix.settings = {
       # Disabled because of https://github.com/NixOS/nix/issues/7273.

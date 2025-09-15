@@ -64,6 +64,4 @@ in
 
   "secrets/users/cooper/tomas.age".publicKeys = [ cooper ];
   "secrets/users/cooper/root.age".publicKeys = [ cooper ];
-
-  "secrets/other/gordon/work-ssh-config.age".publicKeys = [ gordon ];
 }
