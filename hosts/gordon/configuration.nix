@@ -82,6 +82,7 @@
         "iina"
         "netnewswire"
         "obsidian"
+        "pearcleaner"
         "signal"
         "telegram"
         "wireshark-app"
