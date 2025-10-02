@@ -20,14 +20,13 @@
         fish_add_path ~/.local/bin
       '';
 
-    functions = {
-      diff = "${pkgs.diffutils}/bin/diff -v diff --color=auto $argv";
-      ghostify = "infocmp -x | ssh $argv -- tic -x -";
-      grep = "${pkgs.gnugrep}/bin/grep --color=auto $argv";
-      ll = "ls -l $argv";
-      lla = "ls -la $argv";
-      ls = "${pkgs.coreutils}/bin/ls -FNh --color=auto --group-directories-first $argv";
-      vim = "nvim $argv";
+    shellAliases = {
+      diff = "${pkgs.diffutils}/bin/diff --color=auto";
+      grep = "${pkgs.gnugrep}/bin/grep --color=auto";
+      ll = "ls -l";
+      lla = "ls -la";
+      ls = "${pkgs.coreutils}/bin/ls -FNh --color=auto --group-directories-first";
+      vim = "nvim";
       lg = "lazygit";
     };
   };
