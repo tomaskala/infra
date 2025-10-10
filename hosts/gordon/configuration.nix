@@ -26,9 +26,6 @@
     environment = {
       shells = [ pkgs.zsh ];
 
-      # Hack: https://github.com/ghostty-org/ghostty/discussions/2832
-      variables.XDG_DATA_DIRS = [ "$GHOSTTY_SHELL_INTEGRATION_XDG_DIR" ];
-
       systemPackages = with pkgs; [
         # System utilities
         coreutils

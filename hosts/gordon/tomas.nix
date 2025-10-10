@@ -26,7 +26,6 @@
 
       file."${config.home.homeDirectory}/.config/ghostty/config".text = ''
         theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
-        cursor-invert-fg-bg = true
 
         command = ${lib.getExe pkgs.fish}
         macos-icon = retro
