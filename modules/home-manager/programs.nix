@@ -1,9 +1,13 @@
 { lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    jless
-  ];
+  home = {
+    shell.enableShellIntegration = true;
+
+    packages = with pkgs; [
+      jless
+    ];
+  };
 
   programs = {
     bat = {

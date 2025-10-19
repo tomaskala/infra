@@ -101,6 +101,14 @@
             {
               services.thermald.enable = true;
             }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tomas = import ./hosts/bob/tomas.nix;
+              };
+            }
           ];
         };
 
