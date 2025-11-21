@@ -66,6 +66,7 @@ in
       dns-challenge-env.file = ../../secrets/bob/dns-challenge-env.age;
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
       readeck-env.file = ../../secrets/bob/readeck-env.age;
+      healthchecks-env.file = ../../secrets/bob/healthchecks-env.age;
 
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
@@ -208,6 +209,35 @@ in
         dnsProvider = "cloudflare";
         environmentFile = config.age.secrets.dns-challenge-env.path;
         extraDomainNames = [ "*.${hostDomain}" ];
+      };
+    };
+
+    systemd = {
+      services.keepalive.serviceConfig = {
+        EnvironmentFile = config.age.secrets.healthchecks-env.path;
+        Type = "oneshot";
+
+        ExecStart =
+          let
+            script = pkgs.writeShellApplication {
+              name = "keepalive";
+              runtimeInputs = [ pkgs.curl ];
+
+              text = ''
+                curl --fail --silent --show-error --max-time 10 --retry 5 --output /dev/null "$HC_URL"
+              '';
+            };
+          in
+          lib.getExe script;
+      };
+
+      timers.keepalive = {
+        wantedBy = [ "timers.target" ];
+
+        timerConfig = {
+          OnBootSec = "10m";
+          OnUnitActiveSec = "10m";
+        };
       };
     };
 
