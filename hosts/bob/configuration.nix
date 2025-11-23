@@ -17,6 +17,7 @@ in
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
+    ../../modules/nixos-server/monitoring.nix
     ../../modules/nixos-server/navidrome.nix
     ../../modules/nixos-server/readeck.nix
     ../../modules/nixos-server/tailscale.nix
@@ -117,6 +118,19 @@ in
         mode = "0640";
         owner = "root";
         group = "authelia-main";
+      };
+
+      grafana-admin-password = {
+        file = ../../secrets/bob/grafana/admin-password.age;
+        mode = "0640";
+        owner = "root";
+        group = "grafana";
+      };
+      grafana-authelia-password = {
+        file = ../../secrets/bob/grafana/authelia-password.age;
+        mode = "0640";
+        owner = "root";
+        group = "grafana";
       };
     };
 
@@ -256,6 +270,26 @@ in
           UsePAM = false;
         };
       };
+
+      prometheus = {
+        exporters.node = {
+          enable = true;
+          listenAddress = "127.0.0.1";
+        };
+
+        scrapeConfigs = [
+          {
+            job_name = "bob";
+            static_configs = [
+              {
+                targets = [
+                  "127.0.0.1:${builtins.toString config.services.prometheus.exporters.node.port}"
+                ];
+              }
+            ];
+          }
+        ];
+      };
     };
 
     infra = {
@@ -282,6 +316,12 @@ in
         enable = true;
         inherit hostDomain;
         subdomain = "jellyfin";
+      };
+
+      monitoring = {
+        enable = true;
+        inherit hostDomain;
+        subdomain = "monitoring";
       };
 
       navidrome = {

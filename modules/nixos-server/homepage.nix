@@ -35,7 +35,7 @@ in
             };
             Misc = {
               style = "row";
-              columns = 2;
+              columns = 3;
             };
           };
         };
@@ -100,7 +100,14 @@ in
           }
           {
             Misc =
-              (lib.optional config.infra.readeck.enable {
+              (lib.optional config.infra.monitoring.enable {
+                Grafana = {
+                  icon = "grafana";
+                  href = "https://${config.infra.monitoring.subdomain}.${cfg.hostDomain}";
+                  description = "Monitoring";
+                };
+              })
+              ++ (lib.optional config.infra.readeck.enable {
                 Readeck = {
                   icon = "readeck";
                   href = "https://${config.infra.readeck.subdomain}.${cfg.hostDomain}";
