@@ -280,7 +280,7 @@ in
 
         scrapeConfigs = [
           {
-            job_name = "bob";
+            job_name = "node";
             static_configs = [
               {
                 targets = [
