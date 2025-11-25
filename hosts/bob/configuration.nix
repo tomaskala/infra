@@ -132,6 +132,12 @@ in
         owner = "root";
         group = "grafana";
       };
+      prometheus-snmp-env = {
+        file = ../../secrets/bob/prometheus-snmp-env.age;
+        mode = "0640";
+        owner = "root";
+        group = "snmp-exporter";
+      };
     };
 
     users = {
@@ -272,10 +278,31 @@ in
       };
 
       prometheus = {
-        exporters.node = {
-          enable = true;
-          listenAddress = "127.0.0.1";
-          enabledCollectors = [ "hwmon" ];
+        exporters = {
+          node = {
+            enable = true;
+            listenAddress = "127.0.0.1";
+            enabledCollectors = [ "hwmon" ];
+          };
+
+          snmp = {
+            enable = true;
+            listenAddress = "127.0.0.1";
+
+            configuration = {
+              auths.synology = {
+                version = 3;
+                username = "\${SNMP_LELAND_USERNAME}";
+                security_level = "authPriv";
+                password = "\${SNMP_LELAND_PASSWORD}";
+                auth_protocol = "SHA";
+                priv_protocol = "AES";
+                priv_password = "\${SNMP_LELAND_PRIV_PASSWORD}";
+              };
+            };
+
+            environmentFile = config.age.secrets.prometheus-snmp-env.path;
+          };
         };
 
         scrapeConfigs = [
@@ -286,6 +313,44 @@ in
                 targets = [
                   "127.0.0.1:${builtins.toString config.services.prometheus.exporters.node.port}"
                 ];
+              }
+            ];
+          }
+          {
+            job_name = "snmp";
+            static_configs = [
+              {
+                targets = [ "10.0.0.10" ];
+              }
+            ];
+            metrics_path = "/snmp";
+            params = {
+              auth = [ "synology" ];
+              module = [
+                "if_mib"
+                "synology"
+              ];
+            };
+            relabel_configs = [
+              {
+                source_labels = [ "__address__" ];
+                target_label = "__param_target";
+              }
+              {
+                source_labels = [ "__param_target" ];
+                target_label = "instance";
+              }
+              {
+                target_label = "__address__";
+                replacement = "127.0.0.1:${builtins.toString config.services.prometheus.exporters.snmp.port}";
+              }
+            ];
+          }
+          {
+            job_name = "snmp-exporter";
+            static_configs = [
+              {
+                targets = [ "127.0.0.1:${builtins.toString config.services.prometheus.exporters.snmp.port}" ];
               }
             ];
           }

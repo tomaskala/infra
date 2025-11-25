@@ -75,6 +75,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/prometheus-snmp-env.age".publicKeys = [
+    bob
+    gordon
+  ];
 
   "secrets/users/cooper/tomas.age".publicKeys = [ cooper ];
   "secrets/users/cooper/root.age".publicKeys = [ cooper ];
