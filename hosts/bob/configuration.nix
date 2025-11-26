@@ -288,19 +288,7 @@ in
           snmp = {
             enable = true;
             listenAddress = "127.0.0.1";
-
-            configuration = {
-              auths.synology = {
-                version = 3;
-                username = "\${SNMP_LELAND_USERNAME}";
-                security_level = "authPriv";
-                password = "\${SNMP_LELAND_PASSWORD}";
-                auth_protocol = "SHA";
-                priv_protocol = "AES";
-                priv_password = "\${SNMP_LELAND_PRIV_PASSWORD}";
-              };
-            };
-
+            configurationPath = ./snmp.yml;
             environmentFile = config.age.secrets.prometheus-snmp-env.path;
           };
         };
@@ -326,10 +314,7 @@ in
             metrics_path = "/snmp";
             params = {
               auth = [ "synology" ];
-              module = [
-                "if_mib"
-                "synology"
-              ];
+              module = [ "synology" ];
             };
             relabel_configs = [
               {
@@ -343,14 +328,6 @@ in
               {
                 target_label = "__address__";
                 replacement = "127.0.0.1:${builtins.toString config.services.prometheus.exporters.snmp.port}";
-              }
-            ];
-          }
-          {
-            job_name = "snmp-exporter";
-            static_configs = [
-              {
-                targets = [ "127.0.0.1:${builtins.toString config.services.prometheus.exporters.snmp.port}" ];
               }
             ];
           }
