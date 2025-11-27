@@ -39,7 +39,6 @@
         curl
         ldns
         rsync
-        wireguard-tools
 
         # Fonts
         nerd-fonts.fira-code
