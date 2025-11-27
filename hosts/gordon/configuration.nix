@@ -37,14 +37,25 @@
         rsync
         tree
 
-        # Development
+        # General development
         gnumake
+        shellcheck
+
+        # Go development
         go
         gotools
+
+        # Lua development
         lua
+
+        # Python development
         python3
-        shellcheck
         uv
+
+        # Rust development
+        cargo
+        clippy
+        rustc
 
         # Media
         hugo
