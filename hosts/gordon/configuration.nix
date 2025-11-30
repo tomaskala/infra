@@ -1,10 +1,8 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   config = {
     nix.settings = {
-      # Disabled because of https://github.com/NixOS/nix/issues/7273.
-      auto-optimise-store = lib.mkForce false;
       trusted-users = [
         "root"
         "tomas"

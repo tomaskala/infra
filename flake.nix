@@ -136,6 +136,19 @@
             agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
+              nixpkgs.overlays = [
+                (_: prev: {
+                  inherit (prev.lixPackageSets.latest)
+                    nixpkgs-review
+                    nix-eval-jobs
+                    nix-fast-build
+                    colmena
+                    ;
+                })
+              ];
+
+              nix.package = nixpkgs.legacyPackages.aarch64-darwin.lixPackageSets.latest.lix;
+
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
