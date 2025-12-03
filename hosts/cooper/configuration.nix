@@ -92,7 +92,6 @@
 
     programs = {
       firefox.enable = true;
-      ssh.startAgent = true;
       thunderbird.enable = true;
       zsh.enable = true;
 
