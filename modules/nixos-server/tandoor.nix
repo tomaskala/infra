@@ -24,14 +24,11 @@ in
       tandoor-recipes = {
         enable = true;
         address = "localhost";
+        database.createLocally = true;
 
         extraConfig = {
           SECRET_KEY_FILE = config.age.secrets.tandoor-secret-key.path;
           ALLOWED_HOSTS = domain;
-          DB_ENGINE = "django.db.backends.postgresql";
-          POSTGRES_HOST = "/run/postgresql";
-          POSTGRES_DB = "tandoor_recipes";
-          POSTGRES_USER = "tandoor_recipes";
           REMOTE_USER_AUTH = 1;
         };
       };
@@ -47,23 +44,6 @@ in
           '';
         };
       };
-
-      postgresql = {
-        enable = true;
-
-        ensureDatabases = [ "tandoor_recipes" ];
-        ensureUsers = [
-          {
-            name = "tandoor_recipes";
-            ensureDBOwnership = true;
-          }
-        ];
-      };
-    };
-
-    systemd.services.tandoor-recipes = {
-      after = [ "postgresql.service" ];
-      requires = [ "postgresql.service" ];
     };
   };
 }

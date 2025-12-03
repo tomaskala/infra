@@ -113,9 +113,7 @@ in
       postgresql = {
         enable = true;
 
-        ensureDatabases = [
-          "authelia-main"
-        ];
+        ensureDatabases = [ "authelia-main" ];
         ensureUsers = [
           {
             name = "authelia-main";
@@ -126,8 +124,8 @@ in
     };
 
     systemd.services.authelia-main = {
-      after = [ "postgresql.service" ];
-      requires = [ "postgresql.service" ];
+      after = [ "postgresql.target" ];
+      requires = [ "postgresql.target" ];
     };
   };
 }

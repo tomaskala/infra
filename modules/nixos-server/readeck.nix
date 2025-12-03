@@ -68,8 +68,8 @@ in
     };
 
     systemd.services.readeck = {
-      after = [ "postgresql.service" ];
-      requires = [ "postgresql.service" ];
+      after = [ "postgresql.target" ];
+      requires = [ "postgresql.target" ];
 
       serviceConfig = {
         User = "readeck";

@@ -1,9 +1,7 @@
 {
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    serverAliveInterval = 60;
-    controlPath = "~/.ssh/master-%n:%p";
+    enableDefaultConfig = false;
 
     extraConfig = # sshconfig
       ''
@@ -12,6 +10,12 @@
       '';
 
     matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";
+        serverAliveInterval = 60;
+        controlPath = "~/.ssh/master-%n:%p";
+      };
+
       "github.com" = {
         user = "tomaskala";
         identitiesOnly = true;

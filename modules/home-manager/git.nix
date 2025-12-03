@@ -1,29 +1,31 @@
 {
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+
+    options = {
+      hunk-header-style = "file syntax";
+      line-numbers = true;
+      syntax-theme = "ansi";
+    };
+  };
+
   programs.git = {
     enable = true;
     lfs.enable = true;
 
-    delta = {
-      enable = true;
-      options = {
-        hunk-header-style = "file syntax";
-        line-numbers = true;
-        syntax-theme = "ansi";
+    settings = {
+      alias = {
+        a = "add";
+        c = "commit";
+        cp = "cherry-pick";
+        d = "diff";
+        l = "log";
+        s = "status";
+        sh = "show";
+        sw = "switch";
       };
-    };
 
-    aliases = {
-      a = "add";
-      c = "commit";
-      cp = "cherry-pick";
-      d = "diff";
-      l = "log";
-      s = "status";
-      sh = "show";
-      sw = "switch";
-    };
-
-    extraConfig = {
       user = {
         name = "Tomas Kala";
         email = "me@tomaskala.com";
