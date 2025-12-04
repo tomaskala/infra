@@ -371,7 +371,11 @@ in
         enable = true;
         inherit hostDomain;
         subdomain = "navidrome";
-        musicDir = "${mediaDir}/music";
+
+        musicDir = {
+          source = "${mediaDir}/music/";
+          destination = "/media/music/";
+        };
       };
 
       readeck = {

@@ -3,6 +3,9 @@
 let
   cfg = config.infra.navidrome;
   domain = "${cfg.subdomain}.${cfg.hostDomain}";
+
+  user = "musicsync";
+  group = "musicsync";
 in
 {
   options.infra.navidrome = {
@@ -19,8 +22,19 @@ in
     };
 
     musicDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Where Navidrome stores the music";
+      type = lib.types.submodule {
+        options = {
+          source = lib.mkOption {
+            type = lib.types.path;
+            description = "Directory where music is stored";
+          };
+
+          destination = lib.mkOption {
+            type = lib.types.path;
+            description = "Directory where music is periodically rsynced";
+          };
+        };
+      };
     };
   };
 
@@ -32,14 +46,15 @@ in
 
         settings = {
           Address = "unix:/run/navidrome/navidrome.sock";
-          MusicFolder = cfg.musicDir;
+          MusicFolder = cfg.musicDir.destination;
           AutoImportPlaylists = false;
           EnableCoverAnimation = false;
           EnableExternalServices = false;
           EnableGravatar = false;
           EnableStarRating = false;
           EnableTranscodingConfig = false;
-          ScanSchedule = "@every 24h";
+          # Scan every day at 04:00 to run after sync.
+          ScanSchedule = "0 4 * * *";
           ReverseProxyWhitelist = lib.mkIf config.infra.authelia.enable "@";
           EnableUserEditing = !config.infra.authelia.enable;
         };
@@ -56,8 +71,46 @@ in
           '';
         };
       };
+
+      rsync = {
+        enable = true;
+
+        jobs.music = {
+          inherit user group;
+          sources = [ cfg.musicDir.source ];
+          inherit (cfg.musicDir) destination;
+
+          settings = {
+            archive = true;
+            chmod = "D0755,F0644";
+            chown = "${user}:${group}";
+            human-readable = true;
+            verbose = true;
+          };
+
+          timerConfig = {
+            # Sync every day at 02:00 to run before scan.
+            OnCalendar = "*-*-* 02:00:00";
+            Persistent = true;
+          };
+        };
+      };
     };
 
-    users.users.${config.services.caddy.user}.extraGroups = [ config.services.navidrome.group ];
+    users = {
+      users = {
+        ${user} = {
+          inherit group;
+          isSystemUser = true;
+        };
+
+        ${config.services.caddy.user}.extraGroups = [ config.services.navidrome.group ];
+      };
+      groups.${group} = { };
+    };
+
+    systemd.tmpfiles.settings.music.${cfg.musicDir.destination}.d = {
+      inherit user group;
+    };
   };
 }
