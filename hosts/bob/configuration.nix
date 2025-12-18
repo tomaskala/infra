@@ -15,6 +15,7 @@ in
     ./hardware-configuration.nix
     ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
+    ../../modules/nixos-server/forgejo.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/monitoring.nix
@@ -348,6 +349,12 @@ in
         enable = true;
         inherit hostDomain;
         subdomain = "auth";
+      };
+
+      forgejo = {
+        enable = true;
+        inherit hostDomain;
+        subdomain = "forgejo";
       };
 
       homepage = {

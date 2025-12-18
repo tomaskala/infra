@@ -28,16 +28,26 @@ in
           hideVersion = true;
           disableUpdateCheck = true;
 
-          layout = {
-            Media = {
-              style = "row";
-              columns = 3;
-            };
-            Misc = {
-              style = "row";
-              columns = 3;
-            };
-          };
+          layout = [
+            {
+              Media = {
+                style = "row";
+                columns = 3;
+              };
+            }
+            {
+              Development = {
+                style = "column";
+                rows = 2;
+              };
+            }
+            {
+              Documents = {
+                style = "column";
+                rows = 2;
+              };
+            }
+          ];
         };
 
         widgets = [
@@ -99,7 +109,7 @@ in
               });
           }
           {
-            Misc =
+            Development =
               (lib.optional config.infra.monitoring.enable {
                 Grafana = {
                   icon = "grafana";
@@ -107,7 +117,17 @@ in
                   description = "Monitoring";
                 };
               })
-              ++ (lib.optional config.infra.readeck.enable {
+              ++ (lib.optional config.infra.forgejo.enable {
+                Forgejo = {
+                  icon = "forgejo";
+                  href = "https://${config.infra.forgejo.subdomain}.${cfg.hostDomain}";
+                  description = "Code hosting";
+                };
+              });
+          }
+          {
+            Documents =
+              (lib.optional config.infra.readeck.enable {
                 Readeck = {
                   icon = "readeck";
                   href = "https://${config.infra.readeck.subdomain}.${cfg.hostDomain}";
