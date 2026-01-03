@@ -1,5 +1,6 @@
 {
   imports = [
+    ../../modules/home-manager/beets.nix
     ../../modules/home-manager/programs.nix
   ];
 
