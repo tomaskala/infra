@@ -157,6 +157,9 @@ in
           ];
         };
       };
+
+      # The snmp-exporter service uses DynamicUser=true.
+      groups.snmp-exporter = { };
     };
 
     time.timeZone = "Europe/Prague";
