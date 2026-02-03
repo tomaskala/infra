@@ -8,7 +8,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     catppuccin = {
-      url = "github:catppuccin/nix/main";
+      url = "github:catppuccin/nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
