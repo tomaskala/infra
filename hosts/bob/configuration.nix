@@ -133,12 +133,7 @@ in
         owner = "root";
         group = "grafana";
       };
-      prometheus-snmp-env = {
-        file = ../../secrets/bob/prometheus-snmp-env.age;
-        mode = "0640";
-        owner = "root";
-        group = "snmp-exporter";
-      };
+      prometheus-snmp-env.file = ../../secrets/bob/prometheus-snmp-env.age;
     };
 
     users = {
