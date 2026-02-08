@@ -38,7 +38,13 @@
 
       lanzaboote = {
         enable = true;
-        pkiBundle = "/etc/secureboot";
+        pkiBundle = "/var/lib/sbctl";
+        autoGenerateKeys.enable = true;
+
+        autoEnrollKeys = {
+          enable = true;
+          autoReboot = true;
+        };
       };
     };
 
