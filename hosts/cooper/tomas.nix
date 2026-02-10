@@ -11,8 +11,8 @@
     ../../modules/home-manager/programs.nix
     ../../modules/home-manager/ssh.nix
     ../../modules/home-manager/starship.nix
-    ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/yt-dlp.nix
+    ../../modules/home-manager/zellij.nix
   ];
 
   config = {
@@ -26,8 +26,8 @@
 
     catppuccin = {
       enable = true;
-      accent = "mauve";
       flavor = "macchiato";
+      accent = "mauve";
     };
 
     xdg.desktopEntries.openmw = {
