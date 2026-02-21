@@ -50,11 +50,6 @@
         python3
         uv
 
-        # Rust development
-        cargo
-        clippy
-        rustc
-
         # Media
         hugo
 

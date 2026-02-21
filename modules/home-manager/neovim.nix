@@ -102,59 +102,6 @@
           },
         }
       '';
-
-    "nvim/lsp/rust_analyzer.lua".text = # lua
-      ''
-        return {
-          cmd = { "rust-analyzer" },
-          filetypes = { "rust" },
-          root_markers = {
-            "Cargo.toml",
-            "Cargo.lock",
-            "build.rs",
-            ".git",
-          },
-          settings = {
-            ["rust-analyzer"] = {
-              check = {
-                command = "clippy",
-                features = "all",
-                allTargets = true,
-              },
-              diagnostics = {
-                styleLints = { enable = true }
-              },
-              procMacro = {
-                enable = true,
-                ignored = {
-                  ["async-trait"] = { "async_trait" },
-                  ["napi-derive"] = { "napi" },
-                  ["async-recursion"] = { "async_recursion" },
-                },
-              },
-              lens = {
-                enable = true,
-                debug = { enable = true },
-                implementations = { enable = true },
-                run = { enable = true },
-                updateTest = { enable = true },
-                references = {
-                  adt = { enable = true },
-                  enumVariant = { enable = true },
-                  method = { enable = true },
-                  trait = { enable = true },
-                },
-              },
-            },
-          },
-          before_init = function(init_params, config)
-            -- See https://github.com/rust-lang/rust-analyzer/blob/eb5da56d839ae0a9e9f50774fa3eb78eb0964550/docs/dev/lsp-extensions.md?plain=1#L26
-            if config.settings and config.settings["rust-analyzer"] then
-              init_params.initializationOptions = config.settings["rust-analyzer"]
-            end
-          end,
-        }
-      '';
   };
 
   programs.neovim = {
@@ -164,14 +111,12 @@
     withRuby = false;
 
     extraPackages = with pkgs; [
-      clippy
       gopls
       lua-language-server
       nil
       nixfmt
       pyright
       ruff
-      rust-analyzer
     ];
 
     plugins = with pkgs.vimPlugins; [
