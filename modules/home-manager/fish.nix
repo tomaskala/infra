@@ -41,7 +41,6 @@
       lla = "ls -la";
       ls = "${pkgs.coreutils}/bin/ls -FNh --color=auto --group-directories-first";
       vim = "nvim";
-      lg = "lazygit";
     };
   };
 }

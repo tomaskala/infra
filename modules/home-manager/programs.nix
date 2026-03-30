@@ -1,13 +1,5 @@
-{ pkgs, ... }:
-
 {
-  home = {
-    shell.enableShellIntegration = true;
-
-    packages = with pkgs; [
-      jless
-    ];
-  };
+  home.shell.enableShellIntegration = true;
 
   programs = {
     bat = {
@@ -16,14 +8,6 @@
       config = {
         theme-light = "Catppuccin Latte";
         theme-dark = "Catppuccin Macchiato";
-      };
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        gui.nerdFontsVersion = "3";
-        git.parseEmoji = true;
       };
     };
 
