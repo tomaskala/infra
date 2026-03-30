@@ -151,19 +151,15 @@
       }
       {
         plugin = nvim-treesitter.withAllGrammars;
-        type = "lua";
       }
       {
         plugin = nvim-web-devicons;
-        type = "lua";
       }
       {
         plugin = telescope-fzf-native-nvim;
-        type = "lua";
       }
       {
         plugin = telescope-file-browser-nvim;
-        type = "lua";
       }
       {
         plugin = telescope-nvim;
