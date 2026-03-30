@@ -13,7 +13,7 @@ jobs:
       - name: 'Checkout the repository'
         uses: 'actions/checkout@v6'
       - name: 'Install Nix'
-        uses: 'DeterminateSystems/nix-installer-action@v21'
+        uses: 'DeterminateSystems/nix-installer-action@v22'
       - name: 'Give GitHub Actions access to infra-secrets'
         uses: 'webfactory/ssh-agent@v0.10.0'
         with:
