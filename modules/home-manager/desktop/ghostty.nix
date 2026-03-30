@@ -7,7 +7,7 @@
     settings = {
       theme = "dark:Catppuccin Macchiato,light:Catppuccin Latte";
 
-      command = lib.getExe pkgs.fish;
+      command = lib.getExe pkgs.unstable.fish;
 
       # The size gets clamped to the screen size, so this maximizes new windows.
       window-width = 10000;

@@ -17,7 +17,11 @@
     age.identityPaths = [ "/Users/tomas/.ssh/id_ed25519_agenix" ];
 
     programs = {
-      fish.enable = true;
+      fish = {
+        enable = true;
+        package = pkgs.unstable.fish;
+      };
+
       zsh.enable = true;
     };
 
