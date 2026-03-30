@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home = {
@@ -12,7 +12,11 @@
   programs = {
     bat = {
       enable = true;
-      config.theme = lib.mkDefault "ansi";
+
+      config = {
+        theme-light = "Catppuccin Latte";
+        theme-dark = "Catppuccin Macchiato";
+      };
     };
 
     lazygit = {
