@@ -194,9 +194,18 @@
               end, opts)
 
               local telescope = require("telescope")
-              telescope.load_extension("fzf")
+              telescope.setup({
+                extensions = {
+                  file_browser = {
+                    grouped = true,
+                    hijack_netrw = true,
+                  },
+                },
+              })
 
+              telescope.load_extension("fzf")
               telescope.load_extension("file_browser")
+
               vim.keymap.set("n", "<C-h>", function()
                 telescope.extensions.file_browser.file_browser({
                   path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
