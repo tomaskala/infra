@@ -101,6 +101,20 @@
             {
               services.thermald.enable = true;
             }
+            {
+              nixpkgs.overlays = [
+                (_: prev: {
+                  inherit (prev.lixPackageSets.latest)
+                    nixpkgs-review
+                    nix-eval-jobs
+                    nix-fast-build
+                    colmena
+                    ;
+                })
+              ];
+
+              nix.package = nixpkgs.legacyPackages.x86_64-linux.lixPackageSets.latest.lix;
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
