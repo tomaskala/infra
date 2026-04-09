@@ -57,31 +57,34 @@
         "aarch64-darwin"
       ];
 
-      commonConfig = {
-        nixpkgs.overlays = [
-          (_: prev: {
-            unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-          })
-        ];
+      commonConfig =
+        { pkgs, ... }:
+        {
+          nixpkgs.overlays = [
+            (_: prev: {
+              unstable = nixpkgs-unstable.legacyPackages.${prev.system};
+              inherit (prev.lixPackageSets.latest)
+                nixpkgs-review
+                nix-eval-jobs
+                nix-fast-build
+                colmena
+                ;
+            })
+          ];
 
-        nix = {
-          # Pin the nixpkgs flake to the same exact version used to build
-          # the system. This has two benefits:
-          # 1. No version mismatch between system packages and those
-          #    brought in by commands like 'nix shell nixpkgs#<package>'.
-          # 2. More efficient evaluation, because many dependencies will
-          # already be present in the Nix store.
-          registry.nixpkgs.flake = nixpkgs;
+          nix = {
+            registry.nixpkgs.flake = nixpkgs;
+            package = pkgs.lixPackageSets.latest.lix;
 
-          settings = {
-            auto-optimise-store = true;
-            experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
+            settings = {
+              auto-optimise-store = true;
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
           };
         };
-      };
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
@@ -100,20 +103,6 @@
             nixos-hardware.nixosModules.common-pc-ssd
             {
               services.thermald.enable = true;
-            }
-            {
-              nixpkgs.overlays = [
-                (_: prev: {
-                  inherit (prev.lixPackageSets.latest)
-                    nixpkgs-review
-                    nix-eval-jobs
-                    nix-fast-build
-                    colmena
-                    ;
-                })
-              ];
-
-              nix.package = nixpkgs.legacyPackages.x86_64-linux.lixPackageSets.latest.lix;
             }
             home-manager.nixosModules.home-manager
             {
@@ -150,19 +139,6 @@
             agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
-              nixpkgs.overlays = [
-                (_: prev: {
-                  inherit (prev.lixPackageSets.latest)
-                    nixpkgs-review
-                    nix-eval-jobs
-                    nix-fast-build
-                    colmena
-                    ;
-                })
-              ];
-
-              nix.package = nixpkgs.legacyPackages.aarch64-darwin.lixPackageSets.latest.lix;
-
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
@@ -213,3 +189,4 @@
       });
     };
 }
+

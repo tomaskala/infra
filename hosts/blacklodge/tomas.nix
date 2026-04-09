@@ -13,8 +13,6 @@
   ];
 
   config = {
-    nix.package = pkgs.nix;
-
     programs.zsh.enable = true;
 
     home = {
