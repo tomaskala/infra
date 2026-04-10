@@ -3,7 +3,6 @@
 {
   programs.fish = {
     enable = true;
-    package = pkgs.unstable.fish;
 
     functions = {
       fish_prompt.body = ''

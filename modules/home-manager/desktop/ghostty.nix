@@ -6,7 +6,7 @@
 
     settings = {
       theme = "dark:Catppuccin Macchiato,light:Catppuccin Latte";
-      command = lib.getExe pkgs.unstable.fish;
+      command = lib.getExe pkgs.fish;
       maximize = true;
       keybind = "global:cmd+backquote=toggle_quick_terminal";
     };

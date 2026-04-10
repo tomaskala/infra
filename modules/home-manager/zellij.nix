@@ -7,7 +7,7 @@
     settings = {
       theme = "catppuccin-macchiato";
       show_startup_tips = false;
-      default_shell = lib.getExe pkgs.unstable.fish;
+      default_shell = lib.getExe pkgs.fish;
     };
 
     layouts = {
