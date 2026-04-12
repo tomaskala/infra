@@ -216,14 +216,21 @@ in
       nftables.enable = true;
     };
 
-    security.acme = {
-      acceptTerms = true;
-      defaults.email = "public+acme@tomaskala.com";
+    security = {
+      sudo = {
+        enable = true;
+        execWheelOnly = true;
+      };
 
-      certs.${hostDomain} = {
-        dnsProvider = "cloudflare";
-        environmentFile = config.age.secrets.dns-challenge-env.path;
-        extraDomainNames = [ "*.${hostDomain}" ];
+      acme = {
+        acceptTerms = true;
+        defaults.email = "public+acme@tomaskala.com";
+
+        certs.${hostDomain} = {
+          dnsProvider = "cloudflare";
+          environmentFile = config.age.secrets.dns-challenge-env.path;
+          extraDomainNames = [ "*.${hostDomain}" ];
+        };
       };
     };
 
