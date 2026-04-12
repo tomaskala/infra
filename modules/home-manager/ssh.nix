@@ -13,7 +13,7 @@
       "*" = {
         addKeysToAgent = "yes";
         serverAliveInterval = 60;
-        controlPath = "~/.ssh/master-%n:%p";
+        controlPath = "~/.ssh/master-%h-%p-%r";
       };
 
       "github.com" = {
