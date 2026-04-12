@@ -85,7 +85,6 @@
             "wireshark"
           ];
           hashedPasswordFile = config.age.secrets.users-tomas-password.path;
-          shell = pkgs.zsh;
         };
       };
     };
@@ -99,7 +98,6 @@
     programs = {
       firefox.enable = true;
       thunderbird.enable = true;
-      zsh.enable = true;
 
       wireshark = {
         enable = true;
