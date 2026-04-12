@@ -68,7 +68,7 @@ in
           theme = "auto";
           log.level = "info";
           password_policy.zxcvbn.enabled = true;
-          server.address = "tcp://:${builtins.toString cfg.port}/";
+          server.address = "tcp://127.0.0.1:${builtins.toString cfg.port}/";
 
           notifier.filesystem.filename = "/var/lib/authelia-main/notifications.log";
 
