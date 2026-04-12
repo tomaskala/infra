@@ -43,7 +43,6 @@ in
       };
     };
 
-    environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
     systemd.services.jellyfin = {
       serviceConfig.RuntimeDirectory = "jellyfin";
 
