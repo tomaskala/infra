@@ -239,6 +239,22 @@ in
         EnvironmentFile = config.age.secrets.healthchecks-env.path;
         Type = "oneshot";
 
+        DynamicUser = true;
+        NoNewPrivileges = true;
+        ProtectSystem = "strict";
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectClock = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        RestrictNamespaces = true;
+        RestrictSUIDGUID = true;
+        UMask= "0077";
+        LockPersonality = true;
+        RestrictRealtime = true;
+        MemoryDenyWriteExecute = true;
+
         ExecStart =
           let
             script = pkgs.writeShellApplication {
