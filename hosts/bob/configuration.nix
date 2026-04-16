@@ -68,6 +68,7 @@ in
       nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
       readeck-env.file = ../../secrets/bob/readeck-env.age;
       healthchecks-env.file = ../../secrets/bob/healthchecks-env.age;
+      prometheus-snmp-env.file = ../../secrets/bob/prometheus-snmp-env.age;
 
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
@@ -132,7 +133,6 @@ in
         owner = "root";
         group = "grafana";
       };
-      prometheus-snmp-env.file = ../../secrets/bob/prometheus-snmp-env.age;
     };
 
     users = {
