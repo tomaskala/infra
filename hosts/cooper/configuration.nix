@@ -151,8 +151,6 @@
     };
 
     services = {
-      ntp.enable = false;
-      timesyncd.enable = true;
       fstrim.enable = true;
       fwupd.enable = true;
     };
