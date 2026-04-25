@@ -20,6 +20,7 @@ in
     ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/monitoring.nix
     ../../modules/nixos-server/navidrome.nix
+    ../../modules/nixos-server/paperless.nix
     ../../modules/nixos-server/readeck.nix
     ../../modules/nixos-server/tailscale.nix
     ../../modules/nixos-server/tandoor.nix
@@ -69,6 +70,8 @@ in
       readeck-env.file = ../../secrets/bob/readeck-env.age;
       healthchecks-env.file = ../../secrets/bob/healthchecks-env.age;
       prometheus-snmp-env.file = ../../secrets/bob/prometheus-snmp-env.age;
+      paperless-admin-password.file = ../../secrets/bob/paperless-admin-password.age;
+      paperless-env.file = ../../secrets/bob/paperless-env.age;
 
       tandoor-secret-key = {
         file = ../../secrets/bob/tandoor-secret-key.age;
@@ -400,6 +403,12 @@ in
           source = "${mediaDir}/music/";
           destination = "/media/music/";
         };
+      };
+
+      paperless = {
+        enable = true;
+        inherit hostDomain;
+        subdomain = "paperless";
       };
 
       readeck = {

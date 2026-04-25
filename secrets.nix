@@ -24,15 +24,30 @@ in
     bob
     gordon
   ];
-  "secrets/bob/tandoor-secret-key.age".publicKeys = [
-    bob
-    gordon
-  ];
   "secrets/bob/readeck-env.age".publicKeys = [
     bob
     gordon
   ];
-
+  "secrets/bob/healthchecks-env.age".publicKeys = [
+    bob
+    gordon
+  ];
+  "secrets/bob/prometheus-snmp-env.age".publicKeys = [
+    bob
+    gordon
+  ];
+  "secrets/bob/paperless-admin-password.age".publicKeys = [
+    bob
+    gordon
+  ];
+  "secrets/bob/paperless-env.age".publicKeys = [
+    bob
+    gordon
+  ];
+  "secrets/bob/tandoor-secret-key.age".publicKeys = [
+    bob
+    gordon
+  ];
   "secrets/bob/authelia/postgres-password.age".publicKeys = [
     bob
     gordon
@@ -61,21 +76,11 @@ in
     bob
     gordon
   ];
-
-  "secrets/bob/healthchecks-env.age".publicKeys = [
-    bob
-    gordon
-  ];
-
   "secrets/bob/grafana/admin-password.age".publicKeys = [
     bob
     gordon
   ];
   "secrets/bob/grafana/authelia-password.age".publicKeys = [
-    bob
-    gordon
-  ];
-  "secrets/bob/prometheus-snmp-env.age".publicKeys = [
     bob
     gordon
   ];

@@ -30,21 +30,21 @@ in
 
           layout = [
             {
-              Media = {
+              Development = {
                 style = "row";
-                columns = 3;
+                columns = 2;
               };
             }
             {
-              Development = {
+              Media = {
                 style = "column";
-                rows = 2;
+                rows = 3;
               };
             }
             {
               Documents = {
                 style = "column";
-                rows = 2;
+                rows = 3;
               };
             }
           ];
@@ -109,23 +109,6 @@ in
               });
           }
           {
-            Development =
-              (lib.optional config.infra.monitoring.enable {
-                Grafana = {
-                  icon = "grafana";
-                  href = "https://${config.infra.monitoring.subdomain}.${cfg.hostDomain}";
-                  description = "Monitoring";
-                };
-              })
-              ++ (lib.optional config.infra.forgejo.enable {
-                Forgejo = {
-                  icon = "forgejo";
-                  href = "https://${config.infra.forgejo.subdomain}.${cfg.hostDomain}";
-                  description = "Code hosting";
-                };
-              });
-          }
-          {
             Documents =
               (lib.optional config.infra.readeck.enable {
                 Readeck = {
@@ -139,6 +122,30 @@ in
                   icon = "tandoor-recipes";
                   href = "https://${config.infra.tandoor.subdomain}.${cfg.hostDomain}";
                   description = "Recipe management";
+                };
+              })
+              ++ (lib.optional config.infra.paperless.enable {
+                Paperless = {
+                  icon = "paperless";
+                  href = "https://${config.infra.paperless.subdomain}.${cfg.hostDomain}";
+                  description = "Document management";
+                };
+              });
+          }
+          {
+            Development =
+              (lib.optional config.infra.monitoring.enable {
+                Grafana = {
+                  icon = "grafana";
+                  href = "https://${config.infra.monitoring.subdomain}.${cfg.hostDomain}";
+                  description = "Monitoring";
+                };
+              })
+              ++ (lib.optional config.infra.forgejo.enable {
+                Forgejo = {
+                  icon = "forgejo";
+                  href = "https://${config.infra.forgejo.subdomain}.${cfg.hostDomain}";
+                  description = "Code hosting";
                 };
               });
           }
