@@ -13,6 +13,7 @@ let
 in
 {
   imports = [
+    ./disko-config.nix
     ./hardware-configuration.nix
     ../../modules/nix.nix
     ../../modules/programs.nix
@@ -37,9 +38,19 @@ in
       options = "--delete-older-than 30d";
     };
 
-    boot.loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+    boot = {
+      initrd.supportedFilesystems = [ "zfs" ];
+      supportedFilesystems = [ "zfs" ];
+
+      zfs = {
+        package = pkgs.zfs_2_4;
+        forceImportRoot = false;
+      };
+
+      loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
+      };
     };
 
     system.stateVersion = "25.05";
@@ -213,6 +224,7 @@ in
 
     networking = {
       inherit hostName;
+      hostId = "527acb68";
 
       firewall = {
         enable = true;
