@@ -17,8 +17,7 @@ Configuration for my network infrastructure.
 
 ## Deployment
 
-To define and deploy a machine (called `twinpeaks` in this example), do the
-following.
+To define and deploy a machine (called `twinpeaks` in this example), do the following.
 
 1. Put its configuration under `hosts/twinpeaks`.
 2. Create an `outputs.nixosConfigurations.twinpeaks` block in `flake.nix`.
@@ -29,18 +28,7 @@ following.
    ```
 5. Follow the instructions in the [secrets section](#secrets) to include any
    secrets.
-6. SSH into the machine and enter a Nix shell with git (the flake setup needs
-   it).
-   ```
-   $ nix shell nixpkgs#git
-   ```
-7. Run
-   ```
-   # nixos-rebuild switch --flake 'github:tomaskala/infra#twinpeaks'
-   ```
-   Explicitly setting the flake is only necessary during the initial
-   deployment. Afterwards, the hostname will have been set and `nixos-rebuild`
-   will automatically select the matching flake.
+6. Follow the [nixos-anywhere section](#nixos-anywhere) to install NixOS.
 
 ## Secrets
 
@@ -60,3 +48,49 @@ To add secrets for a machine, do the following.
    $ nix shell github:ryantm/agenix#agenix
    $ openssl passwd -6 -in <password-file> | agenix -e secrets/users/user.age
    ```
+
+## nixos-anywhere
+
+This section assumes we are using the
+[nixos-anywhere](https://github.com/nix-community/nixos-anywhere) tool to
+install NixOS. More details can be found in their [quickstart guide](https://github.com/nix-community/nixos-anywhere/blob/main/docs/quickstart.md).
+
+### NixOS installation while copying existing SSH host key
+
+Copying an SSH host key from the previous installation is useful to ensure
+that age secrets can be decrypted without having to re-encrypt them.
+
+Run the following script in the root of the repository (taken from a nixos-anywhere
+[example](https://github.com/nix-community/nixos-anywhere/blob/main/docs/howtos/secrets.md#example-decrypting-an-openssh-host-key-with-pass)).
+Don't forget to change the IP address!
+```
+#!/usr/bin/env bash
+
+# Create a temporary directory.
+temp=$(mktemp -d)
+
+# Cleanup the temporary directory on exit.
+cleanup() {
+  rm -rf "$temp"
+}
+trap cleanup EXIT
+
+# Create the directory where sshd expects to find the host keys.
+install -d -m755 "$temp/etc/ssh"
+
+# Decrypt your private key from the password store and copy it to the temporary directory.
+pass ssh_host_ed25519_key > "$temp/etc/ssh/ssh_host_ed25519_key"
+
+# Set the correct permissions so sshd will accept the key.
+chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
+
+# Install NixOS to the host system with our secrets.
+nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --flake '.#twinpeaks' --target-host root@<ip-address>
+```
+
+### NixOS installation without copying anything
+
+If it's not necessary to transfer the SSH host key, simply run the following
+```
+nix run github:nix-community/nixos-anywhere -- --flake '.#twinpeaks' --target-host root@<ip-address>
+```

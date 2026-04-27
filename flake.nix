@@ -22,6 +22,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko/v1.13.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,6 +52,7 @@
       catppuccin,
       nix-darwin,
       home-manager,
+      disko,
       lanzaboote,
       agenix,
       ...
@@ -97,6 +103,7 @@
             commonConfig
             ./hosts/bob/configuration.nix
             agenix.nixosModules.default
+            disko.nixosModules.default
             # nixos-hardware unfortunately lacks a preset for this particular NUC model.
             nixos-hardware.nixosModules.common-cpu-intel
             nixos-hardware.nixosModules.common-pc
