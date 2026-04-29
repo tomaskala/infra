@@ -1,5 +1,8 @@
 name: 'Flake check'
 permissions: {}
+concurrency:
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}'
+  cancel-in-progress: true
 on:
   push:
 jobs:
@@ -13,13 +16,13 @@ jobs:
     runs-on: '${{ matrix.os }}'
     steps:
       - name: 'Checkout the repository'
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' # v6
         with:
           persist-credentials: false
       - name: 'Install Nix'
-        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+        uses: 'DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25' # v22
       - name: 'Run Nix flake checker'
-        uses: DeterminateSystems/flake-checker-action@3164002371bc90729c68af0e24d5aacf20d7c9f6 # v12
+        uses: 'DeterminateSystems/flake-checker-action@3164002371bc90729c68af0e24d5aacf20d7c9f6' # v12
         with:
           ignore-missing-flake-lock: false
           fail-mode: true
