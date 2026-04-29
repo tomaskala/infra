@@ -6,6 +6,7 @@ on:
     - cron: '0 0 * * 0'
 jobs:
   flake-update:
+    name: 'Flake update'
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Checkout the repository'

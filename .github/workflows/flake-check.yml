@@ -4,6 +4,7 @@ on:
   push:
 jobs:
   flake-check:
+    name: 'Flake check'
     strategy:
       matrix:
         os:
