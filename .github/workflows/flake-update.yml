@@ -1,4 +1,5 @@
 name: 'Flake update'
+permissions: {}
 on:
   workflow_dispatch:
   schedule:

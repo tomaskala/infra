@@ -1,4 +1,5 @@
 name: 'Flake check'
+permissions: {}
 on:
   push:
 jobs:
