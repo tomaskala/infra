@@ -34,21 +34,6 @@ in
       options = "--delete-older-than 30d";
     };
 
-    boot = {
-      initrd.supportedFilesystems = [ "zfs" ];
-      supportedFilesystems = [ "zfs" ];
-
-      zfs = {
-        package = pkgs.zfs_2_4;
-        forceImportRoot = false;
-      };
-
-      loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
-      };
-    };
-
     system.stateVersion = "25.05";
     nixpkgs.config.allowUnfree = true;
     hardware.enableAllFirmware = true;
