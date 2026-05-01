@@ -1,33 +1,126 @@
+{ pkgs, ... }:
+
+# Mirrored ZFS boot volume.
+# Source: https://lowtek.ca/roo/2025/nixos-with-mirrored-zfs-boot-volume/
 let
-  first = "/dev/nvme0n1";
+  disk1 = "/dev/disk/by-id/nvme-KINGSTON_SFYRS1000G_50026B738272235A";
+  boot1 = "/boot1";
+
+  disk2 = ""; # TODO
+  boot2 = "/boot2";
+
   zpoolName = "zroot";
 in
 {
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+
+    zfs = {
+      package = pkgs.zfs_2_4;
+      forceImportRoot = false;
+    };
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+
+      grub = {
+        enable = true;
+        efiSupport = true;
+        copyKernels = true;
+        device = "nodev";
+
+        mirroredBoots = [
+          {
+            path = boot1;
+            devices = [ disk1 ];
+          }
+          {
+            path = boot2;
+            devices = [ disk2 ];
+          }
+        ];
+      };
+    };
+  };
+
+  services.zfs.autoScrub.enable = true;
+
   disko.devices = {
     disk = {
-      first = {
+      disk1 = {
         type = "disk";
-        device = first;
+        device = disk1;
 
         content = {
           type = "gpt";
 
           partitions = {
-            esp = {
+            ESP = {
               type = "EF00";
               size = "1G";
 
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+                mountpoint = boot1;
+                mountOptions = [
+                  "umask=0077"
+                  "nofail"
+                ];
               };
             };
 
             swap = {
               size = "32G";
-              content.type = "swap";
+
+              content = {
+                type = "swap";
+                mountOptions = [ "nofail" ];
+              };
+            };
+
+            root = {
+              size = "100%";
+
+              content = {
+                type = "zfs";
+                pool = zpoolName;
+              };
+            };
+          };
+        };
+      };
+
+      disk2 = {
+        type = "disk";
+        device = disk2;
+
+        content = {
+          type = "gpt";
+
+          partitions = {
+            ESP = {
+              type = "EF00";
+              size = "1G";
+
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = boot2;
+                mountOptions = [
+                  "umask=0077"
+                  "nofail"
+                ];
+              };
+            };
+
+            swap = {
+              size = "32G";
+
+              content = {
+                type = "swap";
+                mountOptions = [ "nofail" ];
+              };
             };
 
             root = {
@@ -46,6 +139,7 @@ in
     zpool = {
       ${zpoolName} = {
         type = "zpool";
+        mode = "mirror";
 
         options = {
           ashift = "12";
