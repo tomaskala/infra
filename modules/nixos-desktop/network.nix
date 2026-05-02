@@ -1,7 +1,15 @@
 {
-  networking.networkmanager = {
-    enable = true;
-    wifi.backend = "iwd";
+  networking = {
+    networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+    };
+
+    wireless.iwd.settings = {
+      General = {
+        AddressRandomization = "once";
+      };
+    };
   };
 
   # Workaround https://github.com/NixOS/nixpkgs/issues/180175
