@@ -16,7 +16,6 @@
     ../../modules/nixos-desktop/network.nix
     ../../modules/nixos-desktop/phone.nix
     ../../modules/nixos-desktop/tailscale.nix
-    ../../modules/nixos-desktop/virtualisation.nix
   ];
 
   config = {
@@ -122,7 +121,6 @@
       whois
 
       # Development
-      gnumake
       go
       gotools
       lua
