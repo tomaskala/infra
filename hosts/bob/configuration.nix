@@ -256,7 +256,7 @@ in
           ProtectControlGroups = true;
           RestrictNamespaces = true;
           RestrictSUIDGUID = true;
-          UMask= "0077";
+          UMask = "0077";
           LockPersonality = true;
           RestrictRealtime = true;
           MemoryDenyWriteExecute = true;
