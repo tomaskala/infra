@@ -121,10 +121,21 @@
           modules = [
             commonConfig
             ./hosts/cooper/configuration.nix
-            catppuccin.nixosModules.catppuccin
             agenix.nixosModules.default
-            lanzaboote.nixosModules.lanzaboote
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
+            lanzaboote.nixosModules.lanzaboote
+            catppuccin.nixosModules.catppuccin
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tomas.imports = [
+                  ./hosts/cooper/tomas.nix
+                  catppuccin.homeModules.catppuccin
+                ];
+              };
+            }
           ];
         };
       };
@@ -150,24 +161,14 @@
       };
 
       homeConfigurations = {
-        "tomas@cooper" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          modules = [
-            commonConfig
-            ./hosts/cooper/tomas.nix
-            catppuccin.homeModules.catppuccin
-          ];
-        };
-
         "tomas@blacklodge" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           modules = [
             commonConfig
             ./hosts/blacklodge/tomas.nix
-            catppuccin.homeModules.catppuccin
             agenix.homeManagerModules.default
+            catppuccin.homeModules.catppuccin
           ];
         };
       };
