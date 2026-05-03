@@ -10,7 +10,6 @@
     ./hardware-configuration.nix
     ../../modules/nixos-desktop/audio.nix
     ../../modules/nixos-desktop/firewall.nix
-    ../../modules/nixos-desktop/gaming.nix
     ../../modules/nixos-desktop/gnome.nix
     ../../modules/nixos-desktop/locale.nix
     ../../modules/nixos-desktop/network.nix
@@ -20,19 +19,12 @@
   ];
 
   config = {
-    hardware = {
-      cpu.amd.updateMicrocode = true;
-      enableRedistributableFirmware = true;
-    };
+    nix.settings.trusted-users = [
+      "root"
+      "tomas"
+    ];
 
     boot = {
-      plymouth.enable = true;
-
-      tmp = {
-        cleanOnBoot = true;
-        useTmpfs = true;
-      };
-
       initrd.systemd.enable = true;
       loader.systemd-boot.enable = lib.mkForce false;
 
@@ -48,16 +40,9 @@
       };
     };
 
-    systemd.services.nix-daemon.environment.TMPDIR = "/var/tmp";
-
-    nix.settings.trusted-users = [
-      "root"
-      "tomas"
-    ];
-
     system.stateVersion = "24.05";
-
     nixpkgs.config.allowUnfree = true;
+    hardware.enableAllFirmware = true;
 
     age = {
       identityPaths = [ "/home/tomas/.ssh/id_ed25519_agenix" ];

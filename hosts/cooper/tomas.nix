@@ -1,5 +1,3 @@
-{ pkgs, ... }:
-
 {
   imports = [
     ../../modules/home-manager/desktop/ghostty.nix
@@ -25,14 +23,6 @@
       enable = true;
       flavor = "macchiato";
       accent = "mauve";
-    };
-
-    xdg.desktopEntries.openmw = {
-      name = "OpenMW";
-      type = "Application";
-      exec = "${pkgs.gamemode}/bin/gamemoderun ${pkgs.openmw}/bin/openmw-launcher";
-      terminal = false;
-      categories = [ "Game" ];
     };
   };
 }
