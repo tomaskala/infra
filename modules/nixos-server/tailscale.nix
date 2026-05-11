@@ -37,53 +37,94 @@ in
       groups.${group} = { };
     };
 
-    systemd.services.tailscaled.serviceConfig = {
-      User = user;
-      Group = group;
-      DeviceAllow = [
-        "/dev/tun"
-        "/dev/net/tun"
-        "/dev/tpmrm0 rw"
-      ];
-      AmbientCapabilities = [
-        "CAP_NET_RAW"
-        "CAP_NET_ADMIN"
-        "CAP_SYS_MODULE"
-      ];
-      ProtectKernelModules = false;
-      RestrictAddressFamilies = [
-        "AF_UNIX"
-        "AF_INET"
-        "AF_INET6"
-        "AF_NETLINK"
-      ];
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      PrivateMounts = true;
-      RestrictNamespaces = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      MemoryDenyWriteExecute = true;
-      LockPersonality = true;
-      ProtectHome = true;
-      ProtectControlGroups = true;
-      ProtectKernelLogs = true;
-      ProtectSystem = "full";
-      ProtectProc = "noaccess";
-      SystemCallArchitectures = "native";
-      SystemCallFilter = [
-        "@known"
-        "~@clock"
-        "~@cpu-emulation"
-        "~@raw-io"
-        "~@reboot"
-        "~@mount"
-        "~@obsolete"
-        "~@swap"
-        "~@debug"
-        "~@keyring"
-        "~@pkey"
-      ];
+    systemd.services = {
+      tailscaled.serviceConfig = {
+        User = user;
+        Group = group;
+
+        DeviceAllow = [
+          "/dev/tun"
+          "/dev/net/tun"
+          "/dev/tpmrm0 rw"
+        ];
+        AmbientCapabilities = [
+          "CAP_NET_RAW"
+          "CAP_NET_ADMIN"
+          "CAP_SYS_MODULE"
+        ];
+
+        ProtectKernelModules = false;
+        RestrictAddressFamilies = [
+          "AF_UNIX"
+          "AF_INET"
+          "AF_INET6"
+          "AF_NETLINK"
+        ];
+
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        PrivateMounts = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        MemoryDenyWriteExecute = true;
+        LockPersonality = true;
+
+        ProtectHome = true;
+        ProtectControlGroups = true;
+        ProtectKernelLogs = true;
+        ProtectSystem = "full";
+        ProtectProc = "noaccess";
+
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@known"
+          "~@clock"
+          "~@cpu-emulation"
+          "~@raw-io"
+          "~@reboot"
+          "~@mount"
+          "~@obsolete"
+          "~@swap"
+          "~@debug"
+          "~@keyring"
+          "~@pkey"
+        ];
+      };
+
+      tailscaled-autoconnect.serviceConfig = {
+        User = user;
+        Group = group;
+        NotifyAccess = "all";
+
+        CapabilityBoundingSet = "";
+        AmbientCapabilities = "";
+
+        ProtectHome = true;
+        ProtectControlGroups = true;
+        ProtectKernelLogs = true;
+        ProtectSystem = "strict";
+        ProtectProc = "noaccess";
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+
+        ReadOnlyPaths = [ config.age.secrets.tailscale-api-key.path ];
+        RestrictAddressFamilies = [ "AF_UNIX" ];
+
+        NoNewPrivileges = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        MemoryDenyWriteExecute = true;
+        LockPersonality = true;
+
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+          "~@resources"
+        ];
+      };
     };
   };
 }
