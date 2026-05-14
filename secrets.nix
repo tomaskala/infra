@@ -85,6 +85,6 @@ in
     gordon
   ];
 
-  "secrets/users/cooper/tomas.age".publicKeys = [ cooper ];
-  "secrets/users/cooper/root.age".publicKeys = [ cooper ];
+  "secrets/cooper/users/tomas.age".publicKeys = [ cooper ];
+  "secrets/cooper/users/root.age".publicKeys = [ cooper ];
 }
