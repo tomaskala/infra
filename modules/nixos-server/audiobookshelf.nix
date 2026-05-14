@@ -17,6 +17,11 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    booksDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Directory where the books are stored";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -67,7 +72,44 @@ in
       ];
     };
 
-    systemd.services.audiobookshelf.serviceConfig.RuntimeDirectory = "audiobookshelf";
+    systemd.services.audiobookshelf.serviceConfig = {
+      RuntimeDirectory = "audiobookshelf";
+
+      NoNewPrivileges = true;
+      LockPersonality = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      RemoveIPC = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      RestrictNamespaces = true;
+
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      ProtectProc = "invisible";
+      ProcSubset = "pid";
+      ReadOnlyPaths = [ cfg.booksDir ];
+      UMask = "0007"; # So Caddy can access the Unix socket created by audiobookshelf.
+
+      CapabilityBoundingSet = "";
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+      ];
+
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [ "@system-service" ];
+      SystemCallErrorNumber = "EPERM";
+    };
+
     users.users.${config.services.caddy.user}.extraGroups = [ config.services.audiobookshelf.group ];
   };
 }

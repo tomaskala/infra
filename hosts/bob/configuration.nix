@@ -389,6 +389,7 @@ in
         enable = true;
         inherit hostDomain;
         subdomain = "audiobookshelf";
+        booksDir = "${mediaDir}/ebooks";
       };
 
       authelia = {
