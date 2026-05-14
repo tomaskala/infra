@@ -1,6 +1,10 @@
+{ pkgs, ... }:
+
 {
   programs.beets = {
     enable = true;
+    # TODO: Remove after upgrading to NixOS 26.05.
+    package = pkgs.unstable.beets;
 
     settings = {
       directory = "~/music";
