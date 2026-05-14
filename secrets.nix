@@ -4,47 +4,47 @@ let
   gordon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDzFx62uD/5YWWOjLV5yVTTEDs2bHBM/j4yxndKzVotF";
 in
 {
-  "secrets/bob/users/tomas.age".publicKeys = [
+  "secrets/bob/users/tomas-password.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/users/root.age".publicKeys = [
+  "secrets/bob/users/root-password.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/tailscale-api-key.age".publicKeys = [
+  "secrets/bob/tailscale/api-key.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/dns-challenge-env.age".publicKeys = [
+  "secrets/bob/acme/env.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/nas-smb-credentials.age".publicKeys = [
+  "secrets/bob/nas/smb-credentials.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/readeck-env.age".publicKeys = [
+  "secrets/bob/readeck/env.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/healthchecks-env.age".publicKeys = [
+  "secrets/bob/healthchecks/env.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/prometheus-snmp-env.age".publicKeys = [
+  "secrets/bob/prometheus/snmp-env.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/paperless-admin-password.age".publicKeys = [
+  "secrets/bob/paperless/admin-password.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/paperless-env.age".publicKeys = [
+  "secrets/bob/paperless/env.age".publicKeys = [
     bob
     gordon
   ];
-  "secrets/bob/tandoor-secret-key.age".publicKeys = [
+  "secrets/bob/tandoor/secret-key.age".publicKeys = [
     bob
     gordon
   ];
@@ -85,6 +85,6 @@ in
     gordon
   ];
 
-  "secrets/cooper/users/tomas.age".publicKeys = [ cooper ];
-  "secrets/cooper/users/root.age".publicKeys = [ cooper ];
+  "secrets/cooper/users/tomas-password.age".publicKeys = [ cooper ];
+  "secrets/cooper/users/root-password.age".publicKeys = [ cooper ];
 }

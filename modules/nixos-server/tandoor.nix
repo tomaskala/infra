@@ -27,7 +27,7 @@ in
         database.createLocally = true;
 
         extraConfig = {
-          SECRET_KEY_FILE = config.age.secrets.tandoor-secret-key.path;
+          SECRET_KEY_FILE = config.age.secrets."tandoor/secret-key".path;
           ALLOWED_HOSTS = domain;
           REMOTE_USER_AUTH = 1;
           MEDIA_ROOT = "/var/lib/tandoor-recipes/media";

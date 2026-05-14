@@ -57,80 +57,82 @@ in
           ];
         in
         [
-          "${builtins.concatStringsSep "," automount},credentials=${config.age.secrets.nas-smb-credentials.path}"
+          "${builtins.concatStringsSep "," automount},credentials=${
+            config.age.secrets."nas/smb-credentials".path
+          }"
         ];
     };
 
     age.secrets = {
-      tomas-password.file = ../../secrets/bob/users/tomas.age;
-      root-password.file = ../../secrets/bob/users/root.age;
-      tailscale-api-key.file = ../../secrets/bob/tailscale-api-key.age;
-      dns-challenge-env.file = ../../secrets/bob/dns-challenge-env.age;
-      nas-smb-credentials.file = ../../secrets/bob/nas-smb-credentials.age;
-      readeck-env.file = ../../secrets/bob/readeck-env.age;
-      healthchecks-env.file = ../../secrets/bob/healthchecks-env.age;
-      prometheus-snmp-env.file = ../../secrets/bob/prometheus-snmp-env.age;
-      paperless-admin-password.file = ../../secrets/bob/paperless-admin-password.age;
-      paperless-env.file = ../../secrets/bob/paperless-env.age;
+      "users/tomas-password".file = ../../secrets/bob/users/tomas-password.age;
+      "users/root-password".file = ../../secrets/bob/users/root-password.age;
+      "tailscale/api-key".file = ../../secrets/bob/tailscale/api-key.age;
+      "acme/env".file = ../../secrets/bob/acme/env.age;
+      "nas/smb-credentials".file = ../../secrets/bob/nas/smb-credentials.age;
+      "readeck/env".file = ../../secrets/bob/readeck/env.age;
+      "healthchecks/env".file = ../../secrets/bob/healthchecks/env.age;
+      "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
+      "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
+      "paperless/env".file = ../../secrets/bob/paperless/env.age;
 
-      tandoor-secret-key = {
-        file = ../../secrets/bob/tandoor-secret-key.age;
+      "tandoor/secret-key" = {
+        file = ../../secrets/bob/tandoor/secret-key.age;
         mode = "0640";
         owner = "root";
         group = "tandoor_recipes";
       };
 
       # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
-      authelia-postgres-password = {
+      "authelia/postgres-password" = {
         file = ../../secrets/bob/authelia/postgres-password.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-jwt-secret = {
+      "authelia/jwt-secret" = {
         file = ../../secrets/bob/authelia/jwt-secret.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-session-secret = {
+      "authelia/session-secret" = {
         file = ../../secrets/bob/authelia/session-secret.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-storage-encryption-key = {
+      "authelia/storage-encryption-key" = {
         file = ../../secrets/bob/authelia/storage-encryption-key.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-users = {
+      "authelia/users" = {
         file = ../../secrets/bob/authelia/users.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-oidc-hmac-secret = {
+      "authelia/oidc-hmac-secret" = {
         file = ../../secrets/bob/authelia/oidc-hmac-secret.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
-      authelia-oidc-issuer-private-key = {
+      "authelia/oidc-issuer-private-key" = {
         file = ../../secrets/bob/authelia/oidc-issuer-private-key.age;
         mode = "0640";
         owner = "root";
         group = "authelia-main";
       };
 
-      grafana-admin-password = {
+      "grafana/admin-password" = {
         file = ../../secrets/bob/grafana/admin-password.age;
         mode = "0640";
         owner = "root";
         group = "grafana";
       };
-      grafana-authelia-password = {
+      "grafana/authelia-password" = {
         file = ../../secrets/bob/grafana/authelia-password.age;
         mode = "0640";
         owner = "root";
@@ -142,12 +144,12 @@ in
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets.root-password.path;
+        root.hashedPasswordFile = config.age.secrets."users/root-password".path;
 
         tomas = {
           isNormalUser = true;
+          hashedPasswordFile = config.age.secrets."users/tomas-password".path;
           extraGroups = [ "wheel" ];
-          hashedPasswordFile = config.age.secrets.tomas-password.path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF9wbboIeutdnZFbYT5zwJNBf4fJy9njfEMwxOnJKh4z blacklodge2bob"
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6BGS5Ty3Oaozhow1qwTsOitN6Ksje4GEzheMzXoijW gordon2bob"
@@ -231,7 +233,7 @@ in
 
         certs.${hostDomain} = {
           dnsProvider = "cloudflare";
-          environmentFile = config.age.secrets.dns-challenge-env.path;
+          environmentFile = config.age.secrets."acme/env".path;
           extraDomainNames = [ "*.${hostDomain}" ];
         };
       };
@@ -242,7 +244,7 @@ in
         description = "Keepalive signal";
 
         serviceConfig = {
-          EnvironmentFile = config.age.secrets.healthchecks-env.path;
+          EnvironmentFile = config.age.secrets."healthchecks/env".path;
           Type = "oneshot";
 
           DynamicUser = true;
@@ -316,7 +318,7 @@ in
             enable = true;
             listenAddress = "127.0.0.1";
             configurationPath = ./snmp.yml;
-            environmentFile = config.age.secrets.prometheus-snmp-env.path;
+            environmentFile = config.age.secrets."prometheus/snmp-env".path;
           };
         };
 

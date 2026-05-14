@@ -48,8 +48,8 @@
       identityPaths = [ "/home/tomas/.ssh/id_ed25519_agenix" ];
 
       secrets = {
-        users-tomas-password.file = ../../secrets/cooper/users/tomas.age;
-        users-root-password.file = ../../secrets/cooper/users/root.age;
+        "users/tomas-password".file = ../../secrets/cooper/users/tomas-password.age;
+        "users/root-password".file = ../../secrets/cooper/users/root-password.age;
       };
     };
 
@@ -57,10 +57,11 @@
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets.users-root-password.path;
+        root.hashedPasswordFile = config.age.secrets."users/root-password".path;
 
         tomas = {
           isNormalUser = true;
+          hashedPasswordFile = config.age.secrets."users/tomas-password".path;
           extraGroups = [
             "audio"
             "networkmanager"
@@ -69,7 +70,6 @@
             "wheel"
             "wireshark"
           ];
-          hashedPasswordFile = config.age.secrets.users-tomas-password.path;
         };
       };
     };

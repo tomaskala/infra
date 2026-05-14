@@ -29,7 +29,7 @@ in
     services = {
       readeck = {
         enable = true;
-        environmentFile = config.age.secrets.readeck-env.path;
+        environmentFile = config.age.secrets."readeck/env".path;
 
         settings = {
           server = {
