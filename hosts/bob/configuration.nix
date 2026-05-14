@@ -212,10 +212,12 @@ in
       firewall = {
         enable = true;
 
-        allowedTCPPorts = lib.mkIf config.services.caddy.enable [
-          80
-          443
-        ];
+        interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts =
+          lib.mkIf (config.services.tailscale.enable && config.services.caddy.enable)
+            [
+              80
+              443
+            ];
       };
 
       nftables.enable = true;
