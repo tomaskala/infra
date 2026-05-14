@@ -55,11 +55,14 @@ in
             "x-systemd.mount-timeout=5s" # Wait for this long for the mount command to finish.
             "ro" # Mount as a read-only filesystem.
           ];
+
+          security = [
+            "credentials=${config.age.secrets."nas/smb-credentials".path}"
+            "seal" # Use encryption (requires SMB 3.0).
+          ];
         in
         [
-          "${builtins.concatStringsSep "," automount},credentials=${
-            config.age.secrets."nas/smb-credentials".path
-          }"
+          (builtins.concatStringsSep "," (automount ++ security))
         ];
     };
 
