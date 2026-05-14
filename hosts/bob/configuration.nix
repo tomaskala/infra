@@ -296,6 +296,19 @@ in
     };
 
     services = {
+      chrony = {
+        enable = true;
+        enableNTS = true;
+
+        servers = [
+          "time.cloudflare.com"
+          "1.ntp.ubuntu.com"
+          "2.ntp.ubuntu.com"
+          "3.ntp.ubuntu.com"
+          "4.ntp.ubuntu.com"
+        ];
+      };
+
       fwupd.enable = true;
 
       openssh = {
