@@ -61,7 +61,6 @@
     {
       nixosConfigurations = {
         bob = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           specialArgs = { inherit inputs; };
 
           modules = [
@@ -76,7 +75,6 @@
         };
 
         cooper = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           specialArgs = { inherit inputs; };
 
           modules = [
@@ -92,7 +90,6 @@
 
       darwinConfigurations = {
         gordon = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
           specialArgs = { inherit inputs; };
 
           modules = [
