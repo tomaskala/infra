@@ -1,12 +1,23 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
+  imports = [
+    ../../modules/nixos-common/nix.nix
+  ];
+
   config = {
     nix.settings = {
       trusted-users = [
         "root"
         "tomas"
       ];
+    };
+
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      users.tomas = ./tomas.nix;
     };
 
     users.users.tomas = {

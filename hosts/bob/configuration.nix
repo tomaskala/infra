@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -13,6 +14,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos-common/nix.nix
     ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/forgejo.nix
@@ -141,6 +143,13 @@ in
         owner = "root";
         group = "grafana";
       };
+    };
+
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      users.tomas = ./tomas.nix;
     };
 
     users = {
@@ -380,6 +389,8 @@ in
           }
         ];
       };
+
+      thermald.enable = true;
     };
 
     infra = {

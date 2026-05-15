@@ -42,7 +42,6 @@
     {
       self,
       nixpkgs,
-      nixpkgs-unstable,
       nixos-hardware,
       catppuccin,
       nix-darwin,
@@ -50,41 +49,12 @@
       lanzaboote,
       agenix,
       ...
-    }:
+    }@inputs:
     let
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
       ];
-
-      commonConfig =
-        { pkgs, ... }:
-        {
-          nixpkgs.overlays = [
-            (_: prev: {
-              unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-              inherit (prev.lixPackageSets.latest)
-                nixpkgs-review
-                nix-eval-jobs
-                nix-fast-build
-                colmena
-                ;
-            })
-          ];
-
-          nix = {
-            registry.nixpkgs.flake = nixpkgs;
-            package = pkgs.lixPackageSets.latest.lix;
-
-            settings = {
-              auto-optimise-store = true;
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-            };
-          };
-        };
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
@@ -92,50 +62,30 @@
       nixosConfigurations = {
         bob = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
 
           modules = [
-            commonConfig
             ./hosts/bob/configuration.nix
             agenix.nixosModules.default
             # nixos-hardware unfortunately lacks a preset for this particular NUC model.
             nixos-hardware.nixosModules.common-cpu-intel
             nixos-hardware.nixosModules.common-pc
             nixos-hardware.nixosModules.common-pc-ssd
-            {
-              services.thermald.enable = true;
-            }
             home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.tomas = import ./hosts/bob/tomas.nix;
-              };
-            }
           ];
         };
 
         cooper = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
 
           modules = [
-            commonConfig
             ./hosts/cooper/configuration.nix
             agenix.nixosModules.default
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
             lanzaboote.nixosModules.lanzaboote
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.tomas.imports = [
-                  ./hosts/cooper/tomas.nix
-                  catppuccin.homeModules.catppuccin
-                ];
-              };
-            }
           ];
         };
       };
@@ -143,19 +93,12 @@
       darwinConfigurations = {
         gordon = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
+          specialArgs = { inherit inputs; };
 
           modules = [
-            commonConfig
             ./hosts/gordon/configuration.nix
             agenix.darwinModules.default
             home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.tomas = import ./hosts/gordon/tomas.nix;
-              };
-            }
           ];
         };
       };
@@ -163,9 +106,9 @@
       homeConfigurations = {
         "tomas@blacklodge" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs; };
 
           modules = [
-            commonConfig
             ./hosts/blacklodge/tomas.nix
             agenix.homeManagerModules.default
             catppuccin.homeModules.catppuccin

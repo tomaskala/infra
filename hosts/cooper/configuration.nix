@@ -2,12 +2,14 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos-common/nix.nix
     ../../modules/nixos-desktop/audio.nix
     ../../modules/nixos-desktop/firewall.nix
     ../../modules/nixos-desktop/gnome.nix
@@ -51,6 +53,16 @@
         "users/tomas-password".file = ../../secrets/cooper/users/tomas-password.age;
         "users/root-password".file = ../../secrets/cooper/users/root-password.age;
       };
+    };
+
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      users.tomas.imports = [
+        ./tomas.nix
+        inputs.catppuccin.homeModules.catppuccin
+      ];
     };
 
     users = {
