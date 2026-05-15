@@ -92,6 +92,7 @@ in
         ];
       };
 
+      # Source: <https://tailscale.com/docs/reference/best-practices/device-hardening>.
       tailscaled-autoconnect.serviceConfig = {
         User = user;
         Group = group;

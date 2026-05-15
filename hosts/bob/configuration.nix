@@ -85,7 +85,7 @@ in
         group = "tandoor_recipes";
       };
 
-      # Resource: https://www.authelia.com/configuration/methods/secrets/#environment-variables
+      # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
       "authelia/postgres-password" = {
         file = ../../secrets/bob/authelia/postgres-password.age;
         mode = "0640";
