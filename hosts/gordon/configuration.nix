@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-common/nix.nix
+    ../../modules/nixos-common/programs.nix
   ];
 
   config = {
@@ -37,16 +38,6 @@
       shells = [ pkgs.zsh ];
 
       systemPackages = with pkgs; [
-        # System utilities
-        coreutils
-        diffutils
-        gawk
-        gnugrep
-        gnused
-        gnutar
-        rsync
-        tree
-
         # General development
         gnumake
         shellcheck
@@ -65,12 +56,6 @@
 
         # Media
         hugo
-
-        # Networking
-        ldns
-        nmap
-        openssl
-        whois
       ];
     };
 

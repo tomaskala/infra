@@ -15,6 +15,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-common/nix.nix
+    ../../modules/nixos-common/programs.nix
     ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/forgejo.nix
@@ -206,15 +207,6 @@ in
 
       systemPackages = with pkgs; [
         cifs-utils # Needed for mounting NAS using SMB.
-        curl
-        jq
-        ldns
-        openssl
-        python3
-        ripgrep
-        rsync
-        tree
-        uv
       ];
     };
 

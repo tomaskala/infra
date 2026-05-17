@@ -10,6 +10,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-common/nix.nix
+    ../../modules/nixos-common/programs.nix
     ../../modules/nixos-desktop/audio.nix
     ../../modules/nixos-desktop/firewall.nix
     ../../modules/nixos-desktop/gnome.nix
@@ -104,26 +105,22 @@
 
     environment.systemPackages = with pkgs; [
       # System utilities
-      man-pages
-      man-pages-posix
-      rsync
       sbctl
-      tree
 
-      # Networking
-      curl
-      ldns
-      nmap
-      openssl
-      tcpdump
-      whois
-
-      # Development
-      go
-      gotools
-      lua
-      python3
+      # General development
+      gnumake
       shellcheck
+
+      # Go development
+      go
+      golangci-lint
+      gotools
+
+      # Lua development
+      lua
+
+      # Python development
+      python3
       uv
 
       # Media
