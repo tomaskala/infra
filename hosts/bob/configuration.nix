@@ -19,6 +19,7 @@ in
     ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/forgejo.nix
+    ../../modules/nixos-server/healthchecks.nix
     ../../modules/nixos-server/homepage.nix
     ../../modules/nixos-server/jellyfin.nix
     ../../modules/nixos-server/monitoring.nix
@@ -245,57 +246,6 @@ in
       };
     };
 
-    systemd = {
-      services.keepalive = {
-        description = "Keepalive signal";
-
-        serviceConfig = {
-          EnvironmentFile = config.age.secrets."healthchecks/env".path;
-          Type = "oneshot";
-
-          DynamicUser = true;
-          NoNewPrivileges = true;
-          ProtectSystem = "strict";
-          PrivateTmp = true;
-          ProtectHome = true;
-          ProtectClock = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectControlGroups = true;
-          RestrictNamespaces = true;
-          RestrictSUIDGUID = true;
-          UMask = "0077";
-          LockPersonality = true;
-          RestrictRealtime = true;
-          MemoryDenyWriteExecute = true;
-
-          ExecStart =
-            let
-              script = pkgs.writeShellApplication {
-                name = "keepalive";
-                runtimeInputs = [ pkgs.curl ];
-
-                text = ''
-                  curl --fail --silent --show-error --max-time 10 --retry 5 --output /dev/null "$HC_URL"
-                '';
-              };
-            in
-            lib.getExe script;
-        };
-      };
-
-      timers.keepalive = {
-        description = "Keepalive timer";
-        wantedBy = [ "timers.target" ];
-        partOf = [ "keepalive.service" ];
-
-        timerConfig = {
-          OnBootSec = "10m";
-          OnUnitActiveSec = "10m";
-        };
-      };
-    };
-
     services = {
       chrony = {
         enable = true;
@@ -386,8 +336,6 @@ in
     };
 
     infra = {
-      tailscale.enable = true;
-
       audiobookshelf = {
         enable = true;
         inherit hostDomain;
@@ -406,6 +354,8 @@ in
         inherit hostDomain;
         subdomain = "forgejo";
       };
+
+      healthchecks.enable = true;
 
       homepage = {
         enable = true;
@@ -446,6 +396,8 @@ in
         inherit hostDomain;
         subdomain = "readeck";
       };
+
+      tailscale.enable = true;
 
       tandoor = {
         enable = true;
