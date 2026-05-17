@@ -3,8 +3,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos-common/nix.nix
-    ../../modules/nixos-common/programs.nix
+    ../../modules/nix.nix
+    ../../modules/programs.nix
   ];
 
   config = {

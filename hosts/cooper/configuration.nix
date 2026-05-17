@@ -9,8 +9,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos-common/nix.nix
-    ../../modules/nixos-common/programs.nix
+    ../../modules/nix.nix
+    ../../modules/programs.nix
     ../../modules/nixos-desktop/audio.nix
     ../../modules/nixos-desktop/firewall.nix
     ../../modules/nixos-desktop/gnome.nix

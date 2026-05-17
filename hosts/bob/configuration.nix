@@ -14,8 +14,8 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos-common/nix.nix
-    ../../modules/nixos-common/programs.nix
+    ../../modules/nix.nix
+    ../../modules/programs.nix
     ../../modules/nixos-server/audiobookshelf.nix
     ../../modules/nixos-server/authelia.nix
     ../../modules/nixos-server/forgejo.nix
