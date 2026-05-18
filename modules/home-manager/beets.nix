@@ -33,7 +33,14 @@
         minwidth = 800;
         maxwidth = 800;
         enforce_ratio = true;
-        sources = "coverart itunes amazon albumart fanarttv filesystem";
+        sources = [
+          "coverart"
+          "itunes"
+          "amazon"
+          "albumart"
+          "fanarttv"
+          "filesystem"
+        ];
         lastfm_key = "c90786d2c221bf2a1e978d69b2812f83";
       };
 
