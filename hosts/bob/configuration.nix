@@ -289,6 +289,11 @@ in
             configurationPath = ./snmp.yml;
             environmentFile = config.age.secrets."prometheus/snmp-env".path;
           };
+
+          smartctl = {
+            enable = true;
+            listenAddress = "127.0.0.1";
+          };
         };
 
         scrapeConfigs = [
@@ -326,6 +331,16 @@ in
               {
                 target_label = "__address__";
                 replacement = "127.0.0.1:${builtins.toString config.services.prometheus.exporters.snmp.port}";
+              }
+            ];
+          }
+          {
+            job_name = "smartctl";
+            static_configs = [
+              {
+                targets = [
+                  "127.0.0.1:${builtins.toString config.services.prometheus.exporters.smartctl.port}"
+                ];
               }
             ];
           }
