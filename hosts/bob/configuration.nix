@@ -13,6 +13,7 @@ let
 in
 {
   imports = [
+    ./disko-config.nix
     ./hardware-configuration.nix
     ../../modules/nix.nix
     ../../modules/programs.nix
@@ -35,11 +36,6 @@ in
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
-    };
-
-    boot.loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
     };
 
     system.stateVersion = "25.05";
@@ -213,6 +209,7 @@ in
 
     networking = {
       inherit hostName;
+      hostId = "527acb68";
 
       firewall = {
         enable = true;
