@@ -69,7 +69,6 @@ in
     age.secrets = {
       "users/tomas-password".file = ../../secrets/bob/users/tomas-password.age;
       "users/root-password".file = ../../secrets/bob/users/root-password.age;
-      "tailscale/api-key".file = ../../secrets/bob/tailscale/api-key.age;
       "acme/env".file = ../../secrets/bob/acme/env.age;
       "nas/smb-credentials".file = ../../secrets/bob/nas/smb-credentials.age;
       "readeck/env".file = ../../secrets/bob/readeck/env.age;
@@ -77,6 +76,13 @@ in
       "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
       "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
       "paperless/env".file = ../../secrets/bob/paperless/env.age;
+
+      "tailscale/api-key" = {
+        file = ../../secrets/bob/tailscale/api-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "tailscale";
+      };
 
       "tandoor/secret-key" = {
         file = ../../secrets/bob/tandoor/secret-key.age;
