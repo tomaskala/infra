@@ -4,10 +4,10 @@
 # Source: https://lowtek.ca/roo/2025/nixos-with-mirrored-zfs-boot-volume/
 let
   disk1 = "/dev/disk/by-id/nvme-KINGSTON_SFYRS1000G_50026B738272235A";
-  boot1 = "/boot1";
+  boot1 = "/boot";
 
   disk2 = "/dev/disk/by-id/nvme-CT1000P310SSD2_25094E6CB4A4";
-  boot2 = "/boot2";
+  boot2 = "/boot-fallback";
 
   zpoolName = "zroot";
 in
