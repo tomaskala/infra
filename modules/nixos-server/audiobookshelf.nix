@@ -47,7 +47,7 @@ in
         {
           client_name = "audiobookshelf";
           client_id = "loHBtDZmyZrON3H0DtuLwaoNOC0aEGydqQW2WLdam~z2aR8doXs40ew5LIsg8l0cAlIaA554";
-          client_secret = "$pbkdf2-sha512$310000$dFQKDkvD0lWgCPAOQlw5Sg$PL1JKhX6whIx.CjvbLJUROysQlqzGv4BjdpwTspLA4ljG.wmcGQFqN2D387T309ba59bJ4umLhNg6OyeHqvKhA";
+          client_secret = "$pbkdf2-sha512$310000$g7HQizpcxTUErJjpTczmXA$lM1wLml0fxE2.0mwmrnVNu/jHah/uKkjW4fJ2dxWnZW0a.VCnaqPhBJiZn2WVsJVsOV/8QrWkB7wwdQyOQ8mJA";
           public = false;
           authorization_policy = "one_factor";
           require_pkce = true;
