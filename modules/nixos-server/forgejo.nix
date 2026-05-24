@@ -68,7 +68,7 @@ in
         {
           client_name = "Forgejo";
           client_id = "H0RNuqVg7fyYtN4uBBmmMkh2zOMZpmpab.vjDUZV9ApHDaUw34rvOL5Glr5q66wB26WZxrm4";
-          client_secret = "$pbkdf2-sha512$310000$VTVtASSZAHN8N3TpwBrG1g$KIVLy.ncnNs51vhe/vtREpRE.SLUwYG3Cqsde4sw/iBXnl/GfltlZpW0THtmQVed4N5DEwXWonD9FuF4YN6Q1g";
+          client_secret = "$pbkdf2-sha512$310000$Qrl8CXrZ3fmnyqfrOhKeow$2.S2NjnkKFYrHoaqXMZwZBCzL2VWMHS7YLMx3qO/zLbJLpQfLkijJ4RzFhSBydH7x5VLFnsv7vQnfceYb0WxBQ";
           public = false;
           authorization_policy = "one_factor";
           require_pkce = true;
