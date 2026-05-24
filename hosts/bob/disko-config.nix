@@ -216,7 +216,7 @@ in
           "reserved" = {
             type = "zfs_fs";
             options.mountpoint = "none";
-            options.refreservation = "10G";
+            options.refreservation = "50G";
           };
         };
       };
