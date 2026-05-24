@@ -43,7 +43,35 @@ in
     };
   };
 
-  services.zfs.autoScrub.enable = true;
+  services = {
+    zfs.autoScrub.enable = true;
+
+    sanoid = {
+      enable = true;
+
+      templates.backup = {
+        hourly = 24;
+        daily = 30;
+        monthly = 6;
+        autosnap = true;
+        autoprune = true;
+      };
+
+      datasets = {
+        "${zpoolName}/system" = {
+          useTemplate = [ "backup" ];
+          recursive = true;
+          processChildrenOnly = true;
+        };
+
+        "${zpoolName}/data" = {
+          useTemplate = [ "backup" ];
+          recursive = true;
+          processChildrenOnly = true;
+        };
+      };
+    };
+  };
 
   disko.devices = {
     disk = {
