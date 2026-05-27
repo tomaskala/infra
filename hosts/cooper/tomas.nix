@@ -18,11 +18,5 @@
       username = "tomas";
       homeDirectory = "/home/tomas";
     };
-
-    catppuccin = {
-      enable = true;
-      flavor = "macchiato";
-      accent = "mauve";
-    };
   };
 }

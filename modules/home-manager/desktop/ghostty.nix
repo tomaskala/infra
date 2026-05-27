@@ -5,7 +5,7 @@
     enable = true;
 
     settings = {
-      theme = "dark:Catppuccin Macchiato,light:Catppuccin Latte";
+      theme = "dark:Modus Vivendi,light:Modus Operandi";
       command = lib.getExe pkgs.fish;
       maximize = true;
     };

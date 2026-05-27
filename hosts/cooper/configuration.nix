@@ -60,10 +60,7 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = { inherit inputs; };
-      users.tomas.imports = [
-        ./tomas.nix
-        inputs.catppuccin.homeModules.catppuccin
-      ];
+      users.tomas = ./tomas.nix;
     };
 
     users = {
@@ -85,12 +82,6 @@
           ];
         };
       };
-    };
-
-    catppuccin = {
-      enable = true;
-      flavor = "macchiato";
-      accent = "mauve";
     };
 
     programs = {

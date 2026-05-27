@@ -7,11 +7,6 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +43,6 @@
       self,
       nixpkgs,
       nixos-hardware,
-      catppuccin,
       nix-darwin,
       home-manager,
       disko,
@@ -89,7 +83,6 @@
             agenix.nixosModules.default
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
             lanzaboote.nixosModules.lanzaboote
-            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
           ];
         };
@@ -115,7 +108,6 @@
           modules = [
             ./hosts/blacklodge/tomas.nix
             agenix.homeManagerModules.default
-            catppuccin.homeModules.catppuccin
           ];
         };
       };

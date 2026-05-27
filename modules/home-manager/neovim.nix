@@ -129,41 +129,6 @@
 
     plugins = with pkgs.vimPlugins; [
       {
-        plugin = catppuccin-nvim;
-        type = "lua";
-        config = # lua
-          ''
-            require("catppuccin").setup({
-              background = {
-                light = "latte",
-                dark = "macchiato",
-              },
-            })
-            vim.cmd.colorscheme("catppuccin")
-          '';
-      }
-      {
-        plugin = lualine-nvim;
-        type = "lua";
-        config = # lua
-          ''
-            require("lualine").setup({
-              options = {
-                theme = "catppuccin",
-              },
-              sections = {
-                lualine_x = { "filetype" },
-              },
-            })
-          '';
-      }
-      {
-        plugin = nvim-treesitter.withAllGrammars;
-      }
-      {
-        plugin = nvim-web-devicons;
-      }
-      {
         plugin = telescope-fzf-native-nvim;
       }
       {
@@ -225,6 +190,7 @@
         vim.loader.enable()
         vim.g.mapleader = ","
 
+        vim.cmd.colorscheme("quiet")
         vim.opt.tabstop = 2
         vim.opt.softtabstop = 2
         vim.opt.shiftwidth = 2
@@ -274,14 +240,6 @@
             if client:supports_method("textDocument/completion") then
               vim.lsp.completion.enable(true, client.id, args.buf)
             end
-          end,
-        })
-
-        vim.api.nvim_create_autocmd("FileType", {
-          desc = "Start treesitter",
-          group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-          callback = function()
-            pcall(vim.treesitter.start)
           end,
         })
 

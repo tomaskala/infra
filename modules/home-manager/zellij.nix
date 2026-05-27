@@ -5,9 +5,8 @@
     enable = true;
 
     settings = {
-      theme = "catppuccin-macchiato";
-      show_startup_tips = false;
       default_shell = lib.getExe pkgs.fish;
+      show_startup_tips = false;
     };
 
     layouts = {
