@@ -28,7 +28,6 @@ in
     ../../modules/nixos-server/paperless.nix
     ../../modules/nixos-server/readeck.nix
     ../../modules/nixos-server/tailscale.nix
-    ../../modules/nixos-server/tandoor.nix
   ];
 
   config = {
@@ -82,13 +81,6 @@ in
         mode = "0640";
         owner = "root";
         group = "tailscale";
-      };
-
-      "tandoor/secret-key" = {
-        file = ../../secrets/bob/tandoor/secret-key.age;
-        mode = "0640";
-        owner = "root";
-        group = "tandoor_recipes";
       };
 
       # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
@@ -416,12 +408,6 @@ in
       };
 
       tailscale.enable = true;
-
-      tandoor = {
-        enable = true;
-        inherit hostDomain;
-        subdomain = "tandoor";
-      };
     };
   };
 }

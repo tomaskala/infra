@@ -44,10 +44,6 @@ in
     bob
     gordon
   ];
-  "secrets/bob/tandoor/secret-key.age".publicKeys = [
-    bob
-    gordon
-  ];
   "secrets/bob/authelia/postgres-password.age".publicKeys = [
     bob
     gordon

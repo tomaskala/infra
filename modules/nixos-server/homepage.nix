@@ -36,15 +36,15 @@ in
               };
             }
             {
-              Media = {
-                style = "column";
-                rows = 3;
+              Documents = {
+                style = "row";
+                columns = 2;
               };
             }
             {
-              Documents = {
-                style = "column";
-                rows = 3;
+              Media = {
+                style = "row";
+                columns = 3;
               };
             }
           ];
@@ -115,13 +115,6 @@ in
                   icon = "readeck";
                   href = "https://${config.infra.readeck.subdomain}.${cfg.hostDomain}";
                   description = "Read later";
-                };
-              })
-              ++ (lib.optional config.infra.tandoor.enable {
-                Tandoor = {
-                  icon = "tandoor-recipes";
-                  href = "https://${config.infra.tandoor.subdomain}.${cfg.hostDomain}";
-                  description = "Recipe management";
                 };
               })
               ++ (lib.optional config.infra.paperless.enable {
