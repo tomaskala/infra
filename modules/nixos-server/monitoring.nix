@@ -64,6 +64,7 @@ in
           security = {
             admin_user = "admin";
             admin_password = "$__file{${config.age.secrets."grafana/admin-password".path}}";
+            secret_key = "$__file{${config.age.secrets."grafana/secret-key".path}}";
             disable_gravatar = true;
           };
 

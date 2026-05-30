@@ -9,7 +9,7 @@
         UseKeychain yes
       '';
 
-    matchBlocks = {
+    settings = {
       "*" = {
         addKeysToAgent = "yes";
         serverAliveInterval = 60;

@@ -185,7 +185,7 @@
       }
     ];
 
-    extraLuaConfig = # lua
+    initLua = # lua
       ''
         vim.loader.enable()
         vim.g.mapleader = ","

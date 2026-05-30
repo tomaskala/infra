@@ -51,7 +51,7 @@ in
         };
       };
 
-      openssh.settings.AcceptEnv = "GIT_PROTOCOL";
+      openssh.settings.AcceptEnv = [ "GIT_PROTOCOL" ];
 
       caddy = {
         enable = true;

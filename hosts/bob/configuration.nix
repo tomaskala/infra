@@ -133,6 +133,12 @@ in
         owner = "root";
         group = "grafana";
       };
+      "grafana/secret-key" = {
+        file = ../../secrets/bob/grafana/secret-key.age;
+        mode = "0640";
+        owner = "root";
+        group = "grafana";
+      };
       "grafana/authelia-password" = {
         file = ../../secrets/bob/grafana/authelia-password.age;
         mode = "0640";

@@ -76,6 +76,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/grafana/secret-key.age".publicKeys = [
+    bob
+    gordon
+  ];
   "secrets/bob/grafana/authelia-password.age".publicKeys = [
     bob
     gordon
