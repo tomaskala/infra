@@ -14,7 +14,7 @@
 
   config = {
     home = {
-      stateVersion = "24.05";
+      stateVersion = "26.05";
       username = "tomas";
       homeDirectory = "/home/tomas";
     };

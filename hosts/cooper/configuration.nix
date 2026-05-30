@@ -43,7 +43,7 @@
       };
     };
 
-    system.stateVersion = "24.05";
+    system.stateVersion = "26.05";
     nixpkgs.config.allowUnfree = true;
     hardware.enableAllFirmware = true;
 

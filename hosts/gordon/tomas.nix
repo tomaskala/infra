@@ -15,7 +15,7 @@
     programs.ghostty.package = null;
 
     home = {
-      stateVersion = "24.05";
+      stateVersion = "26.05";
       homeDirectory = "/Users/tomas";
     };
   };

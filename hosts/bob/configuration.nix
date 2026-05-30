@@ -37,7 +37,7 @@ in
       options = "--delete-older-than 30d";
     };
 
-    system.stateVersion = "25.11";
+    system.stateVersion = "26.05";
     nixpkgs.config.allowUnfree = true;
     hardware.enableAllFirmware = true;
 

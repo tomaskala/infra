@@ -97,7 +97,7 @@
 
     system = {
       primaryUser = "tomas";
-      stateVersion = 4;
+      stateVersion = 7;
 
       # activateSettings -u will reload the settings from the database and apply
       # them to the current session, so we do not need to log out and log in

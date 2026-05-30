@@ -8,7 +8,7 @@
     programs.bash.enable = true;
 
     home = {
-      stateVersion = "25.11";
+      stateVersion = "26.05";
       homeDirectory = "/home/tomas";
     };
   };
