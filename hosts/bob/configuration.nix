@@ -215,17 +215,7 @@ in
       inherit hostName;
       hostId = "527acb68";
 
-      firewall = {
-        enable = true;
-
-        interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts =
-          lib.mkIf (config.services.tailscale.enable && config.services.caddy.enable)
-            [
-              80
-              443
-            ];
-      };
-
+      firewall.enable = true;
       nftables.enable = true;
     };
 
@@ -248,6 +238,8 @@ in
     };
 
     services = {
+      caddy.openFirewall = true;
+
       chrony = {
         enable = true;
         enableNTS = true;
@@ -265,6 +257,7 @@ in
 
       openssh = {
         enable = true;
+        openFirewall = true;
 
         settings = {
           X11Forwarding = false;
