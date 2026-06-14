@@ -32,8 +32,6 @@ in
 
         settings = {
           PAPERLESS_ADMIN_USER = "admin";
-          # Czech+English
-          PAPERLESS_OCR_LANGUAGE = "ces+eng";
           # Use the web UI for uploading documents.
           PAPERLESS_CONSUMER_DISABLE = true;
         };
