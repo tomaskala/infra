@@ -30,6 +30,7 @@ in
             DOMAIN = domain;
             ROOT_URL = "https://${domain}/";
             PROTOCOL = "http+unix";
+            SSH_PORT = lib.head config.services.openssh.ports;
           };
 
           cache = {
