@@ -264,7 +264,6 @@ in
           PermitRootLogin = "no";
           KbdInteractiveAuthentication = false;
           PasswordAuthentication = false;
-          UsePAM = false;
         };
       };
 
