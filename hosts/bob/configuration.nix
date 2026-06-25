@@ -41,7 +41,7 @@ in
     hardware.enableAllFirmware = true;
 
     fileSystems.${mediaDir} = {
-      device = "//10.0.0.10/Media";
+      device = "//10.0.50.11/Media";
       fsType = "cifs";
       options =
         let
@@ -303,7 +303,7 @@ in
             job_name = "snmp";
             static_configs = [
               {
-                targets = [ "10.0.0.10" ];
+                targets = [ "10.0.10.11" ];
               }
             ];
             metrics_path = "/snmp";
