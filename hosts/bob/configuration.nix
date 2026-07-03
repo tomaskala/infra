@@ -164,7 +164,7 @@ in
           hashedPasswordFile = config.age.secrets."users/tomas-password".path;
           extraGroups = [ "wheel" ];
           openssh.authorizedKeys.keys = [
-	    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBviQmhfUXTCnR5q/OFMfsbRNoYrbODXGo+ddvFZsp5K tomas@blacklodge"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBviQmhfUXTCnR5q/OFMfsbRNoYrbODXGo+ddvFZsp5K tomas@blacklodge"
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6BGS5Ty3Oaozhow1qwTsOitN6Ksje4GEzheMzXoijW tomas@gordon"
           ];
         };
