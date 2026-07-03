@@ -151,7 +151,7 @@ in
         virtualHosts.${cfg.hostDomain} = {
           useACMEHost = cfg.hostDomain;
           extraConfig = ''
-            ${lib.optionalString config.infra.authelia.enable "import auth"}
+            ${lib.optionalString config.infra.authelia.enable "import auth *"}
             reverse_proxy :${builtins.toString config.services.homepage-dashboard.listenPort}
           '';
         };

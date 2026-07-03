@@ -41,7 +41,7 @@ in
         # Importable authentication block.
         extraConfig = ''
           (auth) {
-            forward_auth :${builtins.toString config.infra.authelia.port} {
+            forward_auth {args[0]} :${builtins.toString config.infra.authelia.port} {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
             }

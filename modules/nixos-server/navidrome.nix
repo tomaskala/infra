@@ -66,7 +66,9 @@ in
         virtualHosts.${domain} = {
           useACMEHost = cfg.hostDomain;
           extraConfig = ''
-            ${lib.optionalString config.infra.authelia.enable "import auth"}
+            # Enable subsonic clients.
+            ${lib.optionalString config.infra.authelia.enable "@protected not path /rest/*"}
+            ${lib.optionalString config.infra.authelia.enable "import auth @protected"}
             reverse_proxy unix//run/navidrome/navidrome.sock
           '';
         };
