@@ -303,7 +303,7 @@ in
             job_name = "snmp";
             static_configs = [
               {
-                targets = [ "10.0.10.11" ];
+                targets = [ "10.0.50.11" ];
               }
             ];
             metrics_path = "/snmp";
