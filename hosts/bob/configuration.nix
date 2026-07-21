@@ -14,6 +14,7 @@ in
   imports = [
     ./disko-config.nix
     ./hardware-configuration.nix
+    ./network-monitoring.nix
     ../../modules/nix.nix
     ../../modules/programs.nix
     ../../modules/nixos-server/audiobookshelf.nix

@@ -37,6 +37,12 @@ in
                 access = "proxy";
                 url = "http://127.0.0.1:${builtins.toString config.services.prometheus.port}";
               }
+              {
+                name = "Loki";
+                type = "loki";
+                access = "proxy";
+                url = "http://127.0.0.1:${builtins.toString config.services.loki.configuration.server.http_listen_port}";
+              }
             ];
           };
         };
@@ -160,6 +166,56 @@ in
             token_endpoint_auth_method = "client_secret_basic";
           }
         ];
+      };
+
+      alloy.enable = true;
+
+      loki = {
+        enable = true;
+
+        configuration = {
+          auth_enabled = false;
+
+          server = {
+            http_listen_port = 3100;
+            http_listen_address = "127.0.0.1";
+            grpc_listen_address = "127.0.0.1";
+          };
+
+          common = {
+            instance_addr = "127.0.0.1";
+            replication_factor = 1;
+            path_prefix = config.services.loki.dataDir;
+            ring.kvstore.store = "inmemory";
+          };
+
+          schema_config.configs = [
+            {
+              from = "2020-05-15";
+              store = "tsdb";
+              object_store = "filesystem";
+              schema = "v13";
+
+              index = {
+                prefix = "index_";
+                period = "24h";
+              };
+            }
+          ];
+
+          limits_config = {
+            retention_period = "744h"; # 31 days
+          };
+
+          compactor = {
+            retention_enabled = true;
+            working_directory = "${config.services.loki.dataDir}/retention";
+            delete_request_store = "filesystem";
+          };
+
+          storage_config.filesystem.directory = "${config.services.loki.dataDir}/chunks";
+          analytics.reporting_enabled = false;
+        };
       };
     };
 
