@@ -5,7 +5,7 @@
     enable = true;
 
     settings = {
-      theme = "dark:Modus Vivendi,light:Modus Operandi";
+      theme = "dark:Nvim Dark,light:Nvim Light";
       command = lib.getExe pkgs.fish;
       maximize = true;
     };
