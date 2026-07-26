@@ -55,7 +55,7 @@ in
           EnableTranscodingConfig = false;
           # Scan every day at 04:00 to run after sync.
           ScanSchedule = "0 4 * * *";
-          ReverseProxyWhitelist = lib.mkIf config.infra.authelia.enable "@";
+          "ExtAuth.TrustedSources" = lib.mkIf config.infra.authelia.enable "@";
           EnableUserEditing = !config.infra.authelia.enable;
         };
       };
