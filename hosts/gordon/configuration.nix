@@ -44,7 +44,6 @@
 
         # Go development
         go
-        golangci-lint
         gotools
 
         # Lua development
