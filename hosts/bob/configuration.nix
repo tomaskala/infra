@@ -74,6 +74,7 @@ in
       "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
       "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
       "paperless/env".file = ../../secrets/bob/paperless/env.age;
+      "navidrome/env".file = ../../secrets/bob/navidrome/env.age;
 
       "tailscale/api-key" = {
         file = ../../secrets/bob/tailscale/api-key.age;

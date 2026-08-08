@@ -44,6 +44,10 @@ in
     bob
     gordon
   ];
+  "secrets/bob/navidrome/env.age".publicKeys = [
+    bob
+    gordon
+  ];
   "secrets/bob/authelia/postgres-password.age".publicKeys = [
     bob
     gordon

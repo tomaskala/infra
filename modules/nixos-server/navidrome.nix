@@ -43,14 +43,16 @@ in
       navidrome = {
         enable = true;
         openFirewall = false;
+        environmentFile = config.age.secrets."navidrome/env".path;
 
         settings = {
           Address = "unix:/run/navidrome/navidrome.sock";
           MusicFolder = cfg.musicDir.destination;
           AutoImportPlaylists = false;
+          EnableArtworkUpload = false;
           EnableCoverAnimation = false;
-          EnableExternalServices = false;
           EnableGravatar = false;
+          EnableInsightsCollector = false;
           EnableStarRating = false;
           EnableTranscodingConfig = false;
           # Scan every day at 04:00 to run after sync.
