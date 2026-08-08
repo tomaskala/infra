@@ -86,6 +86,7 @@ in
             archive = true;
             chmod = "D0755,F0644";
             human-readable = true;
+            omit-dir-times = true;
             verbose = true;
           };
 
