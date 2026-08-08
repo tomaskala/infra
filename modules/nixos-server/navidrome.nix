@@ -85,7 +85,6 @@ in
           settings = {
             archive = true;
             chmod = "D0755,F0644";
-            chown = "${user}:${group}";
             human-readable = true;
             verbose = true;
           };
