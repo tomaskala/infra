@@ -49,16 +49,21 @@ in
           Address = "unix:/run/navidrome/navidrome.sock";
           MusicFolder = cfg.musicDir.destination;
           AutoImportPlaylists = false;
+
           EnableArtworkUpload = false;
           EnableCoverAnimation = false;
           EnableGravatar = false;
           EnableInsightsCollector = false;
+          EnableSharing = false;
           EnableStarRating = false;
           EnableTranscodingConfig = false;
+
           # Scan every day at 04:00 to run after sync.
           ScanSchedule = "0 4 * * *";
+          EnforceNonRootUser = true;
+
           "ExtAuth.TrustedSources" = lib.mkIf config.infra.authelia.enable "@";
-          EnableUserEditing = !config.infra.authelia.enable;
+          "Subsonic.AppendAlbumVersion" = false;
         };
       };
 
