@@ -23,6 +23,7 @@ in
       enable = true;
       authKeyFile = config.age.secrets."tailscale/api-key".path;
       permitCertUid = config.services.caddy.user;
+      extraDaemonFlags = [ "--no-logs-no-support" ];
     };
 
     security.tpm2.enable = true;
