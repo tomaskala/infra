@@ -71,7 +71,6 @@
         Hush = 1544743900;
         Telegram = 747648890;
         Wipr = 1662217862;
-        WireGuard = 1451685025;
       };
 
       casks = [
