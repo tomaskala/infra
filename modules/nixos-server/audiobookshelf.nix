@@ -74,6 +74,9 @@ in
 
     systemd.services.audiobookshelf.serviceConfig = {
       RuntimeDirectory = "audiobookshelf";
+      # Disallow group access to the state directory. Caddy must be in the same group as audiobookshelf
+      # in order to access the Unix socket, but it shouldn't be able to access anything else.
+      StateDirectoryMode = "0700";
 
       NoNewPrivileges = true;
       LockPersonality = true;
