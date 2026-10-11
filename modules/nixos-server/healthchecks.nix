@@ -32,7 +32,7 @@ in
           ProtectKernelModules = true;
           ProtectControlGroups = true;
           RestrictNamespaces = true;
-          RestrictSUIDGUID = true;
+          RestrictSUIDSGID = true;
           UMask = "0077";
           LockPersonality = true;
           RestrictRealtime = true;
