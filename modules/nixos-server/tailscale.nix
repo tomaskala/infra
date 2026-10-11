@@ -17,6 +17,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    boot.kernelModules = [ "tun" ];
+
     environment.systemPackages = [ pkgs.tailscale ];
 
     services.tailscale = {
@@ -51,10 +53,9 @@ in
         AmbientCapabilities = [
           "CAP_NET_RAW"
           "CAP_NET_ADMIN"
-          "CAP_SYS_MODULE"
         ];
 
-        ProtectKernelModules = false;
+        ProtectKernelModules = true;
         RestrictAddressFamilies = [
           "AF_UNIX"
           "AF_INET"
