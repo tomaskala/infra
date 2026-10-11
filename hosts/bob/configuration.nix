@@ -56,7 +56,11 @@ in
 
           security = [
             "credentials=${config.age.secrets."nas/smb-credentials".path}"
-            "seal" # Use encryption (requires SMB 3.0).
+            "seal" # Use encryption (requires at least SMB 3.0).
+            "nosuid" # Ignore setuid/setgid bits and file capabilities from the share.
+            "nodev" # Ignore device nodes on the share, so crafted files can't access hardware.
+            "noexec" # Block executing files directly from the share.
+            "vers=3.1.1" # Require SMBv3.1.1.
           ];
         in
         [
