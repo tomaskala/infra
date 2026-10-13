@@ -68,44 +68,48 @@ in
         ];
     };
 
-    age.secrets =
-      let
-        ownedBy = owner: file: {
-          inherit owner file;
-          mode = "0400";
+    age = {
+      identityPaths = [ "/etc/agenix/agenix.key" ];
+
+      secrets =
+        let
+          ownedBy = owner: file: {
+            inherit owner file;
+            mode = "0400";
+          };
+        in
+        {
+          "users/tomas-password".file = ../../secrets/bob/users/tomas-password.age;
+          "users/root-password".file = ../../secrets/bob/users/root-password.age;
+          "acme/env".file = ../../secrets/bob/acme/env.age;
+          "nas/smb-credentials".file = ../../secrets/bob/nas/smb-credentials.age;
+          "readeck/env".file = ../../secrets/bob/readeck/env.age;
+          "healthchecks/env".file = ../../secrets/bob/healthchecks/env.age;
+          "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
+          "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
+          "paperless/env".file = ../../secrets/bob/paperless/env.age;
+          "navidrome/env".file = ../../secrets/bob/navidrome/env.age;
+
+          "tailscale/api-key" = ownedBy "tailscaled" ../../secrets/bob/tailscale/api-key.age;
+
+          # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
+          "authelia/postgres-password" =
+            ownedBy "authelia-main" ../../secrets/bob/authelia/postgres-password.age;
+          "authelia/jwt-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/jwt-secret.age;
+          "authelia/session-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/session-secret.age;
+          "authelia/storage-encryption-key" =
+            ownedBy "authelia-main" ../../secrets/bob/authelia/storage-encryption-key.age;
+          "authelia/users" = ownedBy "authelia-main" ../../secrets/bob/authelia/users.age;
+          "authelia/oidc-hmac-secret" =
+            ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-hmac-secret.age;
+          "authelia/oidc-issuer-private-key" =
+            ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-issuer-private-key.age;
+
+          "grafana/admin-password" = ownedBy "grafana" ../../secrets/bob/grafana/admin-password.age;
+          "grafana/secret-key" = ownedBy "grafana" ../../secrets/bob/grafana/secret-key.age;
+          "grafana/authelia-password" = ownedBy "grafana" ../../secrets/bob/grafana/authelia-password.age;
         };
-      in
-      {
-        "users/tomas-password".file = ../../secrets/bob/users/tomas-password.age;
-        "users/root-password".file = ../../secrets/bob/users/root-password.age;
-        "acme/env".file = ../../secrets/bob/acme/env.age;
-        "nas/smb-credentials".file = ../../secrets/bob/nas/smb-credentials.age;
-        "readeck/env".file = ../../secrets/bob/readeck/env.age;
-        "healthchecks/env".file = ../../secrets/bob/healthchecks/env.age;
-        "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
-        "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
-        "paperless/env".file = ../../secrets/bob/paperless/env.age;
-        "navidrome/env".file = ../../secrets/bob/navidrome/env.age;
-
-        "tailscale/api-key" = ownedBy "tailscaled" ../../secrets/bob/tailscale/api-key.age;
-
-        # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
-        "authelia/postgres-password" =
-          ownedBy "authelia-main" ../../secrets/bob/authelia/postgres-password.age;
-        "authelia/jwt-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/jwt-secret.age;
-        "authelia/session-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/session-secret.age;
-        "authelia/storage-encryption-key" =
-          ownedBy "authelia-main" ../../secrets/bob/authelia/storage-encryption-key.age;
-        "authelia/users" = ownedBy "authelia-main" ../../secrets/bob/authelia/users.age;
-        "authelia/oidc-hmac-secret" =
-          ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-hmac-secret.age;
-        "authelia/oidc-issuer-private-key" =
-          ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-issuer-private-key.age;
-
-        "grafana/admin-password" = ownedBy "grafana" ../../secrets/bob/grafana/admin-password.age;
-        "grafana/secret-key" = ownedBy "grafana" ../../secrets/bob/grafana/secret-key.age;
-        "grafana/authelia-password" = ownedBy "grafana" ../../secrets/bob/grafana/authelia-password.age;
-      };
+    };
 
     home-manager = {
       useGlobalPkgs = true;
