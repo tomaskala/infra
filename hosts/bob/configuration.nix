@@ -55,7 +55,7 @@ in
           ];
 
           security = [
-            "credentials=${config.age.secrets."nas/smb-credentials".path}"
+            "credentials=${config.sops.secrets."nas/smb-credentials".path}"
             "seal" # Use encryption (requires at least SMB 3.0).
             "nosuid" # Ignore setuid/setgid bits and file capabilities from the share.
             "nodev" # Ignore device nodes on the share, so crafted files can't access hardware.
@@ -68,47 +68,71 @@ in
         ];
     };
 
-    age = {
-      identityPaths = [ "/etc/agenix/agenix.key" ];
+    sops = {
+      defaultSopsFile = ./secrets.yaml;
+      age.keyFile = "/etc/sops/sops-nix.key";
 
-      secrets =
-        let
-          ownedBy = owner: file: {
-            inherit owner file;
-            mode = "0400";
-          };
-        in
-        {
-          "users/tomas-password".file = ../../secrets/bob/users/tomas-password.age;
-          "users/root-password".file = ../../secrets/bob/users/root-password.age;
-          "acme/env".file = ../../secrets/bob/acme/env.age;
-          "nas/smb-credentials".file = ../../secrets/bob/nas/smb-credentials.age;
-          "readeck/env".file = ../../secrets/bob/readeck/env.age;
-          "healthchecks/env".file = ../../secrets/bob/healthchecks/env.age;
-          "prometheus/snmp-env".file = ../../secrets/bob/prometheus/snmp-env.age;
-          "paperless/admin-password".file = ../../secrets/bob/paperless/admin-password.age;
-          "paperless/env".file = ../../secrets/bob/paperless/env.age;
-          "navidrome/env".file = ../../secrets/bob/navidrome/env.age;
+      secrets = {
+        "users/tomas".neededForUsers = true;
+        "users/root".neededForUsers = true;
 
-          "tailscale/api-key" = ownedBy "tailscaled" ../../secrets/bob/tailscale/api-key.age;
+        "acme/env" = { };
+        "nas/smb-credentials" = { };
+        "readeck/env" = { };
+        "healthchecks/env" = { };
+        "prometheus/snmp-env" = { };
+        "paperless/admin-password" = { };
+        "paperless/env" = { };
+        "navidrome/env" = { };
 
-          # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
-          "authelia/postgres-password" =
-            ownedBy "authelia-main" ../../secrets/bob/authelia/postgres-password.age;
-          "authelia/jwt-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/jwt-secret.age;
-          "authelia/session-secret" = ownedBy "authelia-main" ../../secrets/bob/authelia/session-secret.age;
-          "authelia/storage-encryption-key" =
-            ownedBy "authelia-main" ../../secrets/bob/authelia/storage-encryption-key.age;
-          "authelia/users" = ownedBy "authelia-main" ../../secrets/bob/authelia/users.age;
-          "authelia/oidc-hmac-secret" =
-            ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-hmac-secret.age;
-          "authelia/oidc-issuer-private-key" =
-            ownedBy "authelia-main" ../../secrets/bob/authelia/oidc-issuer-private-key.age;
-
-          "grafana/admin-password" = ownedBy "grafana" ../../secrets/bob/grafana/admin-password.age;
-          "grafana/secret-key" = ownedBy "grafana" ../../secrets/bob/grafana/secret-key.age;
-          "grafana/authelia-password" = ownedBy "grafana" ../../secrets/bob/grafana/authelia-password.age;
+        "tailscale/api-key" = {
+          mode = "0400";
+          owner = "tailscaled";
         };
+
+        # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
+        "authelia/postgres-password" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/jwt-secret" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/session-secret" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/storage-encryption-key" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/oidc/hmac-secret" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/oidc/issuer-private-key" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+        "authelia/users" = {
+          mode = "0400";
+          owner = "authelia-main";
+        };
+
+        "grafana/admin-password" = {
+          mode = "0400";
+          owner = "grafana";
+        };
+        "grafana/secret-key" = {
+          mode = "0400";
+          owner = "grafana";
+        };
+        "grafana/authelia-password" = {
+          mode = "0400";
+          owner = "grafana";
+        };
+      };
     };
 
     home-manager = {
@@ -122,11 +146,11 @@ in
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets."users/root-password".path;
+        root.hashedPasswordFile = config.sops.secrets."users/root".path;
 
         tomas = {
           isNormalUser = true;
-          hashedPasswordFile = config.age.secrets."users/tomas-password".path;
+          hashedPasswordFile = config.sops.secrets."users/tomas".path;
           extraGroups = [ "wheel" ];
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBviQmhfUXTCnR5q/OFMfsbRNoYrbODXGo+ddvFZsp5K tomas@blacklodge"
@@ -195,7 +219,7 @@ in
 
         certs.${hostDomain} = {
           dnsProvider = "cloudflare";
-          environmentFile = config.age.secrets."acme/env".path;
+          environmentFile = config.sops.secrets."acme/env".path;
           extraDomainNames = [ "*.${hostDomain}" ];
         };
       };
@@ -244,7 +268,7 @@ in
             enable = true;
             listenAddress = "127.0.0.1";
             configurationPath = ./snmp.yml;
-            environmentFile = config.age.secrets."prometheus/snmp-env".path;
+            environmentFile = config.sops.secrets."prometheus/snmp-env".path;
           };
 
           smartctl = {

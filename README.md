@@ -34,25 +34,46 @@ To define and deploy a machine (called `twinpeaks` in this example), do the foll
 
 To add secrets for a machine, do the following.
 
-1. Set the age key location in the configuration file for `twinpeaks`.
+1. Create an `age` identity.
+2. Configure `sops` in the configuration file for `twinpeaks`.
 
    ```
-   age.identityPaths = [ <key-location> ];
+   sops = {
+     defaultSopsFile = ../../secrets/twinpeaks.yaml;
+     age.keyFile = "<key-location>";
+
+     secrets = {
+       "<secret-name>" = {};
+       "<another-secret>" = {
+         mode = "<mode-in-octal>";
+         owner = "<owner>";
+         group = "<group>";
+       };
+     };
+   };
    ```
 
-2. Put the agenix public key and any secrets inside `secrets.nix`.
-3. Define all secrets.
+3. Configure the `age` recipient and secrets creation rules in `.sops.yaml`.
+4. Define all secrets.
 
    ```
-   $ nix shell github:ryantm/agenix#agenix
-   $ agenix -e secrets/secret.age
+   $ nix shell nixpkgs#sops
+   $ sops secrets/twinpeaks.yaml
    ```
 
-   Note that for secrets holding the user passwords (to be used with `config.users.users.<name>.hashedPasswordFile`), the content of the age-encrypted file should be the SHA-512 of the password. That is, create the secret as
+   Note that for secrets holding the user passwords (to be used with `config.users.users.<name>.hashedPasswordFile`), the secret should be the SHA-512 of the password. That is, create the secret as
 
    ```
-   $ nix shell github:ryantm/agenix#agenix
-   $ openssl passwd -6 -in <password-file> | agenix -e secrets/users/user.age
+   $ nix shell nixpkgs#sops
+   $ openssl passwd -6 -in <password-file>
+   $ # Paste into the editor.
+   $ sops secrets/users/user.age
+   ```
+
+   The user password secrets also have to be configured with
+
+   ```
+   sops.secrets.<password-name>.neededForUsers = true;
    ```
 
 ## nixos-anywhere
@@ -78,13 +99,13 @@ cleanup() {
 trap cleanup EXIT
 
 # Create the directory where the configuration expects to find the age key.
-install -d -m755 "$temp/etc/agenix"
+install -d -m755 "$temp/etc/sops"
 
 # Decrypt your private key from the password store and copy it to the temporary directory.
-passage agenix_key > "$temp/etc/agenix/agenix.key"
+passage sops-nix-key > "$temp/etc/sops/sops-nix.key"
 
 # Set the correct permissions.
-chmod 600 "$temp/etc/agenix/agenix.key"
+chmod 600 "$temp/etc/sops/sops-nix.key"
 
 # Install NixOS to the host system with our secrets.
 nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --flake '.#twinpeaks' --target-host root@<ip-address>

@@ -25,8 +25,8 @@ in
         enable = true;
         inherit domain;
         database.createLocally = true;
-        environmentFile = config.age.secrets."paperless/env".path;
-        passwordFile = config.age.secrets."paperless/admin-password".path;
+        environmentFile = config.sops.secrets."paperless/env".path;
+        passwordFile = config.sops.secrets."paperless/admin-password".path;
         configureNginx = false;
         configureTika = false;
 

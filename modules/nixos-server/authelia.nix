@@ -53,15 +53,15 @@ in
         enable = true;
 
         secrets = {
-          jwtSecretFile = config.age.secrets."authelia/jwt-secret".path;
-          sessionSecretFile = config.age.secrets."authelia/session-secret".path;
-          storageEncryptionKeyFile = config.age.secrets."authelia/storage-encryption-key".path;
-          oidcHmacSecretFile = config.age.secrets."authelia/oidc-hmac-secret".path;
-          oidcIssuerPrivateKeyFile = config.age.secrets."authelia/oidc-issuer-private-key".path;
+          jwtSecretFile = config.sops.secrets."authelia/jwt-secret".path;
+          sessionSecretFile = config.sops.secrets."authelia/session-secret".path;
+          storageEncryptionKeyFile = config.sops.secrets."authelia/storage-encryption-key".path;
+          oidcHmacSecretFile = config.sops.secrets."authelia/oidc/hmac-secret".path;
+          oidcIssuerPrivateKeyFile = config.sops.secrets."authelia/oidc/issuer-private-key".path;
         };
 
         environmentVariables = {
-          AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE = config.age.secrets."authelia/postgres-password".path;
+          AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE = config.sops.secrets."authelia/postgres-password".path;
         };
 
         settings = {
@@ -89,7 +89,7 @@ in
             username = "authelia-main";
           };
 
-          authentication_backend.file.path = config.age.secrets."authelia/users".path;
+          authentication_backend.file.path = config.sops.secrets."authelia/users".path;
 
           access_control = {
             default_policy = "deny";

@@ -31,8 +31,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix = {
-      url = "github:ryantm/agenix/main";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -46,7 +46,7 @@
       home-manager,
       disko,
       lanzaboote,
-      agenix,
+      sops-nix,
       ...
     }@inputs:
     let
@@ -64,7 +64,7 @@
 
           modules = [
             ./hosts/bob/configuration.nix
-            agenix.nixosModules.default
+            sops-nix.nixosModules.default
             disko.nixosModules.default
             # nixos-hardware unfortunately lacks a preset for this particular NUC model.
             nixos-hardware.nixosModules.common-cpu-intel
@@ -79,7 +79,7 @@
 
           modules = [
             ./hosts/cooper/configuration.nix
-            agenix.nixosModules.default
+            sops-nix.nixosModules.default
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
             lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
@@ -93,7 +93,7 @@
 
           modules = [
             ./hosts/gordon/configuration.nix
-            agenix.darwinModules.default
+            sops-nix.darwinModules.default
             home-manager.darwinModules.home-manager
           ];
         };
@@ -106,7 +106,7 @@
 
           modules = [
             ./hosts/blacklodge/tomas.nix
-            agenix.homeManagerModules.default
+            sops-nix.homeManagerModules.default
           ];
         };
       };

@@ -19,7 +19,7 @@ in
         description = "Keepalive signal";
 
         serviceConfig = {
-          EnvironmentFile = config.age.secrets."healthchecks/env".path;
+          EnvironmentFile = config.sops.secrets."healthchecks/env".path;
           Type = "oneshot";
 
           DynamicUser = true;

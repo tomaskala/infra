@@ -47,12 +47,13 @@
     nixpkgs.config.allowUnfree = true;
     hardware.enableAllFirmware = true;
 
-    age = {
-      identityPaths = [ "/home/tomas/.ssh/id_ed25519_agenix" ];
+    sops = {
+      defaultSopsFile = ./secrets.yaml;
+      age.sshKeyPaths = [ "/home/tomas/.ssh/id_ed25519_agenix" ];
 
       secrets = {
-        "users/tomas-password".file = ../../secrets/cooper/users/tomas-password.age;
-        "users/root-password".file = ../../secrets/cooper/users/root-password.age;
+        "users/tomas".neededForUsers = true;
+        "users/root".neededForUsers = true;
       };
     };
 
@@ -67,11 +68,11 @@
       mutableUsers = false;
 
       users = {
-        root.hashedPasswordFile = config.age.secrets."users/root-password".path;
+        root.hashedPasswordFile = config.sops.secrets."users/root".path;
 
         tomas = {
           isNormalUser = true;
-          hashedPasswordFile = config.age.secrets."users/tomas-password".path;
+          hashedPasswordFile = config.sops.secrets."users/tomas".path;
           extraGroups = [
             "audio"
             "networkmanager"

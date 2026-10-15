@@ -63,8 +63,8 @@ in
 
           security = {
             admin_user = "admin";
-            admin_password = "$__file{${config.age.secrets."grafana/admin-password".path}}";
-            secret_key = "$__file{${config.age.secrets."grafana/secret-key".path}}";
+            admin_password = "$__file{${config.sops.secrets."grafana/admin-password".path}}";
+            secret_key = "$__file{${config.sops.secrets."grafana/secret-key".path}}";
             disable_gravatar = true;
           };
 
@@ -78,7 +78,7 @@ in
             name = "Authelia";
             icon = "signin";
             client_id = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
-            client_secret = "$__file{${config.age.secrets."grafana/authelia-password".path}}";
+            client_secret = "$__file{${config.sops.secrets."grafana/authelia-password".path}}";
             scopes = [
               "openid"
               "profile"

@@ -43,7 +43,7 @@ in
       navidrome = {
         enable = true;
         openFirewall = false;
-        environmentFile = config.age.secrets."navidrome/env".path;
+        environmentFile = config.sops.secrets."navidrome/env".path;
 
         settings = {
           Address = "unix:/run/navidrome/navidrome.sock";

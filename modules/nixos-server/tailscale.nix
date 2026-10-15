@@ -23,7 +23,7 @@ in
 
     services.tailscale = {
       enable = true;
-      authKeyFile = config.age.secrets."tailscale/api-key".path;
+      authKeyFile = config.sops.secrets."tailscale/api-key".path;
       permitCertUid = config.services.caddy.user;
       extraDaemonFlags = [ "--no-logs-no-support" ];
     };
@@ -111,7 +111,7 @@ in
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
 
-        ReadOnlyPaths = [ config.age.secrets."tailscale/api-key".path ];
+        ReadOnlyPaths = [ config.sops.secrets."tailscale/api-key".path ];
         RestrictAddressFamilies = [ "AF_UNIX" ];
 
         NoNewPrivileges = true;
