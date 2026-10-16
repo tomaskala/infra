@@ -138,7 +138,7 @@ in
           {
             client_name = "Grafana";
             client_id = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
-            client_secret = "$pbkdf2-sha512$310000$hQ0qGqpskj7tgSaVvDjY5A$nA9BBEvndooWYyM.6LFvoDzHWNc5lm/PqLcKlkTgA00g57IurTmWDNCg165RhTs9lqh.IL52/LrL3E5K74J1Ug";
+            client_secret = "$pbkdf2-sha512$310000$/YZi4RumA3MyHwCmJrqATg$xeiI7.1vOCS0IiFXNy9EWS87Ny4.JaWOKkOtAa2NcTBqJaXrl9t.94tGzqXXnmVkHSrV0aK77mHCSkZ9BeEgXA";
             claims_policy = "grafana";
             public = false;
             authorization_policy = "one_factor";

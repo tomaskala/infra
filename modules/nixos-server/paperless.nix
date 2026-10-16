@@ -52,7 +52,7 @@ in
         {
           client_name = "Paperless";
           client_id = "uyC3mXDzLEuj8EAplmTmgAhYvJAmGDcARmenl.bT50tKOWgA.ZtI.nkHeo6Iwvgst4eXONJo";
-          client_secret = "$pbkdf2-sha512$310000$mPqgYLGej6L27kI5mxAwqQ$xRaH2f8b7RNhmGHvNXBoAZrebirdLAspLVWV2byDLFKyNqhuHE1wHEg3/WCIGW8pXvndBBsltqzTUeAe5iW6hA";
+          client_secret = "$pbkdf2-sha512$310000$ayNWr2ery275IsGs7DHPdg$tvnnquP6d8M2mX8Ve9ipWziz8QoTsvlbXnlaOjtCRnaQsKdzt8iz/TNlpPQ1QpY3umriWrOqKKvhtYipnR8BmA";
           public = false;
           authorization_policy = "one_factor";
           require_pkce = true;
