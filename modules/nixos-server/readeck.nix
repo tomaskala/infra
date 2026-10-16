@@ -8,6 +8,9 @@
 let
   cfg = config.infra.readeck;
   domain = "${cfg.subdomain}.${cfg.hostDomain}";
+
+  user = "readeck";
+  group = "readeck";
 in
 {
   options.infra.readeck = {
@@ -21,12 +24,6 @@ in
     subdomain = lib.mkOption {
       type = lib.types.str;
       description = "Subdomain of this service";
-    };
-
-    port = lib.mkOption {
-      type = lib.types.port;
-      description = "Port Readeck listens on";
-      default = 8000;
     };
   };
 
@@ -43,8 +40,7 @@ in
 
         settings = {
           server = {
-            host = "127.0.0.1";
-            inherit (cfg) port;
+            host = "unix:/run/readeck/readeck.sock?mode=0660";
             trusted_proxies = [ "127.0.0.1" ];
           };
 
@@ -68,7 +64,7 @@ in
         virtualHosts.${domain} = {
           useACMEHost = cfg.hostDomain;
           extraConfig = ''
-            reverse_proxy :${builtins.toString cfg.port}
+            reverse_proxy unix//run/readeck/readeck.sock
           '';
         };
       };
@@ -94,13 +90,26 @@ in
       ];
     };
 
+    users = {
+      users = {
+        ${user} = {
+          inherit group;
+          isSystemUser = true;
+        };
+        ${config.services.caddy.user}.extraGroups = [ group ];
+      };
+
+      groups.${group} = { };
+    };
+
     systemd.services.readeck = {
       after = [ "postgresql.target" ];
       requires = [ "postgresql.target" ];
 
       serviceConfig = {
-        User = "readeck";
-        Group = "readeck";
+        User = user;
+        Group = group;
+        RuntimeDirectory = "readeck";
       };
     };
   };
