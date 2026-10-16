@@ -91,10 +91,6 @@ in
         };
 
         # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
-        "authelia/postgres-password" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
         "authelia/jwt-secret" = {
           mode = "0400";
           owner = "authelia-main";

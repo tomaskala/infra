@@ -60,10 +60,6 @@ in
           oidcIssuerPrivateKeyFile = config.sops.secrets."authelia/oidc/issuer-private-key".path;
         };
 
-        environmentVariables = {
-          AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE = config.sops.secrets."authelia/postgres-password".path;
-        };
-
         settings = {
           theme = "auto";
           log.level = "info";
