@@ -85,7 +85,11 @@ in
             username = "authelia-main";
           };
 
-          authentication_backend.file.path = config.sops.secrets."authelia/users".path;
+          authentication_backend = {
+            file.path = config.sops.secrets."authelia/users".path;
+            password_reset.disable = true;
+            password_change.disable = true;
+          };
 
           access_control = {
             default_policy = "deny";
