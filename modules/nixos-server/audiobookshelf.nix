@@ -42,33 +42,15 @@ in
           '';
         };
       };
+    };
 
-      authelia.instances.main.settings.identity_providers.oidc.clients = [
-        {
-          client_name = "audiobookshelf";
-          client_id = "loHBtDZmyZrON3H0DtuLwaoNOC0aEGydqQW2WLdam~z2aR8doXs40ew5LIsg8l0cAlIaA554";
-          client_secret = "$pbkdf2-sha512$310000$g7HQizpcxTUErJjpTczmXA$lM1wLml0fxE2.0mwmrnVNu/jHah/uKkjW4fJ2dxWnZW0a.VCnaqPhBJiZn2WVsJVsOV/8QrWkB7wwdQyOQ8mJA";
-          public = false;
-          authorization_policy = "one_factor";
-          require_pkce = true;
-          pkce_challenge_method = "S256";
-          redirect_uris = [
-            "https://${domain}/auth/openid/callback"
-            "https://${domain}/auth/openid/mobile-redirect"
-            "audiobookshelf://oauth"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "groups"
-            "email"
-          ];
-          response_types = [ "code" ];
-          grant_types = [ "authorization_code" ];
-          access_token_signed_response_alg = "none";
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
+    infra.authelia.clients.audiobookshelf = {
+      clientID = "loHBtDZmyZrON3H0DtuLwaoNOC0aEGydqQW2WLdam~z2aR8doXs40ew5LIsg8l0cAlIaA554";
+      clientSecret = "$pbkdf2-sha512$310000$g7HQizpcxTUErJjpTczmXA$lM1wLml0fxE2.0mwmrnVNu/jHah/uKkjW4fJ2dxWnZW0a.VCnaqPhBJiZn2WVsJVsOV/8QrWkB7wwdQyOQ8mJA";
+      redirectURIs = [
+        "https://${domain}/auth/openid/callback"
+        "https://${domain}/auth/openid/mobile-redirect"
+        "audiobookshelf://oauth"
       ];
     };
 

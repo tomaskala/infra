@@ -24,6 +24,51 @@ in
       default = 9091;
       readOnly = true;
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "Authelia URL";
+      default = "https://${domain}";
+      readOnly = true;
+    };
+
+    clients = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule (
+          { name, ... }: {
+            options = {
+              clientName = lib.mkOption {
+                type = lib.types.str;
+                default = name;
+                description = "Client name, defaults to the key";
+              };
+
+              clientID = lib.mkOption {
+                type = lib.types.str;
+                description = "Unique identifier of the client";
+              };
+
+              clientSecret = lib.mkOption {
+                type = lib.types.str;
+                description = "pbkdf2 hash of the shared secret";
+              };
+
+              redirectURIs = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                description = "List of callbacks the client will redirect to";
+              };
+
+              extraSettings = lib.mkOption {
+                type = lib.types.attrs;
+                default = { };
+                description = "Additional free-form settings of the client";
+              };
+            };
+          }
+        )
+      );
+      description = "Attribute set of OIDC clients";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -105,6 +150,21 @@ in
               }
             ];
           };
+
+          identity_providers.oidc.clients = lib.mapAttrsToList (
+            _: c:
+            {
+              client_name = c.clientName;
+              client_id = c.clientID;
+              client_secret = c.clientSecret;
+              redirect_uris = c.redirectURIs;
+
+              authorization_policy = "one_factor";
+              require_pkce = true;
+              pkce_challenge_method = "S256";
+            }
+            // c.extraSettings
+          ) cfg.clients;
         };
       };
 

@@ -47,31 +47,13 @@ in
           '';
         };
       };
+    };
 
-      authelia.instances.main.settings.identity_providers.oidc.clients = [
-        {
-          client_name = "Paperless";
-          client_id = "uyC3mXDzLEuj8EAplmTmgAhYvJAmGDcARmenl.bT50tKOWgA.ZtI.nkHeo6Iwvgst4eXONJo";
-          client_secret = "$pbkdf2-sha512$310000$ayNWr2ery275IsGs7DHPdg$tvnnquP6d8M2mX8Ve9ipWziz8QoTsvlbXnlaOjtCRnaQsKdzt8iz/TNlpPQ1QpY3umriWrOqKKvhtYipnR8BmA";
-          public = false;
-          authorization_policy = "one_factor";
-          require_pkce = true;
-          pkce_challenge_method = "S256";
-          redirect_uris = [
-            "https://${domain}/accounts/oidc/authelia/login/callback/"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "groups"
-            "email"
-          ];
-          response_types = [ "code" ];
-          grant_types = [ "authorization_code" ];
-          access_token_signed_response_alg = "none";
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
+    infra.authelia.clients.paperless = {
+      clientID = "uyC3mXDzLEuj8EAplmTmgAhYvJAmGDcARmenl.bT50tKOWgA.ZtI.nkHeo6Iwvgst4eXONJo";
+      clientSecret = "$pbkdf2-sha512$310000$ayNWr2ery275IsGs7DHPdg$tvnnquP6d8M2mX8Ve9ipWziz8QoTsvlbXnlaOjtCRnaQsKdzt8iz/TNlpPQ1QpY3umriWrOqKKvhtYipnR8BmA";
+      redirectURIs = [
+        "https://${domain}/accounts/oidc/authelia/login/callback/"
       ];
     };
   };

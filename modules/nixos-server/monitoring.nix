@@ -77,7 +77,7 @@ in
             enabled = true;
             name = "Authelia";
             icon = "signin";
-            client_id = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
+            client_id = config.infra.authelia.clients.grafana.clientID;
             client_secret = "$__file{${config.sops.secrets."grafana/authelia-password".path}}";
             scopes = [
               "openid"
@@ -86,9 +86,9 @@ in
               "groups"
             ];
             empty_scopes = false;
-            auth_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/authorization";
-            token_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/token";
-            api_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/userinfo";
+            auth_url = "${config.infra.authelia.url}/api/oidc/authorization";
+            token_url = "${config.infra.authelia.url}/api/oidc/token";
+            api_url = "${config.infra.authelia.url}/api/oidc/userinfo";
             login_attribute_path = "preferred_username";
             groups_attribute_path = "groups";
             name_attribute_path = "name";
@@ -126,41 +126,21 @@ in
         };
       };
 
-      authelia.instances.main.settings.identity_providers.oidc = {
-        claims_policies.grafana.id_token = [
-          "email"
-          "name"
-          "groups"
-          "preferred_username"
-        ];
+      authelia.instances.main.settings.identity_providers.oidc.claims_policies.grafana.id_token = [
+        "email"
+        "name"
+        "groups"
+        "preferred_username"
+      ];
+    };
 
-        clients = [
-          {
-            client_name = "Grafana";
-            client_id = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
-            client_secret = "$pbkdf2-sha512$310000$/YZi4RumA3MyHwCmJrqATg$xeiI7.1vOCS0IiFXNy9EWS87Ny4.JaWOKkOtAa2NcTBqJaXrl9t.94tGzqXXnmVkHSrV0aK77mHCSkZ9BeEgXA";
-            claims_policy = "grafana";
-            public = false;
-            authorization_policy = "one_factor";
-            require_pkce = true;
-            pkce_challenge_method = "S256";
-            redirect_uris = [
-              "https://${domain}/login/generic_oauth"
-            ];
-            scopes = [
-              "openid"
-              "profile"
-              "groups"
-              "email"
-            ];
-            response_types = [ "code" ];
-            grant_types = [ "authorization_code" ];
-            access_token_signed_response_alg = "none";
-            userinfo_signed_response_alg = "none";
-            token_endpoint_auth_method = "client_secret_basic";
-          }
-        ];
-      };
+    infra.authelia.clients.grafana = {
+      clientID = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
+      clientSecret = "$pbkdf2-sha512$310000$/YZi4RumA3MyHwCmJrqATg$xeiI7.1vOCS0IiFXNy9EWS87Ny4.JaWOKkOtAa2NcTBqJaXrl9t.94tGzqXXnmVkHSrV0aK77mHCSkZ9BeEgXA";
+      redirectURIs = [
+        "https://${domain}/login/generic_oauth"
+      ];
+      extraSettings.claims_policy = "grafana";
     };
 
     users.users.${config.services.caddy.user}.extraGroups = [ "grafana" ];

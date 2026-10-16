@@ -62,31 +62,13 @@ in
           '';
         };
       };
+    };
 
-      authelia.instances.main.settings.identity_providers.oidc.clients = [
-        {
-          client_name = "Forgejo";
-          client_id = "H0RNuqVg7fyYtN4uBBmmMkh2zOMZpmpab.vjDUZV9ApHDaUw34rvOL5Glr5q66wB26WZxrm4";
-          client_secret = "$pbkdf2-sha512$310000$Qrl8CXrZ3fmnyqfrOhKeow$2.S2NjnkKFYrHoaqXMZwZBCzL2VWMHS7YLMx3qO/zLbJLpQfLkijJ4RzFhSBydH7x5VLFnsv7vQnfceYb0WxBQ";
-          public = false;
-          authorization_policy = "one_factor";
-          require_pkce = true;
-          pkce_challenge_method = "S256";
-          redirect_uris = [
-            "https://${domain}/user/oauth2/authelia/callback"
-          ];
-          scopes = [
-            "openid"
-            "email"
-            "profile"
-            "groups"
-          ];
-          response_types = [ "code" ];
-          grant_types = [ "authorization_code" ];
-          access_token_signed_response_alg = "none";
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
+    infra.authelia.clients.forgejo = {
+      clientID = "H0RNuqVg7fyYtN4uBBmmMkh2zOMZpmpab.vjDUZV9ApHDaUw34rvOL5Glr5q66wB26WZxrm4";
+      clientSecret = "$pbkdf2-sha512$310000$Qrl8CXrZ3fmnyqfrOhKeow$2.S2NjnkKFYrHoaqXMZwZBCzL2VWMHS7YLMx3qO/zLbJLpQfLkijJ4RzFhSBydH7x5VLFnsv7vQnfceYb0WxBQ";
+      redirectURIs = [
+        "https://${domain}/user/oauth2/authelia/callback"
       ];
     };
 
