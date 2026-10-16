@@ -86,9 +86,9 @@ in
               "groups"
             ];
             empty_scopes = false;
-            auth_url = "https://${config.infra.authelia.subdomain}.${cfg.hostDomain}/api/oidc/authorization";
-            token_url = "https://${config.infra.authelia.subdomain}.${cfg.hostDomain}/api/oidc/token";
-            api_url = "https://${config.infra.authelia.subdomain}.${cfg.hostDomain}/api/oidc/userinfo";
+            auth_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/authorization";
+            token_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/token";
+            api_url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}/api/oidc/userinfo";
             login_attribute_path = "preferred_username";
             groups_attribute_path = "groups";
             name_attribute_path = "name";

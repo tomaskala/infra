@@ -51,7 +51,7 @@ in
             {
               name = "Authelia";
               client_id = "DNJAfSRhH9GXr0I8KaeSZ9nyQFHD0hEay25CAjU_U_icLo93xkP4Hstv9mmHBL1c02VSSqKj";
-              url = "https://${config.infra.authelia.subdomain}.${cfg.hostDomain}";
+              url = "https://${config.infra.authelia.subdomain}.${config.infra.authelia.hostDomain}";
               provisioning = true;
             }
           ];
