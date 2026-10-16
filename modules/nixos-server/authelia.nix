@@ -96,12 +96,10 @@ in
 
             rules = [
               {
-                domain = cfg.hostDomain;
-                policy = "one_factor";
-                subject = [ "group:trusted-users" ];
-              }
-              {
-                domain = "*.${cfg.hostDomain}";
+                domain = [
+                  cfg.hostDomain
+                  "*.${cfg.hostDomain}"
+                ];
                 policy = "one_factor";
                 subject = [ "group:trusted-users" ];
               }
