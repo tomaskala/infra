@@ -14,6 +14,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "healthchecks/env" = { };
+    };
+
     systemd = {
       services.keepalive = {
         description = "Keepalive signal";

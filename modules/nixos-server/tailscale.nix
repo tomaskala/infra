@@ -17,6 +17,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "tailscale/api-key" = {
+        mode = "0400";
+        owner = "tailscaled";
+      };
+    };
+
     boot.kernelModules = [ "tun" ];
 
     environment.systemPackages = [ pkgs.tailscale ];

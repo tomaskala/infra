@@ -72,6 +72,34 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
+      "authelia/jwt-secret" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+      "authelia/session-secret" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+      "authelia/storage-encryption-key" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+      "authelia/oidc/hmac-secret" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+      "authelia/oidc/issuer-private-key" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+      "authelia/users" = {
+        mode = "0400";
+        owner = "authelia-main";
+      };
+    };
+
     services = {
       caddy = {
         enable = true;

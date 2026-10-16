@@ -39,6 +39,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "navidrome/env" = { };
+    };
+
     services = {
       navidrome = {
         enable = true;

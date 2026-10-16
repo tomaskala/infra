@@ -31,6 +31,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "readeck/env" = { };
+    };
+
     services = {
       readeck = {
         enable = true;

@@ -78,56 +78,7 @@ in
 
         "acme/env" = { };
         "nas/smb-credentials" = { };
-        "readeck/env" = { };
-        "healthchecks/env" = { };
         "prometheus/snmp-env" = { };
-        "paperless/admin-password" = { };
-        "paperless/env" = { };
-        "navidrome/env" = { };
-
-        "tailscale/api-key" = {
-          mode = "0400";
-          owner = "tailscaled";
-        };
-
-        # Source: <https://www.authelia.com/configuration/methods/secrets/#environment-variables>.
-        "authelia/jwt-secret" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-        "authelia/session-secret" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-        "authelia/storage-encryption-key" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-        "authelia/oidc/hmac-secret" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-        "authelia/oidc/issuer-private-key" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-        "authelia/users" = {
-          mode = "0400";
-          owner = "authelia-main";
-        };
-
-        "grafana/admin-password" = {
-          mode = "0400";
-          owner = "grafana";
-        };
-        "grafana/secret-key" = {
-          mode = "0400";
-          owner = "grafana";
-        };
-        "grafana/authelia-password" = {
-          mode = "0400";
-          owner = "grafana";
-        };
       };
     };
 

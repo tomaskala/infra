@@ -20,6 +20,21 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "grafana/admin-password" = {
+        mode = "0400";
+        owner = "grafana";
+      };
+      "grafana/secret-key" = {
+        mode = "0400";
+        owner = "grafana";
+      };
+      "grafana/authelia-password" = {
+        mode = "0400";
+        owner = "grafana";
+      };
+    };
+
     services = {
       grafana = {
         enable = true;

@@ -20,6 +20,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "paperless/admin-password" = { };
+      "paperless/env" = { };
+    };
+
     services = {
       paperless = {
         enable = true;
