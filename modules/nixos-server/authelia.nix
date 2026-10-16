@@ -141,16 +141,20 @@ in
 
           notifier.filesystem.filename = "/var/lib/authelia-main/notifications.log";
 
-          session.cookies = [
-            {
-              domain = cfg.hostDomain;
-              authelia_url = "https://${domain}";
-              default_redirection_url = "https://${cfg.hostDomain}";
-              inactivity = "1h";
-              expiration = "1d";
-              remember_me = "3M";
-            }
-          ];
+          session = {
+            redis.host = config.services.redis.servers.authelia.unixSocket;
+
+            cookies = [
+              {
+                domain = cfg.hostDomain;
+                authelia_url = "https://${domain}";
+                default_redirection_url = "https://${cfg.hostDomain}";
+                inactivity = "1h";
+                expiration = "1d";
+                remember_me = "3M";
+              }
+            ];
+          };
 
           storage.postgres = {
             address = "unix:///run/postgresql";
@@ -207,11 +211,24 @@ in
           }
         ];
       };
+
+      redis.servers.authelia = {
+        enable = true;
+        port = 0;
+        unixSocketPerm = 600;
+        inherit (config.services.authelia.instances.main) user group;
+      };
     };
 
     systemd.services.authelia-main = {
-      after = [ "postgresql.target" ];
-      requires = [ "postgresql.target" ];
+      after = [
+        "postgresql.target"
+        "redis-authelia.service"
+      ];
+      requires = [
+        "postgresql.target"
+        "redis-authelia.service"
+      ];
     };
   };
 }
