@@ -18,17 +18,17 @@ in
       description = "Subdomain of this service";
     };
 
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
+
     port = lib.mkOption {
       type = lib.types.port;
       description = "Port Authelia listens on";
       default = 9091;
-      readOnly = true;
-    };
-
-    url = lib.mkOption {
-      type = lib.types.str;
-      description = "Authelia URL";
-      default = "https://${domain}";
       readOnly = true;
     };
 
@@ -147,7 +147,7 @@ in
             cookies = [
               {
                 domain = cfg.hostDomain;
-                authelia_url = "https://${domain}";
+                authelia_url = cfg.url;
                 default_redirection_url = "https://${cfg.hostDomain}";
                 inactivity = "1h";
                 expiration = "1d";

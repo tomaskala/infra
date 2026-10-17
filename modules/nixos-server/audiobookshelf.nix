@@ -18,6 +18,13 @@ in
       description = "Subdomain of this service";
     };
 
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
+
     booksDir = lib.mkOption {
       type = lib.types.path;
       description = "Directory where the books are stored";
@@ -48,8 +55,8 @@ in
       clientID = "loHBtDZmyZrON3H0DtuLwaoNOC0aEGydqQW2WLdam~z2aR8doXs40ew5LIsg8l0cAlIaA554";
       clientSecret = "$pbkdf2-sha512$310000$g7HQizpcxTUErJjpTczmXA$lM1wLml0fxE2.0mwmrnVNu/jHah/uKkjW4fJ2dxWnZW0a.VCnaqPhBJiZn2WVsJVsOV/8QrWkB7wwdQyOQ8mJA";
       redirectURIs = [
-        "https://${domain}/auth/openid/callback"
-        "https://${domain}/auth/openid/mobile-redirect"
+        "${cfg.url}/auth/openid/callback"
+        "${cfg.url}/auth/openid/mobile-redirect"
         "audiobookshelf://oauth"
       ];
     };

@@ -3,11 +3,10 @@
     enable = true;
     enableDefaultConfig = false;
 
-    extraConfig = # sshconfig
-      ''
-        IgnoreUnknown UseKeychain
-        UseKeychain yes
-      '';
+    extraConfig = /* sshconfig */ ''
+      IgnoreUnknown UseKeychain
+      UseKeychain yes
+    '';
 
     settings = {
       "*" = {

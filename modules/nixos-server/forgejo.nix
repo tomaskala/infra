@@ -17,6 +17,13 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -28,7 +35,7 @@ in
         settings = {
           server = {
             DOMAIN = domain;
-            ROOT_URL = "https://${domain}/";
+            ROOT_URL = cfg.url;
             PROTOCOL = "http+unix";
             SSH_PORT = lib.head config.services.openssh.ports;
           };
@@ -68,7 +75,7 @@ in
       clientID = "H0RNuqVg7fyYtN4uBBmmMkh2zOMZpmpab.vjDUZV9ApHDaUw34rvOL5Glr5q66wB26WZxrm4";
       clientSecret = "$pbkdf2-sha512$310000$Qrl8CXrZ3fmnyqfrOhKeow$2.S2NjnkKFYrHoaqXMZwZBCzL2VWMHS7YLMx3qO/zLbJLpQfLkijJ4RzFhSBydH7x5VLFnsv7vQnfceYb0WxBQ";
       redirectURIs = [
-        "https://${domain}/user/oauth2/authelia/callback"
+        "${cfg.url}/user/oauth2/authelia/callback"
       ];
     };
 

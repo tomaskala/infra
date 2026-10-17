@@ -2,114 +2,109 @@
 
 {
   xdg.configFile = {
-    "nvim/lsp/gopls.lua".text = # lua
-      ''
-        return {
-          cmd = { "gopls" },
-          filetypes = { "go", "gomod", "gowork", "gotmpl", "gosum" },
-          root_markers = {
-            "go.work",
-            "go.mod",
-            ".git",
-          },
-        }
-      '';
+    "nvim/lsp/gopls.lua".text = /* lua */ ''
+      return {
+        cmd = { "gopls" },
+        filetypes = { "go", "gomod", "gowork", "gotmpl", "gosum" },
+        root_markers = {
+          "go.work",
+          "go.mod",
+          ".git",
+        },
+      }
+    '';
 
-    "nvim/lsp/lua_ls.lua".text = # lua
-      ''
-        return {
-          cmd = { "lua-language-server" },
-          filetypes = { "lua" },
-          root_markers = {
-            ".luarc.json",
-            ".luarc.jsonc",
-            ".luacheckrc",
-            ".stylua.toml",
-            "stylua.toml",
-            "selene.toml",
-            "selene.yml",
-            ".git",
-          },
-          settings = {
-            Lua = {
-              format = {
-                enable = true,
-                defaultConfig = {
-                  quote_style = "double",
-                  call_arg_parentheses = "always",
-                  trailing_table_separator = "smart",
-                },
+    "nvim/lsp/lua_ls.lua".text = /* lua */ ''
+      return {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        root_markers = {
+          ".luarc.json",
+          ".luarc.jsonc",
+          ".luacheckrc",
+          ".stylua.toml",
+          "stylua.toml",
+          "selene.toml",
+          "selene.yml",
+          ".git",
+        },
+        settings = {
+          Lua = {
+            format = {
+              enable = true,
+              defaultConfig = {
+                quote_style = "double",
+                call_arg_parentheses = "always",
+                trailing_table_separator = "smart",
               },
-              diagnostics = {
-                globals = {
-                  "vim",
-                },
+            },
+            diagnostics = {
+              globals = {
+                "vim",
               },
             },
           },
-        }
-      '';
+        },
+      }
+    '';
 
-    "nvim/lsp/nil_ls.lua".text = # lua
-      ''
-        return {
-          cmd = { "nil" },
-          filetypes = { "nix" },
-          root_markers = {
-            "flake.nix",
-            ".git",
-          },
-          settings = {
-            ["nil"] = {
-              formatting = {
-                command = { "nixfmt" },
-              },
-              nix = {
-                flake = {
-                  autoArchive = false,
-                }
-              },
+    "nvim/lsp/nil_ls.lua".text = /* lua */ ''
+      return {
+        cmd = { "nil" },
+        filetypes = { "nix" },
+        root_markers = {
+          "flake.nix",
+          ".git",
+        },
+        settings = {
+          ["nil"] = {
+            formatting = {
+              command = { "nixfmt" },
+            },
+            nix = {
+              flake = {
+                autoArchive = false,
+              }
             },
           },
-        }
-      '';
+        },
+      }
+    '';
 
-    "nvim/lsp/pyright.lua".text = # lua
-      ''
-        return {
-          cmd = { "pyright-langserver", "--stdio" },
-          filetypes = { "python" },
-          root_markers = {
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "requirements.txt",
-            "Pipfile",
-            "pyrightconfig.json",
-            ".git",
+    "nvim/lsp/pyright.lua".text = /* lua */ ''
+      return {
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        root_markers = {
+          "pyproject.toml",
+          "setup.py",
+          "setup.cfg",
+          "requirements.txt",
+          "Pipfile",
+          "pyrightconfig.json",
+          ".git",
+        },
+        settings = {
+          pyright = {
+            -- Using Ruff's import organizer.
+            disableOrganizeImports = true,
           },
-          settings = {
-            pyright = {
-              -- Using Ruff's import organizer.
-              disableOrganizeImports = true,
-            },
-          },
-        }
-      '';
+        },
+      }
+    '';
 
-    "nvim/lsp/ruff.lua".text = # lua
-      ''
-        return {
-          cmd = { "ruff", "server" },
-          filetypes = { "python" },
-          root_markers = {
-            "pyproject.toml",
-            "ruff.toml",
-            ".ruff.toml",
-            ".git",
-          },
-        }
-      '';
+    "nvim/lsp/ruff.lua".text = /* lua */ ''
+      return {
+        cmd = { "ruff", "server" },
+        filetypes = { "python" },
+        root_markers = {
+          "pyproject.toml",
+          "ruff.toml",
+          ".ruff.toml",
+          ".git",
+        },
+      }
+    '';
   };
 
   programs.neovim = {
@@ -137,153 +132,151 @@
       {
         plugin = telescope-nvim;
         type = "lua";
-        config = # lua
-          ''
-            do
-              local telescope_api = require("telescope.builtin")
-              local opts = { noremap = true, silent = true }
+        config = /* lua */ ''
+          do
+            local telescope_api = require("telescope.builtin")
+            local opts = { noremap = true, silent = true }
 
-              vim.keymap.set("n", "<C-p>", telescope_api.find_files, opts)
-              vim.keymap.set("n", "<C-S-p>", telescope_api.live_grep, opts)
-              vim.keymap.set("n", "<C-b>", telescope_api.buffers, opts)
+            vim.keymap.set("n", "<C-p>", telescope_api.find_files, opts)
+            vim.keymap.set("n", "<C-S-p>", telescope_api.live_grep, opts)
+            vim.keymap.set("n", "<C-b>", telescope_api.buffers, opts)
 
-              vim.keymap.set("n", "grr", telescope_api.lsp_references, opts)
-              vim.keymap.set("n", "gd", function()
-                telescope_api.lsp_definitions({ reuse_win = true })
-              end, opts)
-              vim.keymap.set("n", "gi", function()
-                telescope_api.lsp_implementations({ reuse_win = true })
-              end, opts)
-              vim.keymap.set("n", "go", function()
-                telescope_api.lsp_type_definitions({ reuse_win = true })
-              end, opts)
+            vim.keymap.set("n", "grr", telescope_api.lsp_references, opts)
+            vim.keymap.set("n", "gd", function()
+              telescope_api.lsp_definitions({ reuse_win = true })
+            end, opts)
+            vim.keymap.set("n", "gi", function()
+              telescope_api.lsp_implementations({ reuse_win = true })
+            end, opts)
+            vim.keymap.set("n", "go", function()
+              telescope_api.lsp_type_definitions({ reuse_win = true })
+            end, opts)
 
-              local telescope = require("telescope")
-              telescope.setup({
-                extensions = {
-                  file_browser = {
-                    grouped = true,
-                    hijack_netrw = true,
-                  },
+            local telescope = require("telescope")
+            telescope.setup({
+              extensions = {
+                file_browser = {
+                  grouped = true,
+                  hijack_netrw = true,
                 },
+              },
+            })
+
+            telescope.load_extension("fzf")
+            telescope.load_extension("file_browser")
+
+            vim.keymap.set("n", "<C-h>", function()
+              telescope.extensions.file_browser.file_browser({
+                path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
+                select_buffer = true,
               })
-
-              telescope.load_extension("fzf")
-              telescope.load_extension("file_browser")
-
-              vim.keymap.set("n", "<C-h>", function()
-                telescope.extensions.file_browser.file_browser({
-                  path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
-                  select_buffer = true,
-                })
-              end, opts)
-              vim.keymap.set("n", "<C-S-h>", function()
-                telescope.extensions.file_browser.file_browser()
-              end, opts)
-            end
-          '';
+            end, opts)
+            vim.keymap.set("n", "<C-S-h>", function()
+              telescope.extensions.file_browser.file_browser()
+            end, opts)
+          end
+        '';
       }
     ];
 
-    initLua = # lua
-      ''
-        vim.loader.enable()
-        vim.g.mapleader = ","
+    initLua = /* lua */ ''
+      vim.loader.enable()
+      vim.g.mapleader = ","
 
-        vim.opt.tabstop = 2
-        vim.opt.softtabstop = 2
-        vim.opt.shiftwidth = 2
-        vim.opt.expandtab = true
-        vim.opt.breakindent = true
+      vim.opt.tabstop = 2
+      vim.opt.softtabstop = 2
+      vim.opt.shiftwidth = 2
+      vim.opt.expandtab = true
+      vim.opt.breakindent = true
 
-        vim.opt.shortmess:append({ I = true })
-        vim.opt.splitbelow = true
-        vim.opt.splitright = true
-        vim.opt.swapfile = false
+      vim.opt.shortmess:append({ I = true })
+      vim.opt.splitbelow = true
+      vim.opt.splitright = true
+      vim.opt.swapfile = false
 
-        vim.opt.cursorline = true
-        vim.opt.scrolloff = 3
-        vim.opt.mousescroll = "ver:1,hor:6"
-        vim.opt.number = true
-        vim.opt.relativenumber = true
-        vim.opt.wildmode = { "longest:full", "full" }
-        vim.opt.showmode = false
-        vim.opt.completeopt = { "menu", "menuone", "popup", "fuzzy", "noinsert" } 
-        vim.opt.winborder = "rounded"
+      vim.opt.cursorline = true
+      vim.opt.scrolloff = 3
+      vim.opt.mousescroll = "ver:1,hor:6"
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+      vim.opt.wildmode = { "longest:full", "full" }
+      vim.opt.showmode = false
+      vim.opt.completeopt = { "menu", "menuone", "popup", "fuzzy", "noinsert" } 
+      vim.opt.winborder = "rounded"
 
-        vim.opt.ignorecase = true
-        vim.opt.smartcase = true
+      vim.opt.ignorecase = true
+      vim.opt.smartcase = true
 
-        vim.keymap.set("n", "<Esc>", vim.cmd.nohlsearch, { noremap = true })
-        vim.diagnostic.config({ virtual_text = true })
+      vim.keymap.set("n", "<Esc>", vim.cmd.nohlsearch, { noremap = true })
+      vim.diagnostic.config({ virtual_text = true })
 
-        do
-          local configs = {}
-          for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*", true)) do
-            local name = vim.fn.fnamemodify(v, ":t:r")
-            table.insert(configs, name)
-          end
-          vim.lsp.enable(configs)
+      do
+        local configs = {}
+        for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*", true)) do
+          local name = vim.fn.fnamemodify(v, ":t:r")
+          table.insert(configs, name)
         end
+        vim.lsp.enable(configs)
+      end
 
-        vim.api.nvim_create_autocmd("LspAttach", {
-          desc = "Configure LSP",
-          group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
-          callback = function(args)
-            -- Configure keybinds.
-            local opts = { buffer = args.buf, noremap = true, silent = true }
-            vim.keymap.set("n", "grf", vim.lsp.buf.format, opts)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        desc = "Configure LSP",
+        group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
+        callback = function(args)
+          -- Configure keybinds.
+          local opts = { buffer = args.buf, noremap = true, silent = true }
+          vim.keymap.set("n", "grf", vim.lsp.buf.format, opts)
 
-            -- Configure completions.
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-            if client:supports_method("textDocument/completion") then
-              vim.lsp.completion.enable(true, client.id, args.buf)
-            end
-          end,
-        })
+          -- Configure completions.
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client:supports_method("textDocument/completion") then
+            vim.lsp.completion.enable(true, client.id, args.buf)
+          end
+        end,
+      })
 
-        vim.api.nvim_create_autocmd("FileType", {
-          desc = "Go settings",
-          pattern = "go",
-          group = vim.api.nvim_create_augroup("go", { clear = true }),
-          callback = function()
-            vim.opt_local.tabstop = 4
-            vim.opt_local.softtabstop = 4
-            vim.opt_local.shiftwidth = 4
-            vim.opt_local.expandtab = false
-            vim.opt_local.makeprg = "go build"
-          end,
-        })
+      vim.api.nvim_create_autocmd("FileType", {
+        desc = "Go settings",
+        pattern = "go",
+        group = vim.api.nvim_create_augroup("go", { clear = true }),
+        callback = function()
+          vim.opt_local.tabstop = 4
+          vim.opt_local.softtabstop = 4
+          vim.opt_local.shiftwidth = 4
+          vim.opt_local.expandtab = false
+          vim.opt_local.makeprg = "go build"
+        end,
+      })
 
-        vim.api.nvim_create_autocmd("FileType", {
-          desc = "Python settings",
-          pattern = "python",
-          group = vim.api.nvim_create_augroup("python", { clear = true }),
-          callback = function()
-            vim.opt_local.tabstop = 4
-            vim.opt_local.softtabstop = 4
-            vim.opt_local.shiftwidth = 4
-          end,
-        })
+      vim.api.nvim_create_autocmd("FileType", {
+        desc = "Python settings",
+        pattern = "python",
+        group = vim.api.nvim_create_augroup("python", { clear = true }),
+        callback = function()
+          vim.opt_local.tabstop = 4
+          vim.opt_local.softtabstop = 4
+          vim.opt_local.shiftwidth = 4
+        end,
+      })
 
-        vim.api.nvim_create_autocmd("FileType", {
-          desc = "Plaintext settings",
-          pattern = { "markdown", "text" },
-          group = vim.api.nvim_create_augroup("plaintext", { clear = true }),
-          callback = function()
-            vim.opt_local.textwidth = 80
-            vim.opt_local.wrap = true
-            vim.opt_local.linebreak = true
+      vim.api.nvim_create_autocmd("FileType", {
+        desc = "Plaintext settings",
+        pattern = { "markdown", "text" },
+        group = vim.api.nvim_create_augroup("plaintext", { clear = true }),
+        callback = function()
+          vim.opt_local.textwidth = 80
+          vim.opt_local.wrap = true
+          vim.opt_local.linebreak = true
 
-            vim.opt_local.spell = true
-            vim.opt_local.spelllang = "en_us"
-            vim.opt_local.formatoptions = "qn1j"
+          vim.opt_local.spell = true
+          vim.opt_local.spelllang = "en_us"
+          vim.opt_local.formatoptions = "qn1j"
 
-            local opts = { buffer = true, noremap = true, silent = true }
-            vim.keymap.set({ "n", "x" }, "j", "gj", opts)
-            vim.keymap.set({ "n", "x" }, "k", "gk", opts)
-          end,
-        })
-      '';
+          local opts = { buffer = true, noremap = true, silent = true }
+          vim.keymap.set({ "n", "x" }, "j", "gj", opts)
+          vim.keymap.set({ "n", "x" }, "k", "gk", opts)
+        end,
+      })
+    '';
   };
 }

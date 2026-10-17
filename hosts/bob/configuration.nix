@@ -303,6 +303,59 @@ in
       homepage = {
         enable = true;
         inherit hostDomain;
+
+        groups = [
+          {
+            name = "Development";
+            services = [
+              {
+                name = "Grafana";
+                description = "Monitoring";
+                inherit (config.infra.monitoring) url;
+              }
+              {
+                name = "Forgejo";
+                description = "Code hosting";
+                inherit (config.infra.forgejo) url;
+              }
+            ];
+          }
+          {
+            name = "Documents";
+            services = [
+              {
+                name = "Readeck";
+                description = "Read later";
+                inherit (config.infra.readeck) url;
+              }
+              {
+                name = "Paperless";
+                description = "Document management";
+                inherit (config.infra.paperless) url;
+              }
+            ];
+          }
+          {
+            name = "Media";
+            services = [
+              {
+                name = "audiobookshelf";
+                description = "Audiobook & ebook management";
+                inherit (config.infra.audiobookshelf) url;
+              }
+              {
+                name = "Navidrome";
+                description = "Music player";
+                inherit (config.infra.navidrome) url;
+              }
+              {
+                name = "Jellyfin";
+                description = "Media server";
+                inherit (config.infra.jellyfin) url;
+              }
+            ];
+          }
+        ];
       };
 
       jellyfin = {

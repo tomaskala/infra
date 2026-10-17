@@ -22,6 +22,13 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {

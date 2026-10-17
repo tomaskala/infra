@@ -5,7 +5,7 @@
     enable = true;
 
     functions = {
-      fish_prompt.body = ''
+      fish_prompt.body = /* fish */ ''
         set -l last_status $status
         set -l stat
 
@@ -17,21 +17,20 @@
       '';
     };
 
-    interactiveShellInit = # fish
-      ''
-        set -gx EMAIL me@tomaskala.com
-        set -gx EDITOR nvim
+    interactiveShellInit = /* fish */ ''
+      set -gx EMAIL me@tomaskala.com
+      set -gx EDITOR nvim
 
-        set -gx XDG_CACHE_HOME ~/.cache
-        set -gx XDG_CONFIG_HOME ~/.config
-        set -gx XDG_DATA_HOME ~/.local/share
+      set -gx XDG_CACHE_HOME ~/.cache
+      set -gx XDG_CONFIG_HOME ~/.config
+      set -gx XDG_DATA_HOME ~/.local/share
 
-        set -gx GOPATH "$XDG_DATA_HOME/go"
-        set -gx GOBIN ~/.local/bin
+      set -gx GOPATH "$XDG_DATA_HOME/go"
+      set -gx GOBIN ~/.local/bin
 
-        set -g fish_greeting
-        fish_add_path ~/.local/bin
-      '';
+      set -g fish_greeting
+      fish_add_path ~/.local/bin
+    '';
 
     shellAliases = {
       diff = "${pkgs.diffutils}/bin/diff --color=auto";

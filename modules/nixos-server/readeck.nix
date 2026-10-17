@@ -25,6 +25,13 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -86,7 +93,7 @@ in
       clientID = "DNJAfSRhH9GXr0I8KaeSZ9nyQFHD0hEay25CAjU_U_icLo93xkP4Hstv9mmHBL1c02VSSqKj";
       clientSecret = "$pbkdf2-sha512$310000$q1Wosyh2TUWeXB6bFjl1Bg$1fHywYv5Y2/L.kS2j65KDjR/f5emM/UyuSP69Js6RrFExZX0reuStyKn1zSzWfGYe9a53AXp5bY.SoG6l4kmjQ";
       redirectURIs = [
-        "https://${domain}/login/oidc"
+        "${cfg.url}/login/oidc"
       ];
     };
 

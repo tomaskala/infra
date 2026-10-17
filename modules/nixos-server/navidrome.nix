@@ -21,6 +21,13 @@ in
       description = "Subdomain of this service";
     };
 
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
+
     musicDir = lib.mkOption {
       type = lib.types.submodule {
         options = {

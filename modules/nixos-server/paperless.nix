@@ -17,6 +17,13 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -58,7 +65,7 @@ in
       clientID = "uyC3mXDzLEuj8EAplmTmgAhYvJAmGDcARmenl.bT50tKOWgA.ZtI.nkHeo6Iwvgst4eXONJo";
       clientSecret = "$pbkdf2-sha512$310000$ayNWr2ery275IsGs7DHPdg$tvnnquP6d8M2mX8Ve9ipWziz8QoTsvlbXnlaOjtCRnaQsKdzt8iz/TNlpPQ1QpY3umriWrOqKKvhtYipnR8BmA";
       redirectURIs = [
-        "https://${domain}/accounts/oidc/authelia/login/callback/"
+        "${cfg.url}/accounts/oidc/authelia/login/callback/"
       ];
     };
   };

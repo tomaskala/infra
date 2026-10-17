@@ -99,10 +99,9 @@
       # them to the current session, so we do not need to log out and log in
       # again to make the changes take effect.
       # The script is run every time the system boots or darwin-rebuild runs.
-      activationScripts.postActivation.text = # bash
-        ''
-          sudo -u tomas /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-        '';
+      activationScripts.postActivation.text = /* bash */ ''
+        sudo -u tomas /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      '';
 
       defaults = {
         smb.NetBIOSName = "gordon";

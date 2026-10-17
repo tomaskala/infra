@@ -17,6 +17,13 @@ in
       type = lib.types.str;
       description = "Subdomain of this service";
     };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of this service";
+      default = "https://${domain}";
+      readOnly = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -58,7 +65,7 @@ in
 
         settings = {
           server = {
-            root_url = "https://${domain}";
+            root_url = cfg.url;
             protocol = "socket";
             enable_gzip = true;
           };
@@ -153,7 +160,7 @@ in
       clientID = "h5Xt~Om3pMxHznELCoQLMh4291GNkpr~shG6t5yv5Cu19LajdJmTfUCTKXJ_QAkELHHaE8f-";
       clientSecret = "$pbkdf2-sha512$310000$/YZi4RumA3MyHwCmJrqATg$xeiI7.1vOCS0IiFXNy9EWS87Ny4.JaWOKkOtAa2NcTBqJaXrl9t.94tGzqXXnmVkHSrV0aK77mHCSkZ9BeEgXA";
       redirectURIs = [
-        "https://${domain}/login/generic_oauth"
+        "${cfg.url}/login/generic_oauth"
       ];
       extraSettings.claims_policy = "grafana";
     };
