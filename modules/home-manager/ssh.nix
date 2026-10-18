@@ -10,28 +10,25 @@
 
     settings = {
       "*" = {
+        identitiesOnly = true;
         addKeysToAgent = "yes";
         serverAliveInterval = 60;
-        controlPath = "~/.ssh/master-%h-%p-%r";
       };
 
       "github.com" = {
-        user = "tomaskala";
-        identitiesOnly = true;
+        user = "git";
         identityFile = "~/.ssh/id_ed25519_github";
       };
 
       # Let Tailscale resolve the hostname.
       bob = {
         user = "tomas";
-        identitiesOnly = true;
         identityFile = "~/.ssh/id_ed25519_bob";
       };
 
       seedbox = {
         user = "return9826";
         hostname = "nexus.usbx.me";
-        identitiesOnly = true;
         identityFile = "~/.ssh/id_ed25519_seedbox";
       };
     };
