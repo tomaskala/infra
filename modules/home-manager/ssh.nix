@@ -26,6 +26,11 @@
         identityFile = "~/.ssh/id_ed25519_bob";
       };
 
+      "forgejo.bob.*" = {
+        user = "forgejo";
+        identityFile = "~/.ssh/id_ed25519_bob";
+      };
+
       seedbox = {
         user = "return9826";
         hostname = "nexus.usbx.me";
