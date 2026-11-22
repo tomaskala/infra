@@ -16,17 +16,16 @@ let
     }:
     /* html */ ''
       <li>
-        <a class="tile" href="${lib.escapeXML url}">
-          <span class="name">${lib.escapeXML name}</span>
-          <span class="description">${lib.escapeXML description}</span>
-        </a>
+        <a href="${lib.escapeXML url}">${lib.escapeXML name}</a>
+        <p>${lib.escapeXML description}</p>
       </li>
     '';
 
-  mkGroup = { name, services }: /* html */ ''
+  mkSection = { name, description, services }: /* html */ ''
     <section>
       <h2>${lib.escapeXML name}</h2>
-      <ul class="grid">
+      <p>${lib.escapeXML description}</p>
+      <ul>
         ${lib.concatMapStrings mkTile services}
       </ul>
     </section>
@@ -37,8 +36,7 @@ let
     <html lang="en">
       <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Bob homepage">
         <title>Bob</title>
         <link rel="stylesheet" href="style.css">
@@ -47,12 +45,11 @@ let
       <body>
         <header>
           <h1>Bob</h1>
+          <p>Welcome to Bob, our home server!</p>
         </header>
 
         <main>
-        <nav aria-label="Services">
-            ${lib.concatMapStrings mkGroup cfg.groups}
-        </nav>
+        ${lib.concatMapStrings mkSection cfg.groups}
         </main>
       </body>
     </html>
@@ -61,88 +58,29 @@ let
   styleCSS = pkgs.writeText "style.css" /* css */ ''
     :root {
       color-scheme: light dark;
-      --bg: #f4f5f9;
-      --surface: #ffffff;
-      --text: #1b1d26;
-      --muted: #586174;
-      --border: #d9dde8;
-      --accent: #4a5bf0;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1117;
-        --surface: #181b24;
-        --text: #e8eaf2;
-        --muted: #9aa2b6;
-        --border: #2b3040;
-        --accent: #8f9bff;
-      }
-    }
-
-    * { box-sizing: border-box; }
 
     body {
-      max-width: 64rem;
+      font: 1rem/1.6 monospace;
+      max-width: 80ch;
       margin: 0 auto;
-      padding:
-        max(clamp(1.5rem, 5vw, 3rem), env(safe-area-inset-top))
-        max(1rem, env(safe-area-inset-right))
-        max(2rem, env(safe-area-inset-bottom))
-        max(1rem, env(safe-area-inset-left));
-      background: var(--bg);
-      color: var(--text);
-      font: 1rem/1.4 system-ui, sans-serif;
+      padding: 1rem;
+      overflow-wrap: anywhere;
+      background: light-dark(#ffffff, #151515);
+      color: light-dark(#222222, #dddddd);
     }
 
-    h1 {
-      margin: 0 0 2rem;
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+    a {
+      color: light-dark(#0645ad, #8ab4f8);
     }
 
-    section + section { margin-top: 2rem; }
-
-    h2 {
-      margin: 0 0 0.75rem 0.25rem;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
+    li p {
+      margin: 0 0 1rem;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
-      gap: 0.75rem;
-      margin: 0;
-      padding: 0;
-      list-style: none;
+    ul > li {
+      list-style-type: square;
     }
-
-    .tile {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      padding: 0.9rem 1.1rem;
-      color: inherit;
-      text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: border-color 0.15s;
-    }
-
-    .tile:hover { border-color: var(--accent); }
-
-    .tile:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .name { font-weight: 600; }
-    .description { color: var(--muted); font-size: 0.85rem; }
   '';
 
   site = pkgs.runCommandLocal "generate-homepage" { } ''
@@ -168,6 +106,11 @@ in
             name = lib.mkOption {
               type = lib.types.str;
               description = "Group name";
+            };
+
+            description = lib.mkOption {
+              type = lib.types.str;
+              description = "Group description";
             };
 
             services = lib.mkOption {

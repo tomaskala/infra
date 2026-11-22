@@ -306,51 +306,60 @@ in
 
         groups = [
           {
-            name = "Development";
+            name = "Management";
+            description = "Boring software related to server management";
             services = [
               {
                 name = "Grafana";
-                description = "Monitoring";
+                description = "Monitor the server for abnormalities";
                 inherit (config.infra.monitoring) url;
               }
+            ];
+          }
+          {
+            name = "Development";
+            description = "Stuff usable for developers";
+            services = [
               {
                 name = "Forgejo";
-                description = "Code hosting";
+                description = "Find home for your code here";
                 inherit (config.infra.forgejo) url;
               }
             ];
           }
           {
-            name = "Documents";
+            name = "Archive";
+            description = "Document management";
             services = [
               {
                 name = "Readeck";
-                description = "Read later";
+                description = "Put your pile of bookmarks here and read through them later";
                 inherit (config.infra.readeck) url;
               }
               {
                 name = "Paperless";
-                description = "Document management";
+                description = "Archive and tag your documents";
                 inherit (config.infra.paperless) url;
               }
             ];
           }
           {
             name = "Media";
+            description = "Media stash";
             services = [
               {
                 name = "audiobookshelf";
-                description = "Audiobook & ebook management";
+                description = "Read some of our ebooks or listen to audiobooks";
                 inherit (config.infra.audiobookshelf) url;
               }
               {
                 name = "Navidrome";
-                description = "Music player";
+                description = "Listen to our extensive music collection";
                 inherit (config.infra.navidrome) url;
               }
               {
                 name = "Jellyfin";
-                description = "Media server";
+                description = "Watch films and series in this barely functioning media player";
                 inherit (config.infra.jellyfin) url;
               }
             ];
