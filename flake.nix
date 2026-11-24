@@ -11,11 +11,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,11 +18,6 @@
 
     disko = {
       url = "github:nix-community/disko/v1.13.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -42,19 +32,13 @@
       self,
       nixpkgs,
       nixos-hardware,
-      nix-darwin,
       home-manager,
       disko,
-      lanzaboote,
       sops-nix,
       ...
     }@inputs:
     let
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
+      systems = [ "x86_64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
     {
@@ -71,42 +55,6 @@
             nixos-hardware.nixosModules.common-pc
             nixos-hardware.nixosModules.common-pc-ssd
             home-manager.nixosModules.home-manager
-          ];
-        };
-
-        cooper = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./hosts/cooper/configuration.nix
-            sops-nix.nixosModules.default
-            nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen2
-            lanzaboote.nixosModules.lanzaboote
-            home-manager.nixosModules.home-manager
-          ];
-        };
-      };
-
-      darwinConfigurations = {
-        gordon = nix-darwin.lib.darwinSystem {
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./hosts/gordon/configuration.nix
-            sops-nix.darwinModules.default
-            home-manager.darwinModules.home-manager
-          ];
-        };
-      };
-
-      homeConfigurations = {
-        "tomas@blacklodge" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs; };
-
-          modules = [
-            ./hosts/blacklodge/tomas.nix
-            sops-nix.homeManagerModules.default
           ];
         };
       };

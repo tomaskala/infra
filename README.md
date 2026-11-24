@@ -2,19 +2,6 @@
 
 Configuration for my network infrastructure.
 
-## Hosts
-
-| Hostname | Device type | Operating system |
-| ------------ | ------------------------- | ---------------- |
-| `bob` | ASUS NUC 14 Pro | NixOS |
-| `blacklodge` | Desktop computer | Pop!\_OS |
-| `cooper` | Lenovo Thinkpad T14 Gen 2 | NixOS |
-| `gordon` | MacBook Air M3 | MacOS |
-| `hawk` | iPhone SE 2022 | iOS |
-| `audrey` | MikroTik hAP ac lite TC | OpenWRT |
-| `leland` | Synology NAS | Synology thingy |
-| `bobby` | Steam Deck | SteamOS |
-
 ## Deployment
 
 To define and deploy a machine (called `twinpeaks` in this example), do the following.
