@@ -60,14 +60,26 @@ let
       color-scheme: light dark;
     }
 
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
-      font: 1rem/1.6 monospace;
-      max-width: 80ch;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      max-width: calc(80ch + 2rem);
       margin: 0 auto;
       padding: 1rem;
-      overflow-wrap: anywhere;
+      font: 1rem/1.6 monospace;
+      overflow-wrap: break-word;
       background: light-dark(#ffffff, #151515);
       color: light-dark(#222222, #dddddd);
+    }
+
+    main {
+      flex-grow: 1;
     }
 
     a {
@@ -78,7 +90,7 @@ let
       margin: 0 0 1rem;
     }
 
-    ul > li {
+    ul {
       list-style-type: square;
     }
   '';
